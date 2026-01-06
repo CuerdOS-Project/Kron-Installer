@@ -47,19 +47,6 @@ def get_timezones():
                     zones.append(tz)
     return sorted(zones)
 
-def write_x11_keymap(root, keymap):
-    content = f"""Section "InputClass"
-    Identifier "system-keyboard"
-    MatchIsKeyboard "on"
-    Option "XkbLayout" "{keymap}"
-    Option "XkbModel" "pc105"
-EndSection
-"""
-    path = os.path.join(root, "etc/X11/xorg.conf.d")
-    os.makedirs(path, exist_ok=True)
-    with open(os.path.join(path, "00-keyboard.conf"), "w") as f:
-        f.write(content)
-
 # --- Configuración Global ---
 INSTALL_CONFIG = {
     "HOSTNAME": "olivos",
@@ -68,12 +55,12 @@ INSTALL_CONFIG = {
     "USER_NAME": "",
     "USER_PASSWORD": "",
     "PARTITION_ROOT": None,
-    "PARTITION_EFI": None,   # Nuevo: Soporte UEFI
+    "PARTITION_EFI": None,
     "PARTITION_SWAP": None,
     "PARTITION_HOME": None,
     "ROOT_FSTYPE": "ext4",
     "HOME_FSTYPE": "ext4",
-    "TARGET_DISK": None,     # Para GRUB legacy
+    "TARGET_DISK": None,
     "LOCALE": "en_US.UTF-8",
     "KEYMAP": "us",
     "TIMEZONE": "UTC"
@@ -110,7 +97,7 @@ class Shell:
         except subprocess.CalledProcessError as e:
             return False, e.stdout
         except FileNotFoundError:
-            return False, f"Comando no encontrado: {cmd_list[0]}"
+            return False, f"Command not found: {cmd_list[0]}"
 
     @staticmethod
     def get_partitions():
@@ -125,7 +112,7 @@ class Shell:
                     if device['type'] == 'disk':
                         partitions.append({
                             'path': device['name'], 
-                            'desc': f"DISCO: {device['name']} ({device['size']})",
+                            'desc': f"DISK: {device['name']} ({device['size']})",
                             'type': 'disk'
                         })
                     if 'children' in device:
@@ -164,7 +151,7 @@ class VoidInstaller(Gtk.Window):
         self.set_position(Gtk.WindowPosition.CENTER)
         
         if os.geteuid() != 0:
-            self.show_error("Este instalador DEBE ejecutarse como root.", exit_app=True)
+            self.show_error("This installer MUST be run as root.", exit_app=True)
             return
 
         self.main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
@@ -188,17 +175,26 @@ class VoidInstaller(Gtk.Window):
         action_area.set_margin_start(10)
         self.main_box.pack_end(action_area, False, False, 0)
 
-        self.btn_back = Gtk.Button(label="Atrás")
+        self.btn_back = Gtk.Button(label="Back")
         self.btn_back.connect("clicked", self.on_back)
         action_area.pack_start(self.btn_back, False, False, 0)
 
-        self.btn_next = Gtk.Button(label="Siguiente")
+        self.btn_next = Gtk.Button(label="Next")
         self.btn_next.get_style_context().add_class("suggested-action")
         self.btn_next.connect("clicked", self.on_next)
         action_area.pack_end(self.btn_next, False, False, 0)
 
         self.pages = ["welcome", "regional", "user_config", "partitioning", "install"]
         self.current_page_idx = 0
+        
+        self.install_messages = [
+            "OlivOS: fast, simple and clean",
+            "Based on Void Linux",
+            "Designed for real hardware",
+            "No systemd. No bloat.",
+            "Terminal-friendly by design"
+        ]
+        self._install_msg_idx = 0
         
         self.init_ui()
         self.update_nav()
@@ -225,8 +221,8 @@ class VoidInstaller(Gtk.Window):
         lbl = Gtk.Label()
         lbl.set_markup("<span size='30000' weight='bold'>OlivOS GNU/Linux</span>")
         
-        mode = "Modo UEFI detectado" if Shell.is_uefi() else "Modo BIOS Legacy detectado"
-        msg = Gtk.Label(label=f"Bienvenido a OlivOS.\n{mode}\n\nADVERTENCIA: Se borrarán los datos de las particiones seleccionadas.")
+        mode = "UEFI mode detected" if Shell.is_uefi() else "Legacy BIOS mode detected"
+        msg = Gtk.Label(label=f"Welcome to OlivOS.\n{mode}\n\nWARNING: The data on the selected partitions will be deleted.")
         msg.set_justify(Gtk.Justification.CENTER)
         
         box.pack_start(lbl, False, False, 0)
@@ -241,14 +237,14 @@ class VoidInstaller(Gtk.Window):
         box.set_margin_end(50)
         
         title = Gtk.Label()
-        title.set_markup("<span size='16000' weight='bold'>Configuración Regional</span>")
+        title.set_markup("<span size='16000' weight='bold'>Regional Settings</span>")
         box.pack_start(title, False, False, 0)
         
         grid = Gtk.Grid(column_spacing=15, row_spacing=15)
         grid.set_halign(Gtk.Align.CENTER)
         
         # Idioma del sistema (Locale)
-        lbl_locale = Gtk.Label(label="Idioma del Sistema:")
+        lbl_locale = Gtk.Label(label="System Language:")
         lbl_locale.set_halign(Gtk.Align.END)
         self.combo_locale = Gtk.ComboBoxText()
         for locale in LOCALES:
@@ -259,7 +255,7 @@ class VoidInstaller(Gtk.Window):
         grid.attach(self.combo_locale, 1, 0, 1, 1)
         
         # Distribución de teclado
-        lbl_keymap = Gtk.Label(label="Distribución de Teclado:")
+        lbl_keymap = Gtk.Label(label="Keyboard Layout:")
         lbl_keymap.set_halign(Gtk.Align.END)
         self.combo_keymap = Gtk.ComboBoxText()
         for keymap_id, keymap_name in KEYMAPS:
@@ -270,7 +266,7 @@ class VoidInstaller(Gtk.Window):
         grid.attach(self.combo_keymap, 1, 1, 1, 1)
         
         # Zona horaria
-        lbl_timezone = Gtk.Label(label="Zona Horaria:")
+        lbl_timezone = Gtk.Label(label="Time Zone:")
         lbl_timezone.set_halign(Gtk.Align.END)
         self.combo_timezone = Gtk.ComboBoxText()
         for tz in TIMEZONES:
@@ -291,7 +287,7 @@ class VoidInstaller(Gtk.Window):
         box.set_margin_end(50)
 
         title = Gtk.Label()
-        title.set_markup("<span size='16000' weight='bold'>Configuración de Usuario</span>")
+        title.set_markup("<span size='16000' weight='bold'>User Setup</span>")
         box.pack_start(title, False, False, 0)
 
         grid = Gtk.Grid(column_spacing=15, row_spacing=15)
@@ -316,14 +312,14 @@ class VoidInstaller(Gtk.Window):
         self.ent_name = Gtk.Entry(text=INSTALL_CONFIG["USER_NAME"])
         self.ent_user_pass = Gtk.Entry(visibility=False)
         
-        grid.attach(Gtk.Label(label="Usuario (login):"), 0, 4, 1, 1)
+        grid.attach(Gtk.Label(label="User (login):"), 0, 4, 1, 1)
         grid.attach(self.ent_user, 1, 4, 1, 1)
-        grid.attach(Gtk.Label(label="Nombre Completo:"), 0, 5, 1, 1)
+        grid.attach(Gtk.Label(label="Full Name:"), 0, 5, 1, 1)
         grid.attach(self.ent_name, 1, 5, 1, 1)
-        grid.attach(Gtk.Label(label="Password Usuario:"), 0, 6, 1, 1)
+        grid.attach(Gtk.Label(label="User Password:"), 0, 6, 1, 1)
         grid.attach(self.ent_user_pass, 1, 6, 1, 1)
         
-        lbl_hint = Gtk.Label(label="* El usuario será añadido al grupo wheel (sudo)")
+        lbl_hint = Gtk.Label(label="* The user will have superuser privileges with sudo")
         lbl_hint.get_style_context().add_class("dim-label")
         grid.attach(lbl_hint, 0, 7, 2, 1)
         
@@ -336,10 +332,10 @@ class VoidInstaller(Gtk.Window):
         box.set_margin_end(50)
 
         title = Gtk.Label()
-        title.set_markup("<span size='16000' weight='bold'>Configuración de Disco</span>")
+        title.set_markup("<span size='16000' weight='bold'>Disk Setup</span>")
         box.pack_start(title, False, False, 0)
         
-        btn_gparted = Gtk.Button(label="Abrir GParted")
+        btn_gparted = Gtk.Button(label="Open GParted")
         btn_gparted.connect("clicked", self.launch_gparted)
         box.pack_start(btn_gparted, False, False, 10)
 
@@ -347,7 +343,7 @@ class VoidInstaller(Gtk.Window):
         
         # Selectores
         self.combo_root = Gtk.ComboBoxText()
-        grid.attach(Gtk.Label(label="Raíz (/, ext4/btrfs/xfs):"), 0, 0, 1, 1)
+        grid.attach(Gtk.Label(label="Root (/, ext4/btrfs/xfs):"), 0, 0, 1, 1)
         grid.attach(self.combo_root, 1, 0, 1, 1)
 
         self.combo_efi = Gtk.ComboBoxText()
@@ -365,30 +361,91 @@ class VoidInstaller(Gtk.Window):
         grid.attach(self.combo_home, 1, 3, 1, 1)
 
         self.combo_grub_disk = Gtk.ComboBoxText()
-        lbl_grub = Gtk.Label(label="Disco GRUB (Legacy):")
+        lbl_grub = Gtk.Label(label="GRUB disk (Legacy):")
         if Shell.is_uefi(): lbl_grub.set_sensitive(False)
         grid.attach(lbl_grub, 0, 4, 1, 1)
         grid.attach(self.combo_grub_disk, 1, 4, 1, 1)
 
         box.pack_start(grid, False, False, 10)
         
-        btn_refresh = Gtk.Button(label="Refrescar Lista")
+        btn_refresh = Gtk.Button(label="Refresh List")
         btn_refresh.connect("clicked", lambda x: self.refresh_partitions())
         box.pack_start(btn_refresh, False, False, 0)
         return box
 
     def create_install_page(self):
-        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
-        self.lbl_status = Gtk.Label(label="Listo.")
-        box.pack_start(self.lbl_status, False, False, 0)
+        paned = Gtk.Paned(orientation=Gtk.Orientation.VERTICAL)
+
+        # ZONA SUPERIOR (IMAGEN + TEXTO)
+        overlay = Gtk.Overlay()
+        overlay.set_hexpand(True)
+        overlay.set_vexpand(True)
+
+        image_path = "/usr/share/olivos-installer/install-bg.png"
+        if os.path.exists(image_path):
+            image = Gtk.Image.new_from_file(image_path)
+            image.set_hexpand(True)
+            image.set_vexpand(True)
+            image.set_halign(Gtk.Align.CENTER)
+            image.set_valign(Gtk.Align.CENTER)
+            overlay.add(image)
+        else:
+            overlay.add(Gtk.Label(label="Installing OlivOS..."))
+
+        # --- Texto rotativo (overlay inferior) ---
+        self.install_label = Gtk.Label()
+        self.install_label.set_xalign(0.5)
+        self.install_label.set_yalign(1.0)
+        self.install_label.set_margin_bottom(12)
+
+        self.install_label.set_markup(
+            "<span size='24000' weight='bold' foreground='#4d551f'>Installing OlivOS…</span>"
+        )
+
+        overlay.add_overlay(self.install_label)
+
+        paned.add1(overlay)
+
+        # ZONA INFERIOR (STATUS + LOG)
+        bottom_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        bottom_box.set_margin_start(8)
+        bottom_box.set_margin_end(8)
+        bottom_box.set_margin_bottom(8)
+        bottom_box.set_margin_top(6)
+
+        self.lbl_status = Gtk.Label(label="Preparing installation...")
+        self.lbl_status.set_xalign(0)
+        bottom_box.pack_start(self.lbl_status, False, False, 0)
+
         self.progress = Gtk.ProgressBar()
-        box.pack_start(self.progress, False, False, 0)
+        bottom_box.pack_start(self.progress, False, False, 0)
+
         self.log_view = Gtk.TextView(editable=False, monospace=True)
+        self.log_view.set_wrap_mode(Gtk.WrapMode.NONE)
+
         scroll = Gtk.ScrolledWindow()
         scroll.set_vexpand(True)
         scroll.add(self.log_view)
-        box.pack_start(scroll, True, True, 0)
-        return box
+
+        bottom_box.pack_start(scroll, True, True, 0)
+
+        paned.add2(bottom_box)
+
+        # Proporción
+        GLib.idle_add(
+            lambda: paned.set_position(int(self.get_allocated_height() * 0.6))
+        )
+
+        return paned
+
+    def rotate_install_message(self):
+        msg = self.install_messages[self._install_msg_idx]
+        self.install_label.set_markup(
+            f"<span size='24000' weight='bold' foreground='#4d551f'>{msg}</span>"
+        )
+
+        self._install_msg_idx = (self._install_msg_idx + 1) % len(self.install_messages)
+        return True  # mantiene el timeout activo
 
     # --- Lógica ---
 
@@ -399,12 +456,12 @@ class VoidInstaller(Gtk.Window):
             flags=0,
             message_type=Gtk.MessageType.QUESTION,
             buttons=Gtk.ButtonsType.OK_CANCEL,
-            text="Advertencia"
+            text="Warning"
         )
         dlg.format_secondary_text(
-            "Se abrirá GParted.\n"
-            "Cualquier cambio que hagas será definitivo y puede borrar datos.\n"
-            "¿Deseas continuar?"
+            "GParted will open.\n"
+            "Any changes you make will be permanent and may delete data.\n"
+            "Do you want to continue?"
         )
         response = dlg.run()
         dlg.destroy()
@@ -424,12 +481,12 @@ class VoidInstaller(Gtk.Window):
         self.combo_efi.remove_all()
         self.combo_swap.remove_all()
         self.combo_home.remove_all()
-        self.combo_home.append("none", "Sin Home")
+        self.combo_home.append("none", "No Home")
         self.combo_home.set_active_id("none")
         self.combo_grub_disk.remove_all()
         
-        self.combo_swap.append("none", "Sin Swap")
-        self.combo_efi.append("none", "Ignorar (Solo Legacy)")
+        self.combo_swap.append("none", "No Swap")
+        self.combo_efi.append("none", "Ignore (Only Legacy)")
         
         self.combo_swap.set_active_id("none")
         self.combo_efi.set_active_id("none")
@@ -465,12 +522,14 @@ class VoidInstaller(Gtk.Window):
         if page == "partitioning": self.refresh_partitions()
         if page == "install":
             self.btn_next.set_visible(False)
+            GLib.timeout_add_seconds(5, self.rotate_install_message) # Texto rotativo cada 5 segundos
             self.start_installation()
+            
         elif self.current_page_idx == len(self.pages) - 2:
-            self.btn_next.set_label("INSTALAR")
+            self.btn_next.set_label("INSTALL")
             self.btn_next.get_style_context().add_class("destructive-action")
         else:
-            self.btn_next.set_label("Siguiente")
+            self.btn_next.set_label("Next")
             self.btn_next.get_style_context().remove_class("destructive-action")
 
     def on_back(self, w):
@@ -484,9 +543,9 @@ class VoidInstaller(Gtk.Window):
             # Antes de instalar, mostrar resumen
             if self.pages[self.current_page_idx] == "partitioning":
                 summary = (
-                    f"Resumen de la instalación:\n\n"
+                    f"Installation summary:\n\n"
                     f"Hostname: {INSTALL_CONFIG['HOSTNAME']}\n"
-                    f"Usuario: {INSTALL_CONFIG['USER_LOGIN']} ({INSTALL_CONFIG['USER_NAME']})\n"
+                    f"User: {INSTALL_CONFIG['USER_LOGIN']} ({INSTALL_CONFIG['USER_NAME']})\n"
                     f"Root: {INSTALL_CONFIG['PARTITION_ROOT']} ({INSTALL_CONFIG['ROOT_FSTYPE']})\n"
                     f"Home: {INSTALL_CONFIG['PARTITION_HOME']} ({INSTALL_CONFIG.get('HOME_FSTYPE', '')})\n"
                     f"Swap: {INSTALL_CONFIG['PARTITION_SWAP']}\n"
@@ -495,14 +554,14 @@ class VoidInstaller(Gtk.Window):
                     f"Locale: {INSTALL_CONFIG['LOCALE']}\n"
                     f"Keymap: {INSTALL_CONFIG['KEYMAP']}\n"
                     f"Timezone: {INSTALL_CONFIG['TIMEZONE']}\n\n"
-                    "¿Deseas continuar con la instalación?"
+                    "Do you want to continue with the installation?"
                 )
                 dlg = Gtk.MessageDialog(
                     parent=self,
                     flags=0,
                     message_type=Gtk.MessageType.QUESTION,
                     buttons=Gtk.ButtonsType.YES_NO,
-                    text="Confirmación de instalación"
+                    text="Installation confirmation"
                 )
                 dlg.format_secondary_text(summary)
                 response = dlg.run()
@@ -523,7 +582,7 @@ class VoidInstaller(Gtk.Window):
              INSTALL_CONFIG["TIMEZONE"] = self.combo_timezone.get_active_id()
         
              if not all([INSTALL_CONFIG["LOCALE"], INSTALL_CONFIG["KEYMAP"], INSTALL_CONFIG["TIMEZONE"]]):
-                 self.show_error("Debes seleccionar todos los parámetros regionales.")
+                 self.show_error("You must select all regional settings.")
                  return False
         if page == "user_config":
             INSTALL_CONFIG["HOSTNAME"] = self.ent_host.get_text().strip()
@@ -534,12 +593,12 @@ class VoidInstaller(Gtk.Window):
             
             # Validaciones básicas
             if " " in INSTALL_CONFIG["USER_LOGIN"]:
-                self.show_error("El login de usuario NO puede tener espacios.")
+                self.show_error("The user login cannot contain spaces.")
                 return False
             
             if not all([INSTALL_CONFIG["HOSTNAME"], INSTALL_CONFIG["ROOT_PASSWORD"], 
                         INSTALL_CONFIG["USER_LOGIN"], INSTALL_CONFIG["USER_PASSWORD"]]):
-                self.show_error("Todos los campos son obligatorios.")
+                self.show_error("All fields are required.")
                 return False
                 
         if page == "partitioning":
@@ -550,11 +609,11 @@ class VoidInstaller(Gtk.Window):
             INSTALL_CONFIG["TARGET_DISK"] = self.combo_grub_disk.get_active_id()
             
             if not INSTALL_CONFIG["PARTITION_ROOT"]:
-                self.show_error("Debes seleccionar una partición Raíz.")
+                self.show_error("You must select a root partition.")
                 return False
             
             if Shell.is_uefi() and INSTALL_CONFIG["PARTITION_EFI"] == "none":
-                self.show_error("Estás en modo UEFI pero no seleccionaste partición EFI.\nEl sistema NO arrancará.")
+                self.show_error("You are in UEFI mode but did not select the EFI partition.\nThe system will NOT start.")
                 return False
 
             INSTALL_CONFIG["ROOT_FSTYPE"] = Shell.get_fstype(INSTALL_CONFIG["PARTITION_ROOT"])
@@ -591,7 +650,7 @@ class VoidInstaller(Gtk.Window):
         success, out = Shell.run(cmd_list)
         if not success:
             self.log(f"ERROR OUTPUT: {out}")
-            raise Exception(f"Fallo en: {desc}")
+            raise Exception(f"Failure in: {desc}")
 
     def run_install_process(self):
         try:
@@ -601,28 +660,28 @@ class VoidInstaller(Gtk.Window):
             is_uefi = Shell.is_uefi()
             
             # 1. Formateo
-            self.update_progress(0.1, "Preparando particiones...")
+            self.update_progress(0.1, "Preparing partitions...")
             Shell.run(["umount", "-R", MOUNT_POINT], check=False)
             if swap != "none": Shell.run(["swapoff", swap], check=False)
             
             root_fs = INSTALL_CONFIG["ROOT_FSTYPE"]
 
             if root_fs == "ext4":
-                self.run_cmd_chk(["mkfs.ext4", "-F", root], "Formateando Root (ext4)")
+                self.run_cmd_chk(["mkfs.ext4", "-F", root], "Formatting Root (ext4)")
             elif root_fs == "btrfs":
-                self.run_cmd_chk(["mkfs.btrfs", "-f", root], "Formateando Root (btrfs)")
+                self.run_cmd_chk(["mkfs.btrfs", "-f", root], "Formatting Root (btrfs)")
             elif root_fs == "xfs":
-                self.run_cmd_chk(["mkfs.xfs", "-f", root], "Formateando Root (xfs)")
+                self.run_cmd_chk(["mkfs.xfs", "-f", root], "Formatting Root (xfs)")
             else:
-                raise Exception(f"Filesystem {root_fs} no soportado")
+                raise Exception(f"Filesystem {root_fs} not supported")
                 
             if swap != "none": 
-                self.run_cmd_chk(["mkswap", swap], "Formateando Swap")
+                self.run_cmd_chk(["mkswap", swap], "Formatting Swap")
 
             # 2. Montaje
-            self.update_progress(0.2, "Montando sistema de archivos...")
-            self.run_cmd_chk(["mkdir", "-p", MOUNT_POINT], "Creando dir root")
-            self.run_cmd_chk(["mount", root, MOUNT_POINT], "Montando Root")
+            self.update_progress(0.2, "Mounting file system...")
+            self.run_cmd_chk(["mkdir", "-p", MOUNT_POINT], "Creating root dir")
+            self.run_cmd_chk(["mount", root, MOUNT_POINT], "Mounting Root")
             
             home = INSTALL_CONFIG["PARTITION_HOME"]
 
@@ -630,24 +689,24 @@ class VoidInstaller(Gtk.Window):
                 home_fs = INSTALL_CONFIG.get("HOME_FSTYPE", "ext4")
                 # Formatear /home
                 if home_fs == "ext4":
-                    self.run_cmd_chk(["mkfs.ext4", "-F", home], "Formateando Home (ext4)")
+                    self.run_cmd_chk(["mkfs.ext4", "-F", home], "Formatting Home (ext4)")
                 elif home_fs == "btrfs":
-                    self.run_cmd_chk(["mkfs.btrfs", "-f", home], "Formateando Home (btrfs)")
+                    self.run_cmd_chk(["mkfs.btrfs", "-f", home], "Formatting Home (btrfs)")
                 elif home_fs == "xfs":
-                    self.run_cmd_chk(["mkfs.xfs", "-f", home], "Formateando Home (xfs)")
+                    self.run_cmd_chk(["mkfs.xfs", "-f", home], "Formatting Home (xfs)")
     
-                self.run_cmd_chk(["mkdir", "-p", f"{MOUNT_POINT}/home"], "Creando /home")
-                self.run_cmd_chk(["mount", home, f"{MOUNT_POINT}/home"], "Montando /home")
+                self.run_cmd_chk(["mkdir", "-p", f"{MOUNT_POINT}/home"], "Creating /home")
+                self.run_cmd_chk(["mount", home, f"{MOUNT_POINT}/home"], "Mounting /home")
             
             if is_uefi and efi != "none":
-                self.run_cmd_chk(["mkdir", "-p", f"{MOUNT_POINT}/boot/efi"], "Creando dir EFI")
-                self.run_cmd_chk(["mount", efi, f"{MOUNT_POINT}/boot/efi"], "Montando EFI")
+                self.run_cmd_chk(["mkdir", "-p", f"{MOUNT_POINT}/boot/efi"], "Creating dir EFI")
+                self.run_cmd_chk(["mount", efi, f"{MOUNT_POINT}/boot/efi"], "Mounting EFI")
                 
             if swap != "none": 
-                self.run_cmd_chk(["swapon", swap], "Activando Swap")
+                self.run_cmd_chk(["swapon", swap], "Activating Swap")
 
             # 3. COPIA LOCAL
-            self.update_progress(0.3, "Clonando sistema (Esto tarda)...")
+            self.update_progress(0.3, "Cloning system (This may take a while)...")
             # Excluimos directorios virtuales y basura temporal
             tar_cmd = [
                 "tar", "-c",
@@ -665,13 +724,13 @@ class VoidInstaller(Gtk.Window):
             extract_cmd = ["tar", "-x", "-p", "--xattrs", "-C", MOUNT_POINT]
             
             # Python subprocess pipe
-            self.log("Iniciando tubería TAR...")
+            self.log("Starting TAR pipe...")
             p1 = subprocess.Popen(tar_cmd, stdout=subprocess.PIPE)
             p2 = subprocess.run(extract_cmd, stdin=p1.stdout, check=True)
             p1.wait()
 
             # 4. Configuración Post-Copia
-            self.update_progress(0.6, "Configurando chroot...")
+            self.update_progress(0.6, "Configuring chroot...")
             
             # Montar pseudo-filesystems
             for fs in ["dev", "proc", "sys"]:
@@ -690,7 +749,7 @@ class VoidInstaller(Gtk.Window):
             Shell.run(["rm", "-f", f"{MOUNT_POINT}/etc/sudoers.d/99-void-live"], check=False)
             
             # Generar fstab
-            self.log("Generando fstab...")
+            self.log("Generating fstab...")
             uuid_root = Shell.get_uuid(root)
             fstab_content = f"UUID={uuid_root} / {root_fs} defaults 0 1\n"
             
@@ -718,14 +777,14 @@ class VoidInstaller(Gtk.Window):
                 with open(sudoers_path, 'w') as f: f.write(s_data)
 
             # Configuración Regional
-            self.update_progress(0.65, "Aplicando configuración regional...")
+            self.update_progress(0.65, "Applying regional settings...")
 
             # Hostname
             with open(f"{MOUNT_POINT}/etc/hostname", "w") as f: 
                 f.write(INSTALL_CONFIG["HOSTNAME"])
 
             # Locale
-            self.log(f"Configurando locale: {INSTALL_CONFIG['LOCALE']}")
+            self.log(f"Configuring locale: {INSTALL_CONFIG['LOCALE']}")
             locale_conf = f"LANG={INSTALL_CONFIG['LOCALE']}\nLC_COLLATE=C\n"
             with open(f"{MOUNT_POINT}/etc/locale.conf", "w") as f: 
                 f.write(locale_conf)
@@ -749,10 +808,21 @@ class VoidInstaller(Gtk.Window):
                 f.write(f"KEYMAP={INSTALL_CONFIG['KEYMAP']}\n")
             
             # Keymap X11 (soluciona el bug histórico de Void)
-            write_x11_keymap(
-                MOUNT_POINT,
-                INSTALL_CONFIG["KEYMAP"]
-            )
+            keymap = INSTALL_CONFIG["KEYMAP"]
+
+            content = f"""Section "InputClass"
+                Identifier "system-keyboard"
+                MatchIsKeyboard "on"
+                Option "XkbLayout" "{keymap}"
+                Option "XkbModel" "pc105"
+            EndSection
+            """
+
+            path = os.path.join(MOUNT_POINT, "etc/X11/xorg.conf.d")
+            os.makedirs(path, exist_ok=True)
+
+            with open(os.path.join(path, "00-keyboard.conf"), "w") as f:
+                f.write(content)
             
             # Crear symlink para timezone
             tz_source = f"/usr/share/zoneinfo/{INSTALL_CONFIG['TIMEZONE']}"
@@ -773,27 +843,42 @@ class VoidInstaller(Gtk.Window):
             in_chroot(["chpasswd", "-c", "SHA512"], input_text=f"{u}:{p}")
 
             # Regenerar Initramfs
-            self.update_progress(0.8, "Regenerando Initramfs...")
+            self.update_progress(0.8, "Regenerating Initramfs...")
             # Usar regenerate-all para evitar discrepancias de versión de kernel
             in_chroot(["dracut", "--regenerate-all", "--force"])
 
             # Regenerar locales
-            self.log("Regenerando locales...")
+            self.log("Regenerating locales...")
             in_chroot(["xbps-reconfigure", "-f", "glibc-locales"])
 
             # Bootloader
-            self.update_progress(0.9, "Instalando Bootloader...")
+            self.update_progress(0.9, "Installing Bootloader...")
             if is_uefi:
-                self.log("Instalando GRUB para UEFI...")
-                in_chroot(["grub-install", "--target=x86_64-efi", "--efi-directory=/boot/efi", "--bootloader-id=VoidLinux"])
+                self.log("Installing GRUB for UEFI...")
+                in_chroot(["grub-install", "--target=x86_64-efi", "--efi-directory=/boot/efi", "--bootloader-id=OlivOS"])
             else:
-                self.log("Instalando GRUB Legacy (MBR)...")
+                self.log("Installing GRUB Legacy (MBR)...")
                 in_chroot(["grub-install", INSTALL_CONFIG['TARGET_DISK']])
                 
             in_chroot(["grub-mkconfig", "-o", "/boot/grub/grub.cfg"])
             in_chroot(["xbps-reconfigure", "-fa"])
 
-            self.update_progress(1.0, "Instalación completada.")
+            # --- Limpieza final de montajes ---
+            self.update_progress(0.98, "Final cleanup...")
+
+            # Desactivar swap
+            swap = INSTALL_CONFIG.get("PARTITION_SWAP")
+            if swap and swap != "none":
+                Shell.run(["swapoff", swap], check=False)
+
+            # Desmontar pseudo-filesystems primero
+            for fs in ["dev", "proc", "sys"]:
+                Shell.run(["umount", "-R", f"{MOUNT_POINT}/{fs}"], check=False)
+
+            # Desmontaje recursivo final
+            Shell.run(["umount", "-R", MOUNT_POINT], check=False)
+
+            self.update_progress(1.0, "Installation complete.")
             GLib.idle_add(self.show_success)
 
         except Exception as e:
@@ -820,9 +905,9 @@ class VoidInstaller(Gtk.Window):
             flags=0,
             message_type=Gtk.MessageType.QUESTION,
             buttons=Gtk.ButtonsType.YES_NO,
-            text="Éxito"
+            text="Success"
         )
-        dlg.format_secondary_text("Instalación completada correctamente.\n¿Reiniciar ahora?")
+        dlg.format_secondary_text("Installation completed successfully.\nRestart now?")
         if dlg.run() == Gtk.ResponseType.YES: 
             subprocess.run(["reboot"])
         else: 

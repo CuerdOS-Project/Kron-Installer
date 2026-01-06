@@ -212,7 +212,7 @@ class VoidInstaller(Gtk.Window):
         box.set_halign(Gtk.Align.CENTER)
         
         # Logo
-        logo_path = "/usr/share/olivos-installer/olivos-logo.png"
+        logo_path = "/usr/share/olivinstall/olivos-logo.png"
         if os.path.exists(logo_path):
             logo = Gtk.Image.new_from_file(logo_path)
             box.pack_start(logo, False, False, 0)
@@ -381,7 +381,7 @@ class VoidInstaller(Gtk.Window):
         overlay.set_hexpand(True)
         overlay.set_vexpand(True)
 
-        image_path = "/usr/share/olivos-installer/install-bg.png"
+        image_path = "/usr/share/olivinstall/install-bg.png"
         if os.path.exists(image_path):
             image = Gtk.Image.new_from_file(image_path)
             image.set_hexpand(True)
@@ -481,39 +481,58 @@ class VoidInstaller(Gtk.Window):
         self.combo_efi.remove_all()
         self.combo_swap.remove_all()
         self.combo_home.remove_all()
-        self.combo_home.append("none", "No Home")
-        self.combo_home.set_active_id("none")
         self.combo_grub_disk.remove_all()
         
-        self.combo_swap.append("none", "No Swap")
         self.combo_efi.append("none", "Ignore (Only Legacy)")
+        self.combo_swap.append("none", "No Swap")
+        self.combo_home.append("none", "No Home")
+        self.combo_grub_disk.append("none", "Ignore (Only UEFI)")
         
-        self.combo_swap.set_active_id("none")
         self.combo_efi.set_active_id("none")
+        self.combo_swap.set_active_id("none")
+        self.combo_home.set_active_id("none")
 
         for p in parts:
             fstype = p.get('fstype', '').lower()
             
+            # Definición sistemas de archivos
             if p['type'] == 'part':
-                # Root y Home solo ext4/btrfs/xfs
                 if fstype in ["ext4", "btrfs", "xfs"]:
                      self.combo_root.append(p['path'], p['desc'])
                      self.combo_home.append(p['path'], p['desc'])
                      
-                # Swap solo particiones swap
                 if fstype in ["swap", "linux-swap"]:
                      self.combo_swap.append(p['path'], p['desc'])
                      
-                # EFI solo FAT/VFAT
-                if 'vfat' in p.get('fstype', '').lower() or 'fat' in p.get('fstype', '').lower():
+                if 'vfat' in fstype or 'fat' in fstype:
                      self.combo_efi.append(p['path'], p['desc'])
                      
-            # Discos físicos para GRUB Legacy, ignorando zram y similares
+            # Asignación de disco/partición por defecto
             if p['type'] == 'disk' and not p['path'].startswith("/dev/zram"):
                   self.combo_grub_disk.append(p['path'], p['desc'])
 
-        # Selección por defecto de GRUB
-        if len(self.combo_grub_disk.get_model()) > 0: self.combo_grub_disk.set_active(0)
+            if self.combo_root.get_model() and len(self.combo_root.get_model()) > 0:
+                self.combo_root.set_active(0)
+
+            if self.combo_swap.get_model() and len(self.combo_swap.get_model()) > 1:
+                self.combo_swap.set_active(1)
+
+            if Shell.is_uefi():
+                efi_model = self.combo_efi.get_model()
+                if efi_model and len(efi_model) > 1:
+                    self.combo_efi.set_active(1)
+                grub_model = self.combo_grub_disk.get_model()
+                if grub_model and len(grub_model) > 0:
+                    self.combo_grub_disk.set_active(0)
+            else:
+                efi_model = self.combo_efi.get_model()
+                if efi_model and len(efi_model) > 0:
+                    self.combo_efi.set_active(0)
+                grub_model = self.combo_grub_disk.get_model()
+                if grub_model and len(grub_model) > 1:
+                    self.combo_grub_disk.set_active(1)
+                elif grub_model and len(grub_model) == 1:
+                    self.combo_grub_disk.set_active(0)
 
     def update_nav(self):
         page = self.pages[self.current_page_idx]
@@ -686,15 +705,6 @@ class VoidInstaller(Gtk.Window):
             home = INSTALL_CONFIG["PARTITION_HOME"]
 
             if home != "none":
-                home_fs = INSTALL_CONFIG.get("HOME_FSTYPE", "ext4")
-                # Formatear /home
-                if home_fs == "ext4":
-                    self.run_cmd_chk(["mkfs.ext4", "-F", home], "Formatting Home (ext4)")
-                elif home_fs == "btrfs":
-                    self.run_cmd_chk(["mkfs.btrfs", "-f", home], "Formatting Home (btrfs)")
-                elif home_fs == "xfs":
-                    self.run_cmd_chk(["mkfs.xfs", "-f", home], "Formatting Home (xfs)")
-    
                 self.run_cmd_chk(["mkdir", "-p", f"{MOUNT_POINT}/home"], "Creating /home")
                 self.run_cmd_chk(["mount", home, f"{MOUNT_POINT}/home"], "Mounting /home")
             

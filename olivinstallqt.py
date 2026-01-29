@@ -1,10 +1,11 @@
 #Autor: PabloGA
 from PySide6.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QFormLayout, QStackedWidget, QComboBox, QCheckBox, QLineEdit, QSizePolicy, QPlainTextEdit, QProgressBar, QMessageBox
 from PySide6.QtGui import QPixmap
-from PySide6.QtCore import Qt, QTimer
+from PySide6.QtCore import Qt, Signal
 from system_utils import SystemDetector
 from install_thread import InstallWorker
-import sys
+from utils_locales import LanguageName, KeymapName
+import sys, subprocess, unicodedata, re
 
 class VentInstalador(QWidget):
     def __init__(self):
@@ -20,7 +21,7 @@ class VentInstalador(QWidget):
         self.stack = QStackedWidget()
         main_layout.addWidget(self.stack)
         
-        # --- DETECCIÓN DE HARDWARE AL INICIO ---
+        # DETECCIÓN DE HARDWARE AL INICIO
         self.system_data = {
             "efi": SystemDetector.detect_efi(),
             "timezones": SystemDetector.detect_timezones(),
@@ -31,10 +32,10 @@ class VentInstalador(QWidget):
 
         # Crear páginas (Pasamos datos a las que lo necesitan)
         self.pag_bienvenida = PagBienvenida()
-        self.pag_idiomas = PagIdiomas(self.system_data) # <--- CAMBIO AQUÍ
+        self.pag_idiomas = PagIdiomas(self.system_data)
         self.pag_mirrors = PagMirrors()
         self.pag_usuarios = PagUsuarios()
-        self.pag_discos = PagDiscos(self.system_data)   # <--- CAMBIO AQUÍ
+        self.pag_discos = PagDiscos(self.system_data)
         self.pag_instalacion = PagInstalacion()
 
         # Añadir páginas a stack
@@ -61,9 +62,15 @@ class VentInstalador(QWidget):
         self.btn_atras.clicked.connect(self.ir_atras)
         self.btn_siguiente.clicked.connect(self.ir_siguiente)
 
+        # Mensaje de finalización PagInstalacion
+        self.pag_instalacion.finished_success.connect(
+            lambda: self.btn_siguiente.setVisible(True)
+        )
+
         # Estado inicial
         self.actualizar_botones()
     
+    # Botón 'Siguiente'
     def ir_siguiente(self):
             index = self.stack.currentIndex()
             curr_widget = self.stack.currentWidget()
@@ -81,11 +88,16 @@ class VentInstalador(QWidget):
                     self.pag_instalacion.iniciar_instalacion(config)
                 return
 
+            if isinstance(curr_widget, PagInstalacion):
+                subprocess.Popen(["pkexec", "reboot"])
+                return
+
             # Comportamiento normal para otras páginas
             if index < self.stack.count() - 1:
                 self.stack.setCurrentIndex(index + 1)
             self.actualizar_botones()
-
+    
+    # Botón 'Atrás'
     def ir_atras(self):
         index = self.stack.currentIndex()
         if index > 0:
@@ -99,96 +111,110 @@ class VentInstalador(QWidget):
         # Primera página: ocultar botón atrás
         self.btn_atras.setVisible(index != 0)
 
-        # Última página: ocultar botón "Siguiente"
-        if index == total - 1:
-            self.btn_siguiente.hide()
-        else:
-            self.btn_siguiente.show()
-
         # Página de discos: botón Siguiente = Instalar (rojo)
         if isinstance(self.stack.currentWidget(), PagDiscos):
             self.btn_siguiente.setText("Instalar")
             self.btn_siguiente.setStyleSheet("background-color: red; color: white; font-weight: bold;")
+        elif isinstance(self.stack.currentWidget(), PagInstalacion):
+            self.btn_siguiente.setText("Reiniciar")
+            self.btn_siguiente.setStyleSheet("background-color: green; color: white; font-weight: bold;")
+            self.btn_atras.setVisible(False)
+            self.btn_siguiente.setVisible(False)
         else:
             self.btn_siguiente.setText("Siguiente")
             self.btn_siguiente.setStyleSheet("")  # resetea estilo para otras páginas
 
     def recolectar_datos(self):
-            data = {}
-            try:
-                # 1. Idiomas
-                data["LOCALE"] = self.pag_idiomas.idioma_combo.currentText().split(" ")[0] # Simplificación
-                # Lógica para zona horaria (Region/Ciudad)
-                tz_region = self.pag_idiomas.region_combo.currentText()
-                tz_city = self.pag_idiomas.ciudad_combo.currentText()
-                data["TIMEZONE"] = f"{tz_region}/{tz_city}"
-                data["KEYMAP"] = self.pag_idiomas.teclado_combo.currentText()
+        data = {}
+        try:
+            # --- 1. Idiomas ---
+            data["LOCALE"] = self.pag_idiomas.idioma_combo.currentData()
+            tz_region = self.pag_idiomas.region_combo.currentText()
+            tz_city = self.pag_idiomas.ciudad_combo.currentText()
+            data["TIMEZONE"] = f"{tz_region}/{tz_city}"
+            data["KEYMAP"] = self.pag_idiomas.teclado_combo.currentData()
 
-                # 2. Source (Simplificado: Local si no se tocó nada en mirrors)
-                data["SOURCE"] = "local"
+            # --- 2. Source ---
+            data["SOURCE"] = "local"
 
-                # 3. Usuarios
-                data["HOSTNAME"] = self.pag_usuarios.nombre_equipo.text() or "void-pc"
-                data["USERLOGIN"] = self.pag_usuarios.user_name.text()
-                data["USERNAME"] = self.pag_usuarios.username_name.text()
-                data["USERPASSWORD"] = self.pag_usuarios.user_pass.text()
-                data["ROOTPASSWORD"] = self.pag_usuarios.root_pass.text()
-                data["USERGROUPS"] = "wheel,audio,video,users,network,optical,cdrom"
+            # --- 3. Usuarios ---
+            data["HOSTNAME"] = self.pag_usuarios.nombre_equipo.text()
+            data["USERLOGIN"] = self.pag_usuarios.user_name.text()
+            data["USERNAME"] = self.pag_usuarios.username_name.text()
+            data["USERPASSWORD"] = self.pag_usuarios.user_pass.text()
+            data["ROOTPASSWORD"] = self.pag_usuarios.root_pass.text()
+            data["USERGROUPS"] = "wheel,audio,video,users,network,optical,cdrom"
 
-                if not data["ROOTPASSWORD"]:
-                    QMessageBox.warning(self, "Faltan datos", "La contraseña de Root es obligatoria.")
-                    return None
-
-                # 4. Repo y software
-                data["MIRROR"] = self.pag_mirrors.mirror_combo.currentText()
-                data["NONFREE"] = "1" if self.pag_mirrors.chk_nonfree.isChecked() else "0"
-                data["NVIDIA"] = "1" if self.pag_mirrors.chk_nvidia.isChecked() else "0"
-                data["INTEL"] = "1" if self.pag_mirrors.chk_intel.isChecked() else "0"
-
-                # 5. Discos (Mapeo de tu GUI al Backend)
-                raw_parts = self.pag_discos.obtener_seleccion()
-                partitions = []
-
-                # Función para limpiar texto "/dev/sda1 (50G)" -> "/dev/sda1"
-                def clean(txt): return txt.split(" ")[0]
-
-                if "Seleccionar" in raw_parts["root"]:
-                    QMessageBox.warning(self, "Error", "Debe seleccionar una partición Raíz (/).")
-                    return None
-                
-                # RAÍZ (Siempre formatear)
-                partitions.append({"dev": clean(raw_parts["root"]), "point": "/", "fs": "ext4", "format": "1"})
-
-                # EFI (Si aplica)
-                if self.system_data["efi"]:
-                    if "Seleccionar" in raw_parts["efi"]:
-                        QMessageBox.warning(self, "Error", "Sistema EFI: Seleccione partición EFI.")
-                        return None
-                    partitions.append({"dev": clean(raw_parts["efi"]), "point": "/boot/efi", "fs": "vfat", "format": "1"})
-                
-                # SWAP
-                if "Seleccionar" not in raw_parts["swap"]:
-                    partitions.append({"dev": clean(raw_parts["swap"]), "point": "none", "fs": "swap", "format": "1"})
-
-                # HOME (No formatear para preservar datos)
-                if "Seleccionar" not in raw_parts["home"]:
-                    partitions.append({"dev": clean(raw_parts["home"]), "point": "/home", "fs": "ext4", "format": "0"})
-
-                data["PARTITIONS"] = partitions
-
-                # BOOTLOADER (Instalar en el disco de la raíz)
-                import re
-                root_dev = clean(raw_parts["root"]) # ej: /dev/sda1
-                # Quitar números finales para obtener el disco (/dev/sda)
-                disk_dev = re.sub(r'\d+$', '', root_dev)
-                if "nvme" in disk_dev and disk_dev.endswith("p"): disk_dev = disk_dev[:-1]
-                
-                data["BOOTLOADER"] = disk_dev
-
-                return data
-            except Exception as e:
-                QMessageBox.critical(self, "Error", f"Error procesando datos: {e}")
+            # Validación campos obligatorios
+            required_fields = {
+                "USERLOGIN": "Usuario (login)",
+                "USERNAME": "Nombre completo",
+                "USERPASSWORD": "Contraseña del usuario",
+                "ROOTPASSWORD": "Contraseña de root",
+            }
+            missing = [label for key, label in required_fields.items() if not data[key]]
+            if missing:
+                QMessageBox.warning(
+                    self,
+                    "Faltan datos",
+                    "Debes completar los siguientes campos:\n\n- " + "\n- ".join(missing),
+                )
                 return None
+
+            # --- 4. Repo y software ---
+            data["MIRROR"] = self.pag_mirrors.mirror_combo.currentText()
+            data["NONFREE"] = "1" if self.pag_mirrors.chk_nonfree.isChecked() else "0"
+            data["NVIDIA"] = "1" if self.pag_mirrors.chk_nvidia.isChecked() else "0"
+            data["INTEL"] = "1" if self.pag_mirrors.chk_intel.isChecked() else "0"
+
+            # --- 5. Discos ---
+            raw_parts = self.pag_discos.obtener_seleccion()
+            partitions = []
+            filesys = self.pag_discos.filesys_combo.currentText().lower()
+
+            def clean(txt): return txt.split(" ")[0]
+
+            # Validaciones y creación de particiones
+            part_checks = [
+                ("root", "/", True, "Debe seleccionar una partición Raíz (/).")
+            ]
+            if self.system_data.get("efi", False):
+                part_checks.append(("efi", "/boot/efi", True, "Debe seleccionar una partición EFI (/boot/efi)."))
+
+            for key, point, must_format, msg in part_checks:
+                if raw_parts[key] is None:
+                    QMessageBox.warning(self, "Error", msg)
+                    return None
+                partitions.append({
+                    "dev": clean(raw_parts[key]),
+                    "point": point,
+                    "fs": "vfat" if key == "efi" else filesys,
+                    "format": "1" if must_format else "0"
+                })
+
+            # SWAP
+            if raw_parts["swap"] is not None:
+                partitions.append({"dev": clean(raw_parts["swap"]), "point": "none", "fs": "swap", "format": "1"})
+
+            # HOME
+            if raw_parts["home"] is not None:
+                partitions.append({"dev": clean(raw_parts["home"]), "point": "/home", "fs": filesys, "format": "0"})
+
+            data["PARTITIONS"] = partitions
+
+            # --- BOOTLOADER ---
+            import re
+            root_dev = clean(raw_parts["root"])
+            disk_dev = re.sub(r'\d+$', '', root_dev)
+            if "nvme" in disk_dev and disk_dev.endswith("p"): 
+                disk_dev = disk_dev[:-1]
+            data["BOOTLOADER"] = disk_dev
+
+            return data
+
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Error procesando datos: {e}")
+            return None
 
 # Página principal
 class PagBienvenida(QWidget):
@@ -271,27 +297,23 @@ class PagIdiomas(QWidget):
         self.teclado_combo = QComboBox()
 
         if sys_data:
-            # Datos reales
             self.timezones = sys_data["timezones"]
             self.region_combo.addItems(sorted(self.timezones.keys()))
             
-            # Conectar cambio de región
             self.region_combo.currentTextChanged.connect(self.actualizar_ciudades)
-            # Llenar ciudades iniciales
             self.actualizar_ciudades(self.region_combo.currentText())
 
-            self.idioma_combo.addItems(sys_data["locales"])
-            self.teclado_combo.addItems(sys_data["keymaps"])
-        else:
-            # Fallback
-            self.region_combo.addItems(["UTC"])
-            self.ciudad_combo.addItems(["UTC"])
-            self.idioma_combo.addItems(["en_US.UTF-8"])
-            self.teclado_combo.addItems(["us"])
+            for l in sys_data["locales"]:
+                display = f"{LanguageName(l[:2])} ({l})"
+                self.idioma_combo.addItem(display, l) # 'l' es el código real
 
+            for k in sys_data["keymaps"]:
+                display = f"{KeymapName(k)} ({k})"
+                self.teclado_combo.addItem(display, k) # 'k' es el código real
+        
         # Estilos y Anchos
         self.region_combo.setFixedWidth(200)
-        self.ciudad_combo.setFixedWidth(200) # <--- CORREGIDO (antes self.ciudad)
+        self.ciudad_combo.setFixedWidth(200)
         self.idioma_combo.setFixedWidth(200)
         self.teclado_combo.setFixedWidth(200)
 
@@ -444,7 +466,7 @@ class PagUsuarios(QWidget):
 
         # --- Nombre de equipo ---
         nombre_label = QLabel("Nombre del equipo (hostname):")
-        self.nombre_equipo = QLineEdit()
+        self.nombre_equipo = QLineEdit("olivos-pc")
         self.nombre_equipo.setFixedWidth(250)
 
         right_layout.addWidget(nombre_label)
@@ -453,23 +475,23 @@ class PagUsuarios(QWidget):
         right_layout.addSpacing(15)
 
         # --- Usuario principal ---
+        username_label = QLabel("Nombre completo:")
+        self.username_name = QLineEdit("OlivOS User")
+        self.username_name.setFixedWidth(250)
+
         user_label = QLabel("Usuario (login):")
         self.user_name = QLineEdit()
         self.user_name.setFixedWidth(250)
-
-        username_label = QLabel("Nombre completo:")
-        self.username_name = QLineEdit()
-        self.username_name.setFixedWidth(250)
 
         pass_label = QLabel("Contraseña del usuario:")
         self.user_pass = QLineEdit()
         self.user_pass.setEchoMode(QLineEdit.Password)
         self.user_pass.setFixedWidth(250)
 
-        right_layout.addWidget(user_label)
-        right_layout.addWidget(self.user_name)
         right_layout.addWidget(username_label)
         right_layout.addWidget(self.username_name)
+        right_layout.addWidget(user_label)
+        right_layout.addWidget(self.user_name)
         right_layout.addWidget(pass_label)
         right_layout.addWidget(self.user_pass)
 
@@ -496,6 +518,22 @@ class PagUsuarios(QWidget):
         main_layout.addStretch()
         main_layout.addLayout(h_layout)
         main_layout.addStretch()
+
+        # Variables actualizar label username
+        self.username_name.textChanged.connect(self._update_login)
+        self._update_login(self.username_name.text())
+
+    # Función actualizar label username
+    def _update_login(self, text):
+        normalized = unicodedata.normalize("NFKD", text)
+        ascii_text = normalized.encode("ascii", "ignore").decode("ascii")
+
+        login = ascii_text.lower()
+        login = re.sub(r"[^a-z0-9]+", "-", login)
+        login = login.strip("-")
+
+        self.user_name.setText(login)
+
 
 class PagDiscos(QWidget):
     def __init__(self, sys_data=None):
@@ -535,6 +573,20 @@ class PagDiscos(QWidget):
         self.btn_partman.clicked.connect(self.abrir_partition_manager)
         right_layout.addWidget(self.btn_partman)
         right_layout.setSpacing(30)
+        
+        # Sistema de archivos
+        fs_layout = QHBoxLayout()  # layout horizontal para combo + label
+
+        self.filesys_combo = QComboBox()
+        self.filesys_combo.addItems(["BTRFS", "Ext4", "Ext3", "Ext2", "XFS"])
+        self.filesys_combo.setFixedWidth(70)
+
+        fs_label = QLabel("Seleccionar sistema de archivos")  # el texto a la derecha
+
+        fs_layout.addWidget(self.filesys_combo)
+        fs_layout.addWidget(fs_label)
+
+        right_layout.addLayout(fs_layout)
 
         # Formulario de particiones
         form_layout = QFormLayout()
@@ -542,29 +594,42 @@ class PagDiscos(QWidget):
         self.efi_combo = QComboBox()
         self.home_combo = QComboBox()
         self.swap_combo = QComboBox()
-        self.grub_combo = QComboBox()
 
         # Datos reales
-        lista_particiones = ["Seleccionar..."]
-        if sys_data:
-            lista_particiones += sys_data["partitions"]
+        lista_particiones_base = sys_data["partitions"] if sys_data else []
 
-        for c in [self.raiz_combo, self.efi_combo, self.home_combo, self.swap_combo, self.grub_combo]:
-            c.clear()
-            c.addItems(lista_particiones)
-            c.setFixedWidth(200)
+        placeholders = {
+            self.raiz_combo: self.tr("Seleccionar..."),
+            self.efi_combo: self.tr("Seleccionar..."),
+            self.home_combo: self.tr("Sin Home"),
+            self.swap_combo: self.tr("Sin Swap"),
+        }
+
+        for combo in [self.raiz_combo, self.efi_combo, self.home_combo, self.swap_combo]:
+            combo.clear()
+
+            # Placeholder → None
+            combo.addItem(placeholders[combo], None)
+
+            # Particiones reales → valor real
+            for part in lista_particiones_base:
+                combo.addItem(part, part)
+
+            combo.setFixedWidth(200)
+
+        form_layout.addRow("Raíz (/):", self.raiz_combo)
         
+        # EFI con label y formulario separados para poder ocultarlos
+        efi_label = QLabel("EFI (/boot/efi):")
+        form_layout.addRow(efi_label, self.efi_combo)
+
+        form_layout.addRow("Home (/home):", self.home_combo)
+        form_layout.addRow("Swap:", self.swap_combo)
+
         # Ocultar EFI si es BIOS Legacy
         if sys_data and not sys_data["efi"]:
             self.efi_combo.setVisible(False)
-            # Buscar el label asociado en el form layout para ocultarlo sería ideal,
-            # pero por simplicidad dejaremos el combo oculto.
-
-        form_layout.addRow("Raíz (/):", self.raiz_combo)
-        form_layout.addRow("EFI (/boot/efi):", self.efi_combo)
-        form_layout.addRow("Home (/home):", self.home_combo)
-        form_layout.addRow("Swap:", self.swap_combo)
-        form_layout.addRow("Grub Legacy:", self.grub_combo)
+            efi_label.setVisible(False)
 
         form_layout.setLabelAlignment(Qt.AlignLeft)
         form_layout.setFormAlignment(Qt.AlignLeft)
@@ -585,10 +650,10 @@ class PagDiscos(QWidget):
 
     def obtener_seleccion(self):
         return {
-            "root": self.raiz_combo.currentText(),
-            "efi": self.efi_combo.currentText(),
-            "home": self.home_combo.currentText(),
-            "swap": self.swap_combo.currentText()
+            "root": self.raiz_combo.currentData(),
+            "efi": self.efi_combo.currentData(),
+            "home": self.home_combo.currentData(),
+            "swap": self.swap_combo.currentData()
         }
 
     def abrir_partition_manager(self):
@@ -599,6 +664,10 @@ class PagDiscos(QWidget):
             print("No se pudo abrir KDE Partition Manager:", e)
 
 class PagInstalacion(QWidget):
+    # Declaración de señales
+    finished_success = Signal()
+    finished_error   = Signal(str)
+
     def __init__(self):
         super().__init__()
 
@@ -664,6 +733,7 @@ class PagInstalacion(QWidget):
         self.progress.setValue(100)
         self.terminal.appendPlainText("\n>>> PUEDE REINICIAR SU EQUIPO.")
         QMessageBox.information(self, "Éxito", "OlivOS se ha instalado correctamente.")
+        self.finished_success.emit()
 
     def on_error(self, msg):
         self.texto_label.setText("Error en la instalación")

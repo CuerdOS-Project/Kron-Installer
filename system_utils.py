@@ -2,6 +2,7 @@ import os
 import subprocess
 import json
 import glob
+from utils_locales import KeymapName
 
 class SystemDetector:
     @staticmethod
@@ -77,31 +78,41 @@ class SystemDetector:
     @staticmethod
     def detect_keymaps():
         """
-        Lista mapas de teclado disponibles en /usr/share/kbd/keymaps
+        Lista keymaps disponibles y los filtra según nuestra función KeymapName.
+        Devuelve la lista filtrada y ordenada.
         """
-        keymaps = []
-        # Búsqueda recursiva básica
         search_path = "/usr/share/kbd/keymaps/**/*.map.gz"
+        found = []
         for filepath in glob.glob(search_path, recursive=True):
-            filename = os.path.basename(filepath)
-            keymaps.append(filename.replace(".map.gz", ""))
-        return sorted(keymaps) or ["es", "us"] # Fallback
+            filename = os.path.basename(filepath).replace(".map.gz", "")
+            found.append(filename)
+
+        # Filtrar solo los que KeymapName devuelve distinto del propio código
+        filtered = [k for k in found if KeymapName(k) != k]
+
+        return sorted(filtered)
 
     @staticmethod
     def detect_locales():
         """
-        Lee /etc/default/libc-locales o lista disponibles.
-        Por simplicidad, parseamos el archivo de configuración de Void.
+        Lee /etc/default/libc-locales ignorando las 10 primeras líneas,
+        y devuelve solo locales UTF-8.
         """
         locales = []
         target = "/etc/default/libc-locales"
         if os.path.exists(target):
             with open(target, "r") as f:
+                # Saltar las 10 primeras líneas
+                for _ in range(10):
+                    next(f, None)
+
                 for line in f:
                     line = line.strip()
-                    if line:
-                        parts = line.lstrip("#").split()
-                        if parts:
-                            locales.append(parts[0])
-                
+                    if not line:
+                        continue
+                    # Quitar comentarios al inicio de línea
+                    parts = line.lstrip("#").split()
+                    if parts and parts[0].endswith("UTF-8"):
+                        locales.append(parts[0])
+
         return sorted(locales)

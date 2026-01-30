@@ -1,7 +1,7 @@
 #Autor: PabloGA
 from PySide6.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QFormLayout, QStackedWidget, QComboBox, QCheckBox, QLineEdit, QSizePolicy, QPlainTextEdit, QProgressBar, QMessageBox
 from PySide6.QtGui import QPixmap
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import Qt, Signal, QTranslator
 from system_utils import SystemDetector
 from install_thread import InstallWorker
 from utils_locales import LanguageName, KeymapName
@@ -10,6 +10,7 @@ import sys, subprocess, unicodedata, re
 class VentInstalador(QWidget):
     def __init__(self):
         super().__init__()
+        self.translator = QTranslator()
 
         self.setWindowTitle("Instalador de OlivOS")
         self.resize(900, 650)
@@ -32,11 +33,16 @@ class VentInstalador(QWidget):
 
         # Crear páginas (Pasamos datos a las que lo necesitan)
         self.pag_bienvenida = PagBienvenida()
+        self.pag_bienvenida.languageChanged.connect(self.set_language)
+
         self.pag_idiomas = PagIdiomas(self.system_data)
         self.pag_mirrors = PagMirrors()
         self.pag_usuarios = PagUsuarios()
         self.pag_discos = PagDiscos(self.system_data)
         self.pag_instalacion = PagInstalacion()
+
+        # Cargar idioma por defecto
+        self.set_language("en")
 
         # Añadir páginas a stack
         self.stack.addWidget(self.pag_bienvenida)
@@ -123,6 +129,14 @@ class VentInstalador(QWidget):
         else:
             self.btn_siguiente.setText("Siguiente")
             self.btn_siguiente.setStyleSheet("")  # resetea estilo para otras páginas
+
+    def set_language(self, lang_code):
+        QApplication.instance().removeTranslator(self.translator)
+        
+        if self.translator.load(f"i18n/olivos_{lang_code}.qm"):
+            QApplication.instance().installTranslator(self.translator)
+
+        self.pag_bienvenida.retranslateUi()
 
     def recolectar_datos(self):
         data = {}
@@ -218,11 +232,39 @@ class VentInstalador(QWidget):
 
 # Página principal
 class PagBienvenida(QWidget):
+    languageChanged = Signal(str)
+
     def __init__(self):
         super().__init__()
+        self.setup_ui()
+        self.retranslateUi()
 
+    def setup_ui(self):       
         layout = QVBoxLayout(self)
         layout.setSpacing(20)
+
+        # Selector idioma
+        form_layout = QHBoxLayout()
+        self.lang_combo = QComboBox()
+
+        language_icon = QLabel()
+        icon = QPixmap("languages.png")
+
+        language_icon.setPixmap(icon.scaled(25, 25, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+
+        self.lang_combo.addItem("English", "en")
+        self.lang_combo.addItem("Español", "es")
+        self.lang_combo.addItem("Português", "pt")
+        self.lang_combo.setFixedWidth(100)
+
+        # Inglés por defecto
+        self.lang_combo.setCurrentIndex(0)
+
+        self.lang_combo.currentIndexChanged.connect(self.on_language_changed)
+
+        form_layout.addWidget(language_icon)
+        form_layout.addWidget(self.lang_combo)
+        form_layout.setAlignment(Qt.AlignLeft)
 
         # Logo
         logo = QLabel()
@@ -239,22 +281,31 @@ class PagBienvenida(QWidget):
         logo.setAlignment(Qt.AlignCenter)
 
         # Mensaje bienvenida
-        titl = QLabel("¡Bienvenido a OlivOS!")
-        titl.setWordWrap(True)
-        titl.setAlignment(Qt.AlignCenter)
-        titl.setStyleSheet("font-size: 34px; font-weight: 500")
+        self.titl = QLabel()
+        self.titl.setWordWrap(True)
+        self.titl.setAlignment(Qt.AlignCenter)
+        self.titl.setStyleSheet("font-size: 34px; font-weight: 500")
 
-        sbtitl = QLabel('"Raíz que sostiene, ramas que responden"')
-        sbtitl.setWordWrap(True)
-        sbtitl.setAlignment(Qt.AlignCenter)
-        sbtitl.setStyleSheet("font-size: 16px; font-weight: 500")
+        self.sbtitl = QLabel()
+        self.sbtitl.setWordWrap(True)
+        self.sbtitl.setAlignment(Qt.AlignCenter)
+        self.sbtitl.setStyleSheet("font-size: 16px; font-weight: 500")
 
         # Añadimos widgets al layout
+        layout.addLayout(form_layout)
         layout.addStretch()
         layout.addWidget(logo)
-        layout.addWidget(titl)
-        layout.addWidget(sbtitl)
+        layout.addWidget(self.titl)
+        layout.addWidget(self.sbtitl)
         layout.addStretch()
+
+    def retranslateUi(self):
+        self.titl.setText(self.tr("¡Bienvenido a OlivOS!"))
+        self.sbtitl.setText(self.tr('"Raíz que sostiene, ramas que responden"'))
+
+    def on_language_changed(self):
+        lang = self.lang_combo.currentData()
+        self.languageChanged.emit(lang)
 
 class PagIdiomas(QWidget):
     def __init__(self, sys_data=None):

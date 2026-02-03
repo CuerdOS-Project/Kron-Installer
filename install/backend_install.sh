@@ -1,6 +1,5 @@
 #!/bin/bash
-# backend_install.sh - Lógica de instalación extraída de void-installer
-# Adaptado para ser controlado por una UI externa (Python/Qt)
+# Lógica de instalación extraída de void-installer
 
 # --- 1. CONFIGURACIÓN DEL ENTORNO ---
 
@@ -13,6 +12,7 @@ TARGET_FSTAB=$(mktemp -t vinstall-fstab-XXXXXXXX || exit 1)
 # stdout (1) y stderr (2) van al LOG para depuración detallada
 # fd3 va al stdout original para que Python lea los mensajes de estado ">>>"
 exec 3>&1
+exec 2>&1
 exec >"$LOG" 2>&1
 
 # Función para comunicar estado a la UI (Python)
@@ -102,6 +102,41 @@ create_filesystems() {
         # Montar Root (/) primero
         if [ "$mntpt" = "/" ]; then
             mkdir -p $TARGETDIR
+
+            if [ "$fstype" = "btrfs" ]; then
+                log_ui "Creando subvolúmenes Btrfs..."
+
+                # Montaje temporal sin subvol
+                mount $dev $TARGETDIR || die "Fallo al montar Btrfs temporal"
+
+                # Subvolúmenes estándar
+                btrfs subvolume create $TARGETDIR/@ || die "Fallo creando @"
+                btrfs subvolume create $TARGETDIR/@home || die "Fallo creando @home"
+                btrfs subvolume create $TARGETDIR/@log || die "Fallo creando @log"
+                btrfs subvolume create $TARGETDIR/@pkg || die "Fallo creando @pkg"
+
+                umount $TARGETDIR
+
+                # Montaje definitivo del root
+                mount -o subvol=@ $dev $TARGETDIR || die "Fallo montando subvol @"
+
+                mkdir -p $TARGETDIR/home
+                mkdir -p $TARGETDIR/var/log
+                mkdir -p $TARGETDIR/var/cache/xbps
+
+                mount -o subvol=@home $dev $TARGETDIR/home
+                mount -o subvol=@log  $dev $TARGETDIR/var/log
+                mount -o subvol=@pkg  $dev $TARGETDIR/var/cache/xbps
+
+                uuid=$(blkid -o value -s UUID "$dev")
+                echo "UUID=$uuid / btrfs defaults,subvol=@ 0 0" >>$TARGET_FSTAB
+                echo "UUID=$uuid /home btrfs defaults,subvol=@home 0 0" >>$TARGET_FSTAB
+                echo "UUID=$uuid /var/log btrfs defaults,subvol=@log 0 0" >>$TARGET_FSTAB
+                echo "UUID=$uuid /var/cache/xbps btrfs defaults,subvol=@pkg 0 0" >>$TARGET_FSTAB
+
+                continue
+            fi
+
             mount -t $fstype $dev $TARGETDIR || die "Fallo al montar root en $dev"
             
             # Fstab para root
@@ -145,40 +180,13 @@ copy_rootfs() {
     if [ $? -ne 0 ]; then
         die "Error al copiar el sistema de archivos rootfs"
     fi
-}
 
-# Instalar paquetes desde red (Network Source)
-install_packages() {
-    log_ui "Descargando e instalando sistema base..."
-    
-    local _grub=""
-    local _syspkg="base-system"
-
-    # Determinar paquete GRUB necesario
-    if [ "$(get_option BOOTLOADER)" != "none" ]; then
-        if [ -n "$EFI_SYSTEM" ]; then
-            if [ $EFI_FW_BITS -eq 32 ]; then
-                _grub="grub-i386-efi"
-            else
-                _grub="grub-x86_64-efi"
-            fi
-        else
-            _grub="grub"
-        fi
-    fi
-
-    # Preparar claves XBPS
-    mkdir -p $TARGETDIR/var/db/xbps/keys $TARGETDIR/usr/share
-    cp -a /usr/share/xbps.d $TARGETDIR/usr/share/
-    cp /var/db/xbps/keys/*.plist $TARGETDIR/var/db/xbps/keys
-    mkdir -p $TARGETDIR/boot/grub
-
-    # Instalar
-    XBPS_ARCH=$(xbps-uhelper arch) xbps-install -r $TARGETDIR -SyU ${_syspkg} ${_grub} || die "Fallo xbps-install"
-    
-    # Reconfigurar
-    xbps-reconfigure -r $TARGETDIR -f base-files
-    chroot $TARGETDIR xbps-reconfigure -a || die "Fallo xbps-reconfigure"
+    # Limpieza post-copia live
+    rm -f $TARGETDIR/etc/motd $TARGETDIR/etc/issue $TARGETDIR/usr/sbin/void-installer
+    rm -f $TARGETDIR/etc/sddm.conf # Si existe
+    # Eliminar usuario live del target
+    chroot $TARGETDIR userdel -r anon >/dev/null 2>&1
+    chroot $TARGETDIR userdel -r void >/dev/null 2>&1
 }
 
 # Montar sistemas virtuales para chroot
@@ -269,25 +277,32 @@ set_useraccount() {
 declare -A MIRRORS
 
 # Formato: ["nombre-logico"]="URL"
-MIRRORS["Predeterminado"]="https://repo-default.voidlinux.org/"
-MIRRORS["Europa, Finlandia"]="https://repo-fi.voidlinux.org/"
-MIRRORS["Europa, Alemania"]="https://repo-de.voidlinux.org/"
-MIRRORS["Global, CDN"]="https://repo-fastly.voidlinux.org/"
-MIRRORS["Norte América, EEUU"]="https://mirrors.summithq.com/voidlinux/"
+MIRRORS["Default"]="https://repo-default.voidlinux.org/"
+MIRRORS["Finland"]="https://repo-fi.voidlinux.org/"
+MIRRORS["Germany"]="https://repo-de.voidlinux.org/"
+MIRRORS["Global"]="https://repo-fastly.voidlinux.org/"
+MIRRORS["USA"]="https://mirrors.summithq.com/voidlinux/"
 
 set_mirror() {
     local MIRROR_KEY=$(get_option MIRROR)
     local MIRROR_URL=${MIRRORS[$MIRROR_KEY]}
 
-    if ! chroot $TARGETDIR xmirror -s $MIRROR_URL; then
-        die "Fallo al configurar mirror $MIRROR_KEY ($MIRROR_URL)"
+    if [[ "$MIRROR_KEY" != "Default" ]]; then
+        log_ui "Configurando mirror..."
+        
+        if ! chroot $TARGETDIR xmirror -s $MIRROR_URL; then
+            die "Fallo al configurar mirror $MIRROR_KEY ($MIRROR_URL)"
+        fi
+        log_ui "Mirror configurado: $MIRROR_KEY ($MIRROR_URL)"
     fi
-    log_ui "Mirror configurado: $MIRROR_KEY ($MIRROR_URL)"
+}
 
-    if ! chroot $TARGETDIR xbps-install -S; then
-        die "Fallo al sincronizar repos"
+update_system() {
+    log_ui "Actualizando sistema..."
+    if ! chroot $TARGETDIR xbps-install -Su -y; then
+        die "Fallo al actualizar sistema"
     fi
-    log_ui "Repos sincronizados"
+    log_ui "Sistema actualizado."
 }
 
 enable_nonfree_repos() {
@@ -340,21 +355,27 @@ install_intel_microcodes() {
 }
 
 install_extra_software() {
-    local nonfree=$(get_option NONFREE)   # checkbox de la GUI
+    local update=$(get_option UPDATE)   # checkbox de la GUI
+    local nonfree=$(get_option NONFREE)
     local nvidia=$(get_option NVIDIA)
     local intel=$(get_option INTEL)
 
-    if [ "$nonfree" = "1" ]; then
-        enable_nonfree_repos
-        if [ "$nvidia" = "1" ]; then
-            install_nvidia_driver
-        fi
+    if [ "$update" = "1" ]; then
+        update_system
+        if [ "$nonfree" = "1" ]; then
+            enable_nonfree_repos
+            if [ "$nvidia" = "1" ]; then
+                install_nvidia_driver
+            fi
 
-        if [ "$intel" = "1" ]; then
-            install_intel_microcodes
+            if [ "$intel" = "1" ]; then
+                install_intel_microcodes
+            fi
+        else
+            log_ui "No se activaron repositorios no libres ni drivers propietarios."
         fi
     else
-        log_ui "No se activaron repositorios no libres ni drivers NVIDIA."
+        log_ui "Instalador en modo offline: no se actualizará el sistema."
     fi
 }
 
@@ -392,18 +413,7 @@ log_ui "Preparando discos y particiones..."
 create_filesystems
 
 # Paso 2: Instalación Base
-if [ "$(get_option SOURCE)" == "net" ]; then
-    install_packages
-else
-    copy_rootfs
-    
-    # Limpieza post-copia live
-    rm -f $TARGETDIR/etc/motd $TARGETDIR/etc/issue $TARGETDIR/usr/sbin/void-installer
-    rm -f $TARGETDIR/etc/sddm.conf # Si existe
-    # Eliminar usuario live del target
-    chroot $TARGETDIR userdel -r anon >/dev/null 2>&1
-    chroot $TARGETDIR userdel -r void >/dev/null 2>&1
-fi
+copy_rootfs
 
 # Paso 3: Configuración
 log_ui "Configurando sistema (Host, Hora, Idioma)..."
@@ -416,7 +426,6 @@ set_locale
 set_timezone
 set_hostname
 
-log_ui "Configurando mirror..."
 set_mirror
 install_extra_software
 

@@ -2,7 +2,7 @@ import os
 import subprocess
 import json
 import glob
-from utils_locales import KeymapName
+from utils.utils_locales import KeymapName
 
 class SystemDetector:
     @staticmethod
@@ -11,26 +11,49 @@ class SystemDetector:
         return os.path.exists("/sys/firmware/efi")
 
     @staticmethod
+    def has_internet(timeout=2):
+        """
+        Comprueba si hay conexión a Internet.
+        Devuelve True / False.
+        """
+        try:
+            result = subprocess.run(
+                ["ping", "-c", "1", "-W", str(timeout), "1.1.1.1"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            return result.returncode == 0
+        except Exception:
+            return False
+
+    @staticmethod
     def detect_disks():
         """
         Retorna una lista de discos usando lsblk en formato JSON.
-        Filtra loops y rams.
+        Filtra loops, rams y discos sin tamaño o modelo válido.
         """
         try:
-            # lsblk -J (JSON), -o (Columnas específicas)
             cmd = ["lsblk", "-J", "-o", "NAME,SIZE,TYPE,MODEL,FSTYPE"]
             result = subprocess.run(cmd, capture_output=True, text=True)
             data = json.loads(result.stdout)
             
             disks = []
             for device in data.get("blockdevices", []):
-                if device.get("type") == "disk":
-                    disks.append({
-                        "name": f"/dev/{device['name']}",
-                        "model": device.get("model", "Unknown"),
-                        "size": device.get("size"),
-                        "children": device.get("children", []) # Particiones
-                    })
+                if device.get("type") != "disk":
+                    continue
+                model = device.get("model")
+                size = device.get("size")
+                name = device.get("name", "")
+                if not model:
+                    model = "Virtual / Generic Disk"
+                if name.startswith("zram"):
+                    continue
+                disks.append({
+                    "name": f"/dev/{device['name']}",
+                    "model": model,
+                    "size": size,
+                    "children": device.get("children", [])
+                })
             return disks
         except Exception as e:
             print(f"Error detectando discos: {e}")

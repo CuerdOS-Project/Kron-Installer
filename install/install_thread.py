@@ -14,7 +14,13 @@ class InstallWorker(QThread):
         super().__init__()
         self.config_data = config_data
         self.conf_file = "/tmp/.void-installer.conf"
-        self.backend_script = os.path.abspath("backend_install.sh") 
+        self.backend_script = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),  # carpeta ui/
+            "..",  # subimos a la raíz
+            "install",
+            "backend_install.sh"
+        )
+        self.backend_script = os.path.abspath(self.backend_script) 
 
     def generate_conf_file(self):
         """Genera el archivo .conf que espera el backend bash."""

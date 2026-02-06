@@ -98,9 +98,6 @@ class DisksPage(QWidget):
         self.lbl_home = QLabel()
         self.lbl_swap = QLabel()
 
-        # Cargar particiones en combos
-        self.cargar_particiones()
-
         form_layout.addRow(self.lbl_root, self.raiz_combo)
         
         # EFI con label y formulario separados para poder ocultarlos
@@ -144,6 +141,9 @@ class DisksPage(QWidget):
         self.lbl_efi.setText(self.tr("EFI (/boot/efi):"))
         self.lbl_home.setText(self.tr("Home (/home):"))
         self.lbl_swap.setText(self.tr("Swap:"))
+
+        # Cargar particiones en combos
+        self.cargar_particiones()
 
     def abrir_partition_manager(self):
         import subprocess
@@ -204,10 +204,10 @@ class DisksPage(QWidget):
             self,
             self.tr("Advertencia: Particionado automático"),
             self.tr(
-                f"El disco {disk} se formateará y perderá todos sus datos.\n"
+                "El disco {disk} se formateará y perderá todos sus datos.\n"
                 "Esta acción NO se puede deshacer.\n\n"
                 "¿Deseas continuar?"
-            ),
+            ).format(disk = disk),
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
         )
 
@@ -225,7 +225,7 @@ class DisksPage(QWidget):
                 QMessageBox.information(
                     self,
                     self.tr("Particionado completado"),
-                    self.tr(f"El disco {disk} ha sido particionado correctamente.")
+                    self.tr("El disco {disk} ha sido particionado correctamente.").format(disk = disk)
                 )
 
                 self.cargar_particiones()
@@ -234,5 +234,5 @@ class DisksPage(QWidget):
                 QMessageBox.critical(
                     self,
                     self.tr("Error"),
-                    self.tr(f"Fallo al particionar {disk}:\n{e}")
+                    self.tr("Fallo al particionar {disk}:\n{e}").format(disk = disk, e = e)
                 )

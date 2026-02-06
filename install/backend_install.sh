@@ -12,8 +12,7 @@ TARGET_FSTAB=$(mktemp -t vinstall-fstab-XXXXXXXX || exit 1)
 # stdout (1) y stderr (2) van al LOG para depuración detallada
 # fd3 va al stdout original para que Python lea los mensajes de estado ">>>"
 exec 3>&1
-exec 2>&1
-exec >"$LOG" 2>&1
+exec > >(tee -a "$LOG") 2>&1
 
 # Función para comunicar estado a la UI (Python)
 log_ui() {
@@ -23,7 +22,7 @@ log_ui() {
 # Función para errores fatales
 die() {
     log_ui "ERROR: $1"
-    echo "ERROR FATAL: $1" >&2
+    echo "FATAL ERROR: $1" >&2
     # Intentar desmontar por seguridad
     umount -R "$TARGETDIR" >/dev/null 2>&1
     exit 1
@@ -73,10 +72,10 @@ create_filesystems() {
         if [ "$fstype" = "swap" ]; then
             swapoff $dev >/dev/null 2>&1
             if [ "$mkfs" -eq 1 ]; then
-                log_ui "Formateando Swap en $dev..."
-                mkswap $dev || die "Fallo al crear swap en $dev"
+                echo "Formatting Swap on $dev..."
+                mkswap $dev || die "Error creating swap on $dev"
             fi
-            swapon $dev || die "Fallo al activar swap en $dev"
+            swapon $dev || die "Error activating swap on $dev"
             uuid=$(blkid -o value -s UUID "$dev")
             echo "UUID=$uuid none swap defaults 0 0" >>$TARGET_FSTAB
             continue
@@ -84,7 +83,7 @@ create_filesystems() {
 
         # Formatear particiones (Si mkfs=1)
         if [ "$mkfs" -eq 1 ]; then
-            log_ui "Formateando $dev como $fstype..."
+            echo "Formatting $dev as $fstype..."
             case "$fstype" in
                 btrfs) MKFS="mkfs.btrfs -f"; modprobe btrfs ;;
                 ext2) MKFS="mke2fs -F"; modprobe ext2 ;;
@@ -93,10 +92,10 @@ create_filesystems() {
                 f2fs) MKFS="mkfs.f2fs -f"; modprobe f2fs ;;
                 vfat) MKFS="mkfs.vfat -F32"; modprobe vfat ;;
                 xfs) MKFS="mkfs.xfs -f -i sparse=0"; modprobe xfs ;;
-                *) die "Sistema de archivos $fstype no soportado" ;;
+                *) die "File system $fstype not supported" ;;
             esac
             
-            $MKFS $dev || die "Fallo al formatear $dev ($fstype)"
+            $MKFS $dev || die "Error formatting $dev ($fstype)"
         fi
 
         # Montar Root (/) primero
@@ -104,21 +103,21 @@ create_filesystems() {
             mkdir -p $TARGETDIR
 
             if [ "$fstype" = "btrfs" ]; then
-                log_ui "Creando subvolúmenes Btrfs..."
+                echo "Creating BTRFS subvolumes..."
 
                 # Montaje temporal sin subvol
-                mount $dev $TARGETDIR || die "Fallo al montar Btrfs temporal"
+                mount $dev $TARGETDIR || die "Error when mounting temporary BTRFS"
 
                 # Subvolúmenes estándar
-                btrfs subvolume create $TARGETDIR/@ || die "Fallo creando @"
-                btrfs subvolume create $TARGETDIR/@home || die "Fallo creando @home"
-                btrfs subvolume create $TARGETDIR/@log || die "Fallo creando @log"
-                btrfs subvolume create $TARGETDIR/@pkg || die "Fallo creando @pkg"
+                btrfs subvolume create $TARGETDIR/@ || die "Error creating @"
+                btrfs subvolume create $TARGETDIR/@home || die "Error creating @home"
+                btrfs subvolume create $TARGETDIR/@log || die "Error creating @log"
+                btrfs subvolume create $TARGETDIR/@pkg || die "Error creating @pkg"
 
                 umount $TARGETDIR
 
                 # Montaje definitivo del root
-                mount -o subvol=@ $dev $TARGETDIR || die "Fallo montando subvol @"
+                mount -o subvol=@ $dev $TARGETDIR || die "Error mounting subvol @"
 
                 mkdir -p $TARGETDIR/home
                 mkdir -p $TARGETDIR/var/log
@@ -137,7 +136,7 @@ create_filesystems() {
                 continue
             fi
 
-            mount -t $fstype $dev $TARGETDIR || die "Fallo al montar root en $dev"
+            mount -t $fstype $dev $TARGETDIR || die "Error mounting root on $dev"
             
             # Fstab para root
             uuid=$(blkid -o value -s UUID "$dev")
@@ -158,7 +157,7 @@ create_filesystems() {
         [ "$mntpt" = "/" -o "$fstype" = "swap" ] && continue
         
         mkdir -p ${TARGETDIR}${mntpt}
-        mount -t $fstype $dev ${TARGETDIR}${mntpt} || die "Fallo al montar $mntpt en $dev"
+        mount -t $fstype $dev ${TARGETDIR}${mntpt} || die "Error mounting $mntpt on $dev"
         
         uuid=$(blkid -o value -s UUID "$dev")
         if [ "$fstype" = "f2fs" -o "$fstype" = "btrfs" -o "$fstype" = "xfs" ]; then
@@ -172,13 +171,13 @@ create_filesystems() {
 
 # Copiar sistema base desde el Live ISO (Local Source)
 copy_rootfs() {
-    log_ui "Copiando archivos del sistema..."
+    echo "Copying system files..."
     # Usamos tar tal cual el original para preservar atributos extendidos
     tar --create --one-file-system --xattrs -f - / 2>/dev/null | \
         tar --extract --xattrs --xattrs-include='*' --preserve-permissions -f - -C $TARGETDIR
     
     if [ $? -ne 0 ]; then
-        die "Error al copiar el sistema de archivos rootfs"
+        die "Error copying rootfs file system"
     fi
 
     # Limpieza post-copia live
@@ -288,27 +287,32 @@ set_mirror() {
     local MIRROR_URL=${MIRRORS[$MIRROR_KEY]}
 
     if [[ "$MIRROR_KEY" != "Default" ]]; then
-        log_ui "Configurando mirror..."
+        echo "Configuring mirror..."
+        log_ui "MIRROR"        
         
         if ! chroot $TARGETDIR xmirror -s $MIRROR_URL; then
-            die "Fallo al configurar mirror $MIRROR_KEY ($MIRROR_URL)"
+            die "Error configuring mirror $MIRROR_KEY ($MIRROR_URL)"
         fi
-        log_ui "Mirror configurado: $MIRROR_KEY ($MIRROR_URL)"
+        echo "Mirror configured: $MIRROR_KEY ($MIRROR_URL)"
     fi
 }
 
 update_system() {
-    log_ui "Actualizando sistema..."
+    echo "Updating system..."
+    log_ui "UPDATE"
+
     if ! chroot $TARGETDIR xbps-install -Su -y; then
-        die "Fallo al actualizar sistema"
+        die "Error updating system"
     fi
-    log_ui "Sistema actualizado."
+    echo "System updated"
 }
 
 enable_nonfree_repos() {
-    log_ui "Activando repositorios no libres..."
-    chroot $TARGETDIR xbps-install -Sy void-repo-nonfree || die "Fallo al instalar void-repo-nonfree"
-    log_ui "Repositorios no libres activados."
+    echo "Enabling non-free repositories..."
+    log_ui "NON-FREE"
+
+    chroot $TARGETDIR xbps-install -Sy void-repo-nonfree || die "Error installing void-repo-nonfree"
+    echo "Non-free repositories enabled"
 }
 
 get_nvidia_driver() {
@@ -340,18 +344,20 @@ install_nvidia_driver() {
     driver=$(get_nvidia_driver)
 
     if [ -n "$driver" ]; then
-        log_ui "Instalando driver NVIDIA: $driver..."
-        chroot $TARGETDIR xbps-install -Sy "$driver" || die "Fallo al instalar driver $driver"
-        log_ui "Driver NVIDIA instalado correctamente."
+        echo "Installing NVIDIA driver: $driver..."
+        log_ui "NVIDIA"
+        chroot $TARGETDIR xbps-install -Sy "$driver" || die "Error installing driver $driver"
+        echo "NVIDIA driver successfully installed"
     else
-        log_ui "No se detectó driver NVIDIA compatible, se usará nouveau/nvk."
+        echo "No compatible NVIDIA driver detected, nouveau/nvk will be used"
     fi
 }
 
 install_intel_microcodes() {
-    log_ui "Instalando microcódigos Intel..."
-    chroot $TARGETDIR xbps-install -Sy intel-ucode || die "Fallo al instalar microcódigos Intel"
-    log_ui "Microcódigos Intel instalados correctamente."
+    echo "Installing Intel microcode..."
+    log_ui "INTEL"
+    chroot $TARGETDIR xbps-install -Sy intel-ucode || die "Failure when installing Intel microcode"
+    echo "Intel microcodes installed correctly"
 }
 
 install_extra_software() {
@@ -372,10 +378,10 @@ install_extra_software() {
                 install_intel_microcodes
             fi
         else
-            log_ui "No se activaron repositorios no libres ni drivers propietarios."
+            echo "Non-free repositories and proprietary drivers were not activated"
         fi
     else
-        log_ui "Instalador en modo offline: no se actualizará el sistema."
+        echo "Offline installer: the system will not be updated"
     fi
 }
 
@@ -389,34 +395,35 @@ set_bootloader() {
         grub_args="--target=$EFI_TARGET --efi-directory=/boot/efi --bootloader-id=void_grub --recheck"
     fi
     
-    chroot $TARGETDIR grub-install $grub_args $dev || die "Error instalando GRUB en $dev"
-    chroot $TARGETDIR grub-mkconfig -o /boot/grub/grub.cfg || die "Error generando grub.cfg"
+    chroot $TARGETDIR grub-install $grub_args $dev || die "Error installing GRUB on $dev"
+    chroot $TARGETDIR grub-mkconfig -o /boot/grub/grub.cfg || die "Error generating grub.cfg"
 }
 
 # --- 5. ORQUESTACIÓN PRINCIPAL ---
 
 # Validaciones previas
 if [ "$(id -u)" != "0" ]; then
-    echo "Este script debe ejecutarse como root" >&2
+    echo "This script must be run as root." >&2
     exit 1
 fi
 
 if [ ! -f "$CONF_FILE" ]; then
-    die "No se encontró $CONF_FILE. El frontend Python debe generarlo primero."
+    die "$CONF_FILE was not found. The Python frontend must generate it first."
 fi
 
-log_ui "INICIANDO INSTALACIÓN..."
-echo "Log iniciado en $LOG"
+log_ui "INIT"
+echo "Log started at $LOG"
 
 # Paso 1: Discos
-log_ui "Preparando discos y particiones..."
+log_ui "CREATE_FS"
 create_filesystems
 
 # Paso 2: Instalación Base
+log_ui "COPY"
 copy_rootfs
 
 # Paso 3: Configuración
-log_ui "Configurando sistema (Host, Hora, Idioma)..."
+log_ui "REGIONAL_CONFIG"
 mount_filesystems
 install -Dm644 $TARGET_FSTAB $TARGETDIR/etc/fstab
 echo "tmpfs /tmp tmpfs defaults,nosuid,nodev 0 0" >> $TARGETDIR/etc/fstab
@@ -426,22 +433,23 @@ set_locale
 set_timezone
 set_hostname
 
+# Mirrors y drivers propietarios
 set_mirror
 install_extra_software
 
-log_ui "Configurando usuarios..."
+log_ui "USER_CONFIG"
 set_rootpassword
 set_useraccount
 
 # Paso 4: Bootloader
-log_ui "Instalando Bootloader (GRUB)..."
+log_ui "GRUB_INSTALL"
 set_bootloader
 
 # Paso 5: Finalizar
-log_ui "Finalizando y desmontando..."
+log_ui "FINISH"
 sync
 umount_filesystems
 rm -f $TARGET_FSTAB
 
-log_ui "INSTALACIÓN COMPLETADA"
+log_ui "DONE"
 exit 0

@@ -19,13 +19,20 @@ class WelcomePage(QWidget):
         self.lang_combo = QComboBox()
 
         language_icon = QLabel()
-        icon = QPixmap("images/languages.png")
+        icon = QPixmap("images/i18n.png")
 
         language_icon.setPixmap(icon.scaled(25, 25, Qt.KeepAspectRatio, Qt.SmoothTransformation))
 
         self.lang_combo.addItem("English", "en")
         self.lang_combo.addItem("Español", "es")
-        self.lang_combo.addItem("Português", "pt")
+        self.lang_combo.addItem("Català", "ca")
+        self.lang_combo.addItem("Galego", "gl")
+        self.lang_combo.addItem("Basque", "eu")
+        self.lang_combo.addItem("Français", "fr")
+        self.lang_combo.addItem("Português", "pt_BR")
+        self.lang_combo.addItem("Русский", "ru")
+        self.lang_combo.addItem("日本語", "ja")
+        self.lang_combo.addItem("简体中文", "zh_CN")
         self.lang_combo.setFixedWidth(100)
 
         # Inglés por defecto

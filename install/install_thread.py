@@ -1,6 +1,8 @@
 from PySide6.QtCore import QThread, Signal
 import subprocess
 import os
+import threading
+import time
 
 class InstallWorker(QThread):
     # Señales para comunicar con la UI
@@ -14,13 +16,54 @@ class InstallWorker(QThread):
         super().__init__()
         self.config_data = config_data
         self.conf_file = "/tmp/.void-installer.conf"
+
+        # Calcular ruta al backend
         self.backend_script = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),  # carpeta ui/
-            "..",  # subimos a la raíz
+            "..",  # subida a raíz
             "install",
             "backend_install.sh"
         )
         self.backend_script = os.path.abspath(self.backend_script) 
+
+        # Variables para controlar la animación del progreso
+        self._progress_thread = None
+        self._stop_progress_event = threading.Event()
+
+    def _scaling_task(self, start_val, end_val):
+        """
+        Función que se ejecuta en un hilo separado para incrementar la barra.
+        """
+        current = start_val
+        while not self._stop_progress_event.is_set() and current < end_val:
+            current += 1
+            
+            if current > end_val:
+                current = end_val
+            
+            self.progress_update.emit(int(current))
+            
+            time.sleep(10)
+
+    def _stop_scaling(self):
+        """Detiene el hilo de progreso actual si existe."""
+        if self._progress_thread and self._progress_thread.is_alive():
+            self._stop_progress_event.set()
+            self._progress_thread.join(timeout=1)
+
+    def _start_scaling(self, start_val, end_val):
+        """Inicia el hilo de progreso."""
+        # Parar y reiniciar hilo
+        self._stop_scaling()
+        self._stop_progress_event.clear()
+        
+        # Crear e iniciar nuevo hilo
+        self._progress_thread = threading.Thread(
+            target=self._scaling_task,
+            args=(start_val, end_val),
+            daemon=True
+        )
+        self._progress_thread.start()
 
     def generate_conf_file(self):
         """Genera el archivo .conf que espera el backend bash."""
@@ -41,12 +84,13 @@ class InstallWorker(QThread):
                     f.write(line)
             return True
         except Exception as e:
-            self.finished_error.emit(f"Error escribiendo config: {e}")
+            error_msg = self.tr("Error al escribir la configuración: {e}").format(e = e)
+            self.finished_error.emit(error_msg)
             return False
 
     def run(self):
         # 1. Generar configuración
-        self.status_update.emit("Generando configuración...")
+        self.status_update.emit("INIT")
         if not self.generate_conf_file():
             return
 
@@ -58,7 +102,7 @@ class InstallWorker(QThread):
             process = subprocess.Popen(
                 cmd,
                 stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
                 text=True,
                 bufsize=1 # Line buffered
             )
@@ -77,25 +121,49 @@ class InstallWorker(QThread):
                         self.status_update.emit(msg)
                         self.log_update.emit(f"[INFO] {msg}")
                         
-                        # Heurística simple para barra de progreso basada en mensajes clave
-                        if "Iniciando" in msg: self.progress_update.emit(5)
-                        elif "discos" in msg: self.progress_update.emit(15)
-                        elif "Copiando" in msg or "Descargando" in msg: self.progress_update.emit(30)
-                        elif "Configurando sistema" in msg: self.progress_update.emit(60)
-                        elif "usuarios" in msg: self.progress_update.emit(80)
-                        elif "Bootloader" in msg: self.progress_update.emit(90)
-                        elif "COMPLETADA" in msg: self.progress_update.emit(100)
+                        # Casos donde queremos animación progresiva
+                        if "COPY" in msg:
+                            self._start_scaling(30, 49) # Anima entre 30% y 49%
+                        
+                        elif "UPDATE" in msg:
+                            self._start_scaling(50, 69) # Anima entre 50% y 69%
+                        
+                        # Casos donde paramos animación y fijamos valor exacto
+                        elif "INIT" in msg:
+                            self._stop_scaling()
+                            self.progress_update.emit(5)
+                        elif "CREATE_FS" in msg:
+                            self._stop_scaling()
+                            self.progress_update.emit(15)
+                        elif "REGIONAL_CONFIG" in msg:
+                            self._stop_scaling()
+                            self.progress_update.emit(50)
+                        elif "USER_CONFIG" in msg:
+                            self._stop_scaling()
+                            self.progress_update.emit(85)
+                        elif "GRUB_INSTALL" in msg:
+                            self._stop_scaling()
+                            self.progress_update.emit(90)
+                        elif "DONE" in msg:
+                            self._stop_scaling()
+                            self.progress_update.emit(100)
+                            
                     else:
-                        # Log normal (si se escapa algo al stdout)
                         self.log_update.emit(clean_line)
 
             # Verificar código de salida
+            self._stop_scaling()
+
             rc = process.poll()
             if rc == 0:
                 self.finished_success.emit()
             else:
-                err = process.stderr.read()
-                self.finished_error.emit(f"El instalador falló (Código {rc}).\n{err}")
+                self.finished_error.emit(
+                    self.tr("El instalador ha fallado. Mire en /tmp/installation.log.")
+                )
 
         except Exception as e:
-            self.finished_error.emit(f"Error crítico ejecutando backend: {e}")
+            self._stop_scaling()
+
+            error_msg = self.tr("Error crítico al ejecutar el backend: {e}").format(e = e)
+            self.finished_error.emit(error_msg)

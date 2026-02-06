@@ -56,7 +56,7 @@ class SystemDetector:
                 })
             return disks
         except Exception as e:
-            print(f"Error detectando discos: {e}")
+            print(f"Error detecting disks: {e}")
             return []
 
     @staticmethod

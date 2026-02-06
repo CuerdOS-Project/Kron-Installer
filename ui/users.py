@@ -78,12 +78,12 @@ class UsersPage(QWidget):
         right_layout.addSpacing(15)
 
         # --- Root ---
-        root_label = QLabel("Contraseña de root:")
+        self.root_label = QLabel()
         self.root_pass = QLineEdit()
         self.root_pass.setEchoMode(QLineEdit.Password)
         self.root_pass.setFixedWidth(250)
 
-        right_layout.addWidget(root_label)
+        right_layout.addWidget(self.root_label)
         right_layout.addWidget(self.root_pass)
 
         right_layout.addStretch()
@@ -109,6 +109,7 @@ class UsersPage(QWidget):
         self.username_label.setText(self.tr("Nombre completo:"))
         self.user_label.setText(self.tr("Usuario (login):"))
         self.pass_label.setText(self.tr("Contraseña del usuario:"))
+        self.root_label.setText(self.tr("Contraseña de root:"))
 
     # Función actualizar label username
     def _update_login(self, text):

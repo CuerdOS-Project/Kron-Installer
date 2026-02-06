@@ -85,6 +85,8 @@ class MirrorsPage(QWidget):
         self.titl.setText(self.tr("Repositorios y software"))
         self.mirror_label.setText(self.tr("Servidor de descarga (mirror)"))
         
+        self.mirror_combo.blockSignals(True)      
+        self.mirror_combo.clear()
         self.mirror_combo.addItem(self.tr("Predeterminado"), "Default")
         self.mirror_combo.addItem(self.tr("Europa, Finlandia"), "Finland")
         self.mirror_combo.addItem(self.tr("Europa, Alemania"), "Germany")

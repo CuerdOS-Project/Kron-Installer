@@ -1,7 +1,9 @@
 from PySide6.QtWidgets import QMessageBox
+from PySide6.QtCore import QObject
 
-class InstallerConfigCollector:
+class InstallerConfigCollector(QObject):
     def __init__(self, parent, paginas, system_data):
+        super().__init__(parent)
         self.parent = parent
         self.paginas = paginas
         self.system_data = system_data
@@ -32,18 +34,18 @@ class InstallerConfigCollector:
 
             # Validación campos obligatorios
             required_fields = {
-                "HOSTNAME" : self.parent.tr("Nombre del equipo (hostname)"),
-                "USERLOGIN": self.parent.tr("Usuario (login)"),
-                "USERNAME": self.parent.tr("Nombre completo"),
-                "USERPASSWORD": self.parent.tr("Contraseña del usuario"),
-                "ROOTPASSWORD": self.parent.tr("Contraseña de root"),
+                "HOSTNAME" : self.tr("Nombre del equipo (hostname)"),
+                "USERLOGIN": self.tr("Usuario (login)"),
+                "USERNAME": self.tr("Nombre completo"),
+                "USERPASSWORD": self.tr("Contraseña del usuario"),
+                "ROOTPASSWORD": self.tr("Contraseña de root"),
             }
             missing = [label for key, label in required_fields.items() if not data[key]]
             if missing:
                 QMessageBox.warning(
                     self.parent,
-                    self.parent.tr("Faltan datos"),
-                    self.parent.tr("Debes completar los siguientes campos:\n\n- ")
+                    self.tr("Faltan datos"),
+                    self.tr("Debes completar los siguientes campos:\n\n- ")
                     + "\n- ".join(missing),
                 )
                 return None
@@ -60,8 +62,8 @@ class InstallerConfigCollector:
             if hostname.lower() != hostname or not hostname_re.match(hostname):
                 QMessageBox.warning(
                     self.parent,
-                    self.parent.tr("Hostname inválido"),
-                    self.parent.tr(
+                    self.tr("Hostname inválido"),
+                    self.tr(
                         "El nombre del equipo solo puede contener letras minúsculas,\n"
                         "números y guiones, y no puede empezar ni terminar con un guión."
                     ),
@@ -71,8 +73,8 @@ class InstallerConfigCollector:
             if userlogin.lower() != userlogin or not user_re.match(userlogin):
                 QMessageBox.warning(
                     self.parent,
-                    self.parent.tr("Usuario inválido"),
-                    self.parent.tr(
+                    self.tr("Usuario inválido"),
+                    self.tr(
                         "El nombre de usuario solo puede contener letras minúsculas,\n"
                         "números, guiones y guiones bajos, y no puede contener espacios."
                     ),
@@ -80,22 +82,22 @@ class InstallerConfigCollector:
                 return None
 
             for key, label, pwd in [
-                ("USERPASSWORD", self.parent.tr("Contraseña del usuario"), user_pass),
-                ("ROOTPASSWORD", self.parent.tr("Contraseña de root"), root_pass),
+                ("USERPASSWORD", self.tr("Contraseña del usuario"), user_pass),
+                ("ROOTPASSWORD", self.tr("Contraseña de root"), root_pass),
             ]:
                 if pwd.strip() != pwd:
                     QMessageBox.warning(
                         self.parent,
-                        self.parent.tr("Contraseña inválida"),
-                        self.parent.tr(f"{label} no puede empezar ni terminar con espacios."),
+                        self.tr("Contraseña inválida"),
+                        self.tr("{label} no puede empezar ni terminar con espacios.").format(label = label),
                     )
                     return None
 
                 if len(pwd) < 4:
                     QMessageBox.warning(
                         self.parent,
-                        self.parent.tr("Contraseña demasiado corta"),
-                        self.parent.tr(f"{label} debe tener al menos 4 caracteres."),
+                        self.tr("Contraseña demasiado corta"),
+                        self.tr("{label} debe tener al menos 4 caracteres.").format(label = label),
                     )
                     return None
 
@@ -119,14 +121,14 @@ class InstallerConfigCollector:
 
             # Validaciones y creación de particiones
             part_checks = [
-                ("root", "/", True, self.parent.tr("Debe seleccionar una partición Raíz (/)."))
+                ("root", "/", True, self.tr("Debe seleccionar una partición Raíz (/)."))
             ]
             if self.system_data.get("efi", False):
-                part_checks.append(("efi", "/boot/efi", True, self.parent.tr("Debe seleccionar una partición EFI (/boot/efi).")))
+                part_checks.append(("efi", "/boot/efi", True, self.tr("Debe seleccionar una partición EFI (/boot/efi).")))
 
             for key, point, must_format, msg in part_checks:
                 if raw_parts[key] is None:
-                    QMessageBox.warning(self.parent, self.parent.tr("Error"), msg)
+                    QMessageBox.warning(self.parent, self.tr("Error"), msg)
                     return None
                 partitions.append({
                     "dev": clean(raw_parts[key]),
@@ -146,7 +148,6 @@ class InstallerConfigCollector:
             data["PARTITIONS"] = partitions
 
             # --- BOOTLOADER ---
-            import re
             root_dev = clean(raw_parts["root"])
             disk_dev = re.sub(r'\d+$', '', root_dev)
             if "nvme" in disk_dev and disk_dev.endswith("p"): 
@@ -156,5 +157,5 @@ class InstallerConfigCollector:
             return data
 
         except Exception as e:
-            QMessageBox.critical(self.parent, self.parent.tr("Error"), self.parent.tr("Error procesando datos: ") + str(e))
+            QMessageBox.critical(self.parent, self.tr("Error"), self.tr("Error procesando datos: ") + str(e))
             return None

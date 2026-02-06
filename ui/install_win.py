@@ -86,7 +86,7 @@ class InstallWin(QWidget):
         self.set_language("en")
     
     def translate_ui(self):
-        self.setWindowTitle(self.tr("Instalador de OlivOS"))
+        self.setWindowTitle(self.tr("Instalador Almazara"))
         self.btn_atras.setText(self.tr("Atrás"))
         self.btn_siguiente.setText(self.tr("Siguiente"))
     
@@ -162,8 +162,13 @@ class InstallWin(QWidget):
     def set_language(self, lang_code):
         QApplication.instance().removeTranslator(self.translator)
         
-        if self.translator.load(f"i18n/olivos_{lang_code}.qm"):
+        if self.translator.load(f"i18n/{lang_code}.qm"):
             QApplication.instance().installTranslator(self.translator)
     
         self.translate_ui()
         self.pag_bienvenida.translate_ui()
+        self.pag_idiomas.translate_ui()
+        self.pag_mirrors.translate_ui()
+        self.pag_usuarios.translate_ui()
+        self.pag_discos.translate_ui()
+        self.pag_instalacion.translate_ui()

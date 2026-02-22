@@ -76,4 +76,3 @@ The project is organized modularly for better maintenance:
     ```bash
     python3 main.py
     ```
-```

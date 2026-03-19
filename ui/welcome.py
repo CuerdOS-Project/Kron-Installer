@@ -25,14 +25,14 @@ class WelcomePage(QWidget):
 
         self.lang_combo.addItem("English", "en")
         self.lang_combo.addItem("Español", "es")
+        self.lang_combo.addItem("Asturianu", "ast")
         self.lang_combo.addItem("Català", "ca")
         self.lang_combo.addItem("Galego", "gl")
         self.lang_combo.addItem("Basque", "eu")
+        self.lang_combo.addItem("Deutsch", "de")
         self.lang_combo.addItem("Français", "fr")
+        self.lang_combo.addItem("Italiano", "it")
         self.lang_combo.addItem("Português", "pt_BR")
-        self.lang_combo.addItem("Русский", "ru")
-        self.lang_combo.addItem("日本語", "ja")
-        self.lang_combo.addItem("简体中文", "zh_CN")
         self.lang_combo.setFixedWidth(100)
 
         # Inglés por defecto

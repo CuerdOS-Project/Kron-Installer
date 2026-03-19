@@ -10,7 +10,6 @@ class InstallationPage(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.log_visible = False
         self.setup_ui()
         self.translate_ui()
 
@@ -65,7 +64,7 @@ class InstallationPage(QWidget):
         main_layout.addStretch()
 
     def toggle_terminal_log(self):
-        if self.log_visible:
+        if self.terminal.isVisible():
             self.terminal.hide()
             self.btn_toggle_log.setText(self.tr("Mostrar log"))
             self.log_visible = False

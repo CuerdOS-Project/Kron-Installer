@@ -186,6 +186,14 @@ copy_rootfs() {
     # Eliminar usuario live del target
     chroot $TARGETDIR userdel -r anon >/dev/null 2>&1
     chroot $TARGETDIR userdel -r void >/dev/null 2>&1
+
+    # Aseguramos que el sistema instalado no tenga 'pam_rootok' activado
+    PAM_FILES="$TARGETDIR/etc/pam.d/su $TARGETDIR/etc/pam.d/login"
+    for file in $PAM_FILES; do
+        if [ -f "$file" ]; then
+            sed -i 's/^auth\s\+sufficient\s\+pam_rootok\.so/#auth sufficient pam_rootok.so/' "$file"
+        fi
+    done 
 }
 
 # Montar sistemas virtuales para chroot

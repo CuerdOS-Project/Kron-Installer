@@ -25,6 +25,15 @@ class InstallerConfigCollector(QObject):
             # --- 2. Usuarios ---
             pag_usuarios = self.paginas["usuarios"]
 
+            # Validar que las contraseñas coincidan antes de continuar
+            if not pag_usuarios.validate_passwords():
+                QMessageBox.warning(
+                    self.parent,
+                    self.tr("Error en contraseñas"),
+                    self.tr("Las contraseñas no coinciden o están vacías. Por favor, verifica los campos de contraseña."),
+                )
+                return None
+
             data["HOSTNAME"] = pag_usuarios.nombre_equipo.text().strip()
             data["USERLOGIN"] = pag_usuarios.user_name.text().strip()
             data["USERNAME"] = pag_usuarios.username_name.text()

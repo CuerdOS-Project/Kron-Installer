@@ -10,6 +10,7 @@ class InstallationPage(QWidget):
 
     def __init__(self):
         super().__init__()
+        self.install_finished = False
         self.setup_ui()
         self.translate_ui()
 
@@ -119,6 +120,7 @@ class InstallationPage(QWidget):
         self.btn_toggle_log.setText(self.tr("Mostrar log"))
 
     def on_success(self):
+        self.install_finished = True
         self.texto_label.setText(self.tr("¡Instalación Completada!"))
         self.progress.setValue(100)
         QMessageBox.information(self, self.tr("Éxito"), self.tr("OlivOS se ha instalado correctamente.\nPuede reiniciar su equipo."))

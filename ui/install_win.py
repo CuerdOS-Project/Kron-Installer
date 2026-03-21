@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QStackedWidget
+from PySide6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QStackedWidget, QMessageBox
 from PySide6.QtCore import QTranslator
 from ui.welcome import WelcomePage
 from ui.language import LanguagePage
@@ -172,3 +172,25 @@ class InstallWin(QWidget):
         self.pag_usuarios.translate_ui()
         self.pag_discos.translate_ui()
         self.pag_instalacion.translate_ui()
+    
+    def closeEvent(self, event):
+        """Confirmar antes de cerrar la ventana"""
+        # Si la instalación ya terminó, no preguntar
+        if isinstance(self.stack.currentWidget(), InstallationPage):
+            if self.pag_instalacion.install_finished:
+                event.accept()
+                return
+        
+        # Mostrar diálogo de confirmación
+        reply = QMessageBox.question(
+            self,
+            self.tr("¿Salir del instalador?"),
+            self.tr("¿Estás seguro de que deseas salir? La instalación no ha finalizado."),
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No
+        )
+        
+        if reply == QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()

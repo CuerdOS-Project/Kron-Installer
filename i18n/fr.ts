@@ -145,12 +145,12 @@ Voulez-vous continuer ?</translation>
     <message>
         <location line="+33"/>
         <source>¿Salir del instalador?</source>
-        <translation type="unfinished"></translation>
+        <translation>Quitter l&apos;installateur ?</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>¿Estás seguro de que deseas salir? La instalación no ha finalizado.</source>
-        <translation type="unfinished"></translation>
+        <translation>Êtes-vous sûr de vouloir quitter ? L&apos;installation n&apos;est pas terminée.</translation>
     </message>
 </context>
 <context>
@@ -292,12 +292,12 @@ Vous pouvez redémarrer votre ordinateur.</translation>
     <message>
         <location filename="../install/config_collector.py" line="+32"/>
         <source>Error en contraseñas</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur de mots de passe</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Las contraseñas no coinciden o están vacías. Por favor, verifica los campos de contraseña.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les mots de passe ne correspondent pas ou sont vides. Veuillez vérifier les champs de mot de passe.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -528,43 +528,43 @@ des chiffres, des tirets et des tirets bas, et ne peut pas contenir d&apos;espac
         <location line="+3"/>
         <location line="+1"/>
         <source>Contraseña</source>
-        <translation type="unfinished"></translation>
+        <translation>Mot de passe</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Repetir contraseña</source>
-        <translation type="unfinished"></translation>
+        <translation>Répéter le mot de passe</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+25"/>
         <location line="+41"/>
         <source>⚠ Las contraseñas de usuario no coinciden</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ Les mots de passe utilisateur ne correspondent pas</translation>
     </message>
     <message>
         <location line="-65"/>
         <location line="+42"/>
         <location line="+30"/>
         <source>⚠ Las contraseñas de root no coinciden</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ Les mots de passe root ne correspondent pas</translation>
     </message>
     <message>
         <location line="-44"/>
         <location line="+18"/>
         <source>⚠ Debe repetir la contraseña</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ Vous devez répéter le mot de passe</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>⚠ La contraseña de usuario es obligatoria</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ Le mot de passe utilisateur est obligatoire</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>⚠ La contraseña de root es obligatoria</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ Le mot de passe root est obligatoire</translation>
     </message>
 </context>
 <context>
@@ -576,8 +576,8 @@ des chiffres, des tirets et des tirets bas, et ne peut pas contenir d&apos;espac
     </message>
     <message>
         <location line="+1"/>
-        <source>&quot;Raíz que sostiene, ramas que responden&quot;</source>
-        <translation>&quot;Racine qui soutient, branches qui répondent&quot;</translation>
+        <source>"Raíz que sostiene, ramas que responden"</source>
+        <translation>"Racine qui soutient, branches qui répondent"</translation>
     </message>
     <message>
         <location line="+5"/>

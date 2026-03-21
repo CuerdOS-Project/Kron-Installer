@@ -145,12 +145,12 @@ Do you wish to continue?</translation>
     <message>
         <location line="+33"/>
         <source>¿Salir del instalador?</source>
-        <translation type="unfinished"></translation>
+        <translation>Exit the installer?</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>¿Estás seguro de que deseas salir? La instalación no ha finalizado.</source>
-        <translation type="unfinished"></translation>
+        <translation>Are you sure you want to exit? The installation has not finished.</translation>
     </message>
 </context>
 <context>
@@ -292,12 +292,12 @@ You can restart your computer.</translation>
     <message>
         <location filename="../install/config_collector.py" line="+32"/>
         <source>Error en contraseñas</source>
-        <translation type="unfinished"></translation>
+        <translation>Password error</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Las contraseñas no coinciden o están vacías. Por favor, verifica los campos de contraseña.</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwords do not match or are empty. Please verify the password fields.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -528,43 +528,43 @@ numbers, hyphens, and underscores, and cannot contain spaces.</translation>
         <location line="+3"/>
         <location line="+1"/>
         <source>Contraseña</source>
-        <translation type="unfinished"></translation>
+        <translation>Password</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Repetir contraseña</source>
-        <translation type="unfinished"></translation>
+        <translation>Repeat password</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+25"/>
         <location line="+41"/>
         <source>⚠ Las contraseñas de usuario no coinciden</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ User passwords do not match</translation>
     </message>
     <message>
         <location line="-65"/>
         <location line="+42"/>
         <location line="+30"/>
         <source>⚠ Las contraseñas de root no coinciden</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ Root passwords do not match</translation>
     </message>
     <message>
         <location line="-44"/>
         <location line="+18"/>
         <source>⚠ Debe repetir la contraseña</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ You must repeat the password</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>⚠ La contraseña de usuario es obligatoria</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ User password is required</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>⚠ La contraseña de root es obligatoria</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ Root password is required</translation>
     </message>
 </context>
 <context>
@@ -576,8 +576,8 @@ numbers, hyphens, and underscores, and cannot contain spaces.</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>&quot;Raíz que sostiene, ramas que responden&quot;</source>
-        <translation>&quot;Root that holds, branches that respond&quot;</translation>
+        <source>"Raíz que sostiene, ramas que responden"</source>
+        <translation>"Root that holds, branches that respond"</translation>
     </message>
     <message>
         <location line="+5"/>

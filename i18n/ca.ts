@@ -145,12 +145,12 @@ Vols continuar?</translation>
     <message>
         <location line="+33"/>
         <source>¿Salir del instalador?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortir de l&apos;instal·lador?</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>¿Estás seguro de que deseas salir? La instalación no ha finalizado.</source>
-        <translation type="unfinished"></translation>
+        <translation>Estàs segur que vols sortir? La instal·lació no ha finalitzat.</translation>
     </message>
 </context>
 <context>
@@ -292,12 +292,12 @@ Pots reiniciar el teu equip.</translation>
     <message>
         <location filename="../install/config_collector.py" line="+32"/>
         <source>Error en contraseñas</source>
-        <translation type="unfinished"></translation>
+        <translation>Error en les contrasenyes</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Las contraseñas no coinciden o están vacías. Por favor, verifica los campos de contraseña.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les contrasenyes no coincideixen o estan buides. Si us plau, verifica els camps de contrasenya.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -528,43 +528,43 @@ números, guions i guions baixos, i no pot contenir espais.</translation>
         <location line="+3"/>
         <location line="+1"/>
         <source>Contraseña</source>
-        <translation type="unfinished"></translation>
+        <translation>Contrasenya</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Repetir contraseña</source>
-        <translation type="unfinished"></translation>
+        <translation>Repetir contrasenya</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+25"/>
         <location line="+41"/>
         <source>⚠ Las contraseñas de usuario no coinciden</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ Les contrasenyes d&apos;usuari no coincideixen</translation>
     </message>
     <message>
         <location line="-65"/>
         <location line="+42"/>
         <location line="+30"/>
         <source>⚠ Las contraseñas de root no coinciden</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ Les contrasenyes de root no coincideixen</translation>
     </message>
     <message>
         <location line="-44"/>
         <location line="+18"/>
         <source>⚠ Debe repetir la contraseña</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ Has de repetir la contrasenya</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>⚠ La contraseña de usuario es obligatoria</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ La contrasenya d&apos;usuari és obligatòria</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>⚠ La contraseña de root es obligatoria</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ La contrasenya de root és obligatòria</translation>
     </message>
 </context>
 <context>
@@ -576,8 +576,8 @@ números, guions i guions baixos, i no pot contenir espais.</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>&quot;Raíz que sostiene, ramas que responden&quot;</source>
-        <translation>&quot;Arrel que sosté, branques que responen&quot;</translation>
+        <source>"Raíz que sostiene, ramas que responden"</source>
+        <translation>"Arrel que sosté, branques que responen"</translation>
     </message>
     <message>
         <location line="+5"/>

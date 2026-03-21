@@ -145,12 +145,12 @@ Desideri continuare?</translation>
     <message>
         <location line="+33"/>
         <source>¿Salir del instalador?</source>
-        <translation type="unfinished"></translation>
+        <translation>Uscire dal programma di installazione?</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>¿Estás seguro de que deseas salir? La instalación no ha finalizado.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sei sicuro di voler uscire? L&apos;installazione non è stata completata.</translation>
     </message>
 </context>
 <context>
@@ -158,7 +158,7 @@ Desideri continuare?</translation>
     <message>
         <location filename="../install/install_thread.py" line="+87"/>
         <source>Error al escribir la configuración: {e}</source>
-        <translation>Errore nella scrittura della configurazione: {e}</translation>
+        <translation>Errore durante la scrittura della configurazione: {e}</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -292,12 +292,12 @@ Puede reiniciar su equipo.</source>
     <message>
         <location filename="../install/config_collector.py" line="+32"/>
         <source>Error en contraseñas</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore nelle password</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Las contraseñas no coinciden o están vacías. Por favor, verifica los campos de contraseña.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le password non coincidono o sono vuote. Si prega di verificare i campi della password.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -528,43 +528,43 @@ numeri, trattini e trattini bassi, e non può contenere spazi.</translation>
         <location line="+3"/>
         <location line="+1"/>
         <source>Contraseña</source>
-        <translation type="unfinished"></translation>
+        <translation>Password</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Repetir contraseña</source>
-        <translation type="unfinished"></translation>
+        <translation>Ripeti password</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+25"/>
         <location line="+41"/>
         <source>⚠ Las contraseñas de usuario no coinciden</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ Le password utente non coincidono</translation>
     </message>
     <message>
         <location line="-65"/>
         <location line="+42"/>
         <location line="+30"/>
         <source>⚠ Las contraseñas de root no coinciden</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ Le password root non coincidono</translation>
     </message>
     <message>
         <location line="-44"/>
         <location line="+18"/>
         <source>⚠ Debe repetir la contraseña</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ Devi ripetere la password</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>⚠ La contraseña de usuario es obligatoria</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ La password utente è obbligatoria</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>⚠ La contraseña de root es obligatoria</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ La password root è obbligatoria</translation>
     </message>
 </context>
 <context>
@@ -576,8 +576,8 @@ numeri, trattini e trattini bassi, e non può contenere spazi.</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>&quot;Raíz que sostiene, ramas que responden&quot;</source>
-        <translation>&quot;Radici che sostengono, rami che rispondono&quot;</translation>
+        <source>"Raíz que sostiene, ramas que responden"</source>
+        <translation>"Radici che sostengono, rami che rispondono"</translation>
     </message>
     <message>
         <location line="+5"/>

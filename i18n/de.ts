@@ -81,14 +81,7 @@
 Esta acción NO se puede deshacer.
 
 ¿Deseas continuar?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>El disco {disk} se formateará y perderá todos sus datos.
-Esta acción NICHT rückgängig gemacht werden.
-
-Möchten Sie fortfahren?</source>
-        <translation type="vanished">Der Datenträger {disk} wird formatiert und alle Daten gehen verloren.
+        <translation>Der Datenträger {disk} wird formatiert und alle Daten gehen verloren.
 Diese Aktion kann NICHT rückgängig gemacht werden.
 
 Möchten Sie fortfahren?</translation>
@@ -152,12 +145,12 @@ Möchten Sie fortfahren?</translation>
     <message>
         <location line="+33"/>
         <source>¿Salir del instalador?</source>
-        <translation type="unfinished"></translation>
+        <translation>Installationsprogramm beenden?</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>¿Estás seguro de que deseas salir? La instalación no ha finalizado.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sind Sie sicher, dass Sie beenden möchten? Die Installation wurde nicht abgeschlossen.</translation>
     </message>
 </context>
 <context>
@@ -299,12 +292,12 @@ Sie können Ihren Computer neu starten.</translation>
     <message>
         <location filename="../install/config_collector.py" line="+32"/>
         <source>Error en contraseñas</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwortfehler</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Las contraseñas no coinciden o están vacías. Por favor, verifica los campos de contraseña.</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwörter stimmen nicht überein oder sind leer. Bitte überprüfen Sie die Passwortfelder.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -535,43 +528,43 @@ Zahlen, Bindestriche und Unterstriche enthalten und darf keine Leerzeichen entha
         <location line="+3"/>
         <location line="+1"/>
         <source>Contraseña</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Repetir contraseña</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort wiederholen</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+25"/>
         <location line="+41"/>
         <source>⚠ Las contraseñas de usuario no coinciden</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ Benutzerpasswörter stimmen nicht überein</translation>
     </message>
     <message>
         <location line="-65"/>
         <location line="+42"/>
         <location line="+30"/>
         <source>⚠ Las contraseñas de root no coinciden</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ Root-Passwörter stimmen nicht überein</translation>
     </message>
     <message>
         <location line="-44"/>
         <location line="+18"/>
         <source>⚠ Debe repetir la contraseña</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ Sie müssen das Passwort wiederholen</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>⚠ La contraseña de usuario es obligatoria</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ Benutzerpasswort ist erforderlich</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>⚠ La contraseña de root es obligatoria</source>
-        <translation type="unfinished"></translation>
+        <translation>⚠ Root-Passwort ist erforderlich</translation>
     </message>
 </context>
 <context>
@@ -583,8 +576,8 @@ Zahlen, Bindestriche und Unterstriche enthalten und darf keine Leerzeichen entha
     </message>
     <message>
         <location line="+1"/>
-        <source>&quot;Raíz que sostiene, ramas que responden&quot;</source>
-        <translation>&quot;Wurzeln, die halten, Zweige, die antworten&quot;</translation>
+        <source>"Raíz que sostiene, ramas que responden"</source>
+        <translation>"Wurzeln, die halten, Zweige, die antworten"</translation>
     </message>
     <message>
         <location line="+5"/>

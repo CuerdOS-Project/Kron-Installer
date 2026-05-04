@@ -33,7 +33,7 @@ class WelcomePage(QWidget):
         self.lang_combo.addItem("Français", "fr")
         self.lang_combo.addItem("Italiano", "it")
         self.lang_combo.addItem("Português", "pt_BR")
-        self.lang_combo.setFixedWidth(100)
+        self.lang_combo.setFixedWidth(120)
 
         # Inglés por defecto
         self.lang_combo.setCurrentIndex(0)
@@ -60,14 +60,14 @@ class WelcomePage(QWidget):
 
         # Mensaje bienvenida
         self.titl = QLabel()
+        self.titl.setObjectName("welcomeTitle")
         self.titl.setWordWrap(True)
         self.titl.setAlignment(Qt.AlignCenter)
-        self.titl.setStyleSheet("font-size: 34px; font-weight: 500")
 
         self.sbtitl = QLabel()
+        self.sbtitl.setObjectName("welcomeSubtitle")
         self.sbtitl.setWordWrap(True)
         self.sbtitl.setAlignment(Qt.AlignCenter)
-        self.sbtitl.setStyleSheet("font-size: 16px; font-weight: 500")
 
         # Tarjeta de estado
         self.has_net = sys_data["net"]
@@ -75,32 +75,22 @@ class WelcomePage(QWidget):
         self.net_card = QWidget()
         self.net_card.setFixedWidth(400)
 
+        # ObjectName dinámico según estado de red
+        if self.has_net:
+            self.net_card.setObjectName("netCardOnline")
+        else:
+            self.net_card.setObjectName("netCardOffline")
+
         net_layout = QVBoxLayout(self.net_card)
         net_layout.setContentsMargins(15, 10, 15, 10)
         net_layout.setAlignment(Qt.AlignCenter)
 
         self.net_label = QLabel()
+        self.net_label.setObjectName("netCardLabel")
         self.net_label.setWordWrap(True)
         self.net_label.setAlignment(Qt.AlignCenter)
 
         net_layout.addWidget(self.net_label)
-
-        if self.has_net:
-            bg = "#27ae60"
-        else:
-            bg = "#e78c3c"
-
-        self.net_card.setStyleSheet(f"""
-        QWidget {{
-            background-color: {bg};
-            border-radius: 8px;
-        }}
-        QLabel {{
-            color: white;
-            font-size: 14px;
-            font-weight: bold;
-        }}
-        """)
 
         # Añadir widgets AL LAYOUT PRINCIPAL
         main_layout.addLayout(form_layout)

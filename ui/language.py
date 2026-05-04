@@ -34,7 +34,7 @@ class LanguagePage(QWidget):
         right_layout.setAlignment(Qt.AlignVCenter | Qt.AlignLeft)
 
         self.titl = QLabel("Configuración regional")
-        self.titl.setStyleSheet("font-size: 24px; font-weight: 500; padding-bottom: 10px;")
+        self.titl.setObjectName("title")
         right_layout.addStretch()
         right_layout.addWidget(self.titl)
         right_layout.setSpacing(20)
@@ -67,7 +67,7 @@ class LanguagePage(QWidget):
                 display = f"{KeymapName(k)} ({k})"
                 self.teclado_combo.addItem(display, k) # 'k' es el código real
         
-        # Estilos y Anchos
+        # Anchos
         self.region_combo.setFixedWidth(200)
         self.ciudad_combo.setFixedWidth(200)
         self.idioma_combo.setFixedWidth(200)

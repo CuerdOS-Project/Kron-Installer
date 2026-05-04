@@ -34,7 +34,7 @@ class DisksPage(QWidget):
 
         # Título
         self.titl = QLabel()
-        self.titl.setStyleSheet("font-size: 24px; font-weight: 500; padding-bottom: 15px;")
+        self.titl.setObjectName("title")
         right_layout.addWidget(self.titl)
 
         # --- Auto particionado ---
@@ -47,7 +47,7 @@ class DisksPage(QWidget):
         self.disk_combo.setFixedWidth(200)
 
         self.btn_autopart = QPushButton()
-        self.btn_autopart.setStyleSheet("background-color: orange; color: white; font-weight: bold;")
+        self.btn_autopart.setObjectName("warnButton")
         self.btn_autopart.setFixedWidth(90)
 
         right_layout.addWidget(self.auto_label)
@@ -65,6 +65,7 @@ class DisksPage(QWidget):
         self.part_label = QLabel()
 
         self.btn_partman = QPushButton()
+        self.btn_partman.setObjectName("actionButton")
         self.btn_partman.setFixedWidth(300)
         self.btn_partman.clicked.connect(self.abrir_partition_manager)
         right_layout.addWidget(self.part_label)
@@ -76,7 +77,7 @@ class DisksPage(QWidget):
 
         self.filesys_combo = QComboBox()
         self.filesys_combo.addItems(["BTRFS", "Ext4", "Ext3", "Ext2", "XFS"])
-        self.filesys_combo.setFixedWidth(70)
+        self.filesys_combo.setFixedWidth(110)
 
         self.fs_label = QLabel()  # el texto a la derecha
 

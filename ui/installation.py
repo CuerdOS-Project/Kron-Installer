@@ -29,9 +29,9 @@ class InstallationPage(QWidget):
 
         # --- Texto de estado ---
         self.texto_label = QLabel()
+        self.texto_label.setObjectName("statusLabel")
         self.texto_label.setAlignment(Qt.AlignCenter)
         self.texto_label.setWordWrap(True)
-        self.texto_label.setStyleSheet("font-size: 18px;")
 
         # --- Barra de progreso ---
         self.progress = QProgressBar()
@@ -42,16 +42,12 @@ class InstallationPage(QWidget):
         # --- Pseudo-terminal ---
         self.terminal = QPlainTextEdit()
         self.terminal.setReadOnly(True)
-        self.terminal.setStyleSheet(
-            "background-color: black; color: lime; font-family: monospace; font-size: 12px;"
-        )
-        self.terminal.setFixedHeight(150)
-
         self.terminal.setFixedHeight(150)
         self.terminal.hide()
 
         # --- Botón mostrar/ocultar log ---
         self.btn_toggle_log = QPushButton()
+        self.btn_toggle_log.setObjectName("actionButton")
         self.btn_toggle_log.setFixedWidth(200)
         self.btn_toggle_log.clicked.connect(self.toggle_terminal_log)
 
@@ -127,6 +123,7 @@ class InstallationPage(QWidget):
         self.finished_success.emit()
 
     def on_error(self, msg):
+        self.texto_label.setObjectName("errorStatusLabel")
+        self.texto_label.setStyle(self.texto_label.style())
         self.texto_label.setText(self.tr("Error en la instalación"))
-        self.texto_label.setStyleSheet("color: red; font-size: 18px;")
         QMessageBox.critical(self, self.tr("Error Fatal"), msg)

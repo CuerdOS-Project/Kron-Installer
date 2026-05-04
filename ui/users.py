@@ -37,9 +37,9 @@ class UsersPage(QWidget):
 
         # Título
         self.titl = QLabel()
+        self.titl.setObjectName("title")
         self.titl.setWordWrap(True)
         self.titl.setAlignment(Qt.AlignLeft)
-        self.titl.setStyleSheet("font-size: 24px; font-weight: 500; padding-bottom: 10px;")
         self.titl.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         right_layout.addWidget(self.titl)
 
@@ -79,8 +79,8 @@ class UsersPage(QWidget):
         self.user_pass.setFixedWidth(145)
         
         self.btn_show_user_pass = QPushButton("👁")
+        self.btn_show_user_pass.setObjectName("togglePassButton")
         self.btn_show_user_pass.setFixedSize(26, 26)
-        self.btn_show_user_pass.setStyleSheet("font-size: 12px;")
         self.btn_show_user_pass.setCheckable(True)
         self.btn_show_user_pass.clicked.connect(self._toggle_user_pass_visibility)
         
@@ -98,7 +98,7 @@ class UsersPage(QWidget):
 
         # Label de error usuario
         self.user_pass_error = QLabel()
-        self.user_pass_error.setStyleSheet("color: #d32f2f; font-size: 11px; font-weight: bold;")
+        self.user_pass_error.setObjectName("errorLabel")
         self.user_pass_error.hide()
         right_layout.addWidget(self.user_pass_error)
 
@@ -118,8 +118,8 @@ class UsersPage(QWidget):
         self.root_pass.setPlaceholderText("Contraseña")
         
         self.btn_show_root_pass = QPushButton("👁")
+        self.btn_show_root_pass.setObjectName("togglePassButton")
         self.btn_show_root_pass.setFixedSize(26, 26)
-        self.btn_show_root_pass.setStyleSheet("font-size: 12px;")
         self.btn_show_root_pass.setCheckable(True)
         self.btn_show_root_pass.clicked.connect(self._toggle_root_pass_visibility)
         
@@ -137,7 +137,7 @@ class UsersPage(QWidget):
 
         # Label de error root
         self.root_pass_error = QLabel()
-        self.root_pass_error.setStyleSheet("color: #d32f2f; font-size: 11px; font-weight: bold;")
+        self.root_pass_error.setObjectName("errorLabel")
         self.root_pass_error.hide()
         right_layout.addWidget(self.root_pass_error)
 

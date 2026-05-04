@@ -36,9 +36,9 @@ class MirrorsPage(QWidget):
 
         # Título
         self.titl = QLabel()
+        self.titl.setObjectName("title")
         self.titl.setWordWrap(True)
         self.titl.setAlignment(Qt.AlignLeft)
-        self.titl.setStyleSheet("font-size: 24px; font-weight: 500; padding-bottom: 10px;")
         right_layout.addWidget(self.titl)
 
         # Mirror

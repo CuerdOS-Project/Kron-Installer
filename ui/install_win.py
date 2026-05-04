@@ -62,7 +62,10 @@ class InstallWin(QWidget):
         nav_layout = QHBoxLayout()
 
         self.btn_atras = QPushButton()
+        self.btn_atras.setObjectName("backButton")
+
         self.btn_siguiente = QPushButton()
+        self.btn_siguiente.setObjectName("nextButton")
 
         nav_layout.addWidget(self.btn_atras)
         nav_layout.addStretch()
@@ -148,16 +151,19 @@ class InstallWin(QWidget):
         # Cambios de apariencia en botón 'Siguiente'
         if isinstance(self.stack.currentWidget(), DisksPage):
             self.btn_siguiente.setText(self.tr("Instalar"))
-            self.btn_siguiente.setStyleSheet("background-color: red; color: white; font-weight: bold;")
+            self.btn_siguiente.setObjectName("installButton")
+            self.btn_siguiente.setStyle(self.btn_siguiente.style())
             self._confirm_install = False
         elif isinstance(self.stack.currentWidget(), InstallationPage):
             self.btn_siguiente.setText(self.tr("Reiniciar"))
-            self.btn_siguiente.setStyleSheet("background-color: green; color: white; font-weight: bold;")
+            self.btn_siguiente.setObjectName("rebootButton")
+            self.btn_siguiente.setStyle(self.btn_siguiente.style())
             self.btn_atras.setVisible(False)
             self.btn_siguiente.setVisible(False)
         else:
             self.btn_siguiente.setText(self.tr("Siguiente"))
-            self.btn_siguiente.setStyleSheet("")
+            self.btn_siguiente.setObjectName("nextButton")
+            self.btn_siguiente.setStyle(self.btn_siguiente.style())
 
     def set_language(self, lang_code):
         QApplication.instance().removeTranslator(self.translator)

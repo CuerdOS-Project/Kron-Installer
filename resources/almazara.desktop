@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Install OlivOS
+Comment=
+Exec=python3 /usr/share/almazara/main.py
+Icon=/usr/share/pixmaps/install-olivos.png
+Path=/usr/share/almazara/
+Terminal=false
+StartupNotify=false

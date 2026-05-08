@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=almazara-entry
+GenericName=
+Comment=
+Exec=/usr/bin/almazara-entry.sh
+Type=Application
+Icon=application-x-desktop
+Terminal=false

@@ -435,6 +435,7 @@ log_ui "REGIONAL_CONFIG"
 mount_filesystems
 install -Dm644 $TARGET_FSTAB $TARGETDIR/etc/fstab
 echo "tmpfs /tmp tmpfs defaults,nosuid,nodev 0 0" >> $TARGETDIR/etc/fstab
+touch $TARGETDIR/etc/olivos-release
 
 set_keymap
 set_locale

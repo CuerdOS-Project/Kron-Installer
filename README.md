@@ -1,4 +1,4 @@
-# Almazara Intaller
+# Kron Intaller
 
 Graphical installer for **OlivOS GNU/Linux**, inspired by the official Void Linux installer, but rewritten in **Python + PySide6 (Qt6)**.  
 It allows you to configure partitions, user, system language, keyboard layout, and timezone in a simple and safe way.

@@ -23,7 +23,7 @@ class MirrorsPage(QWidget):
         imagen = QLabel()
         pixmap = QPixmap("images/repos.png")
         imagen.setPixmap(
-            pixmap.scaled(200, 200, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            pixmap.scaled(150, 260, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         )
         left_layout.addWidget(imagen, alignment=Qt.AlignCenter)
         left_layout.addStretch()

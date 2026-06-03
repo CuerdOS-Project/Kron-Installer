@@ -46,11 +46,11 @@ class WelcomePage(QWidget):
 
         # Logo
         logo = QLabel()
-        pixmap = QPixmap("images/olivos-logo.png")
+        pixmap = QPixmap("images/identity.png")
 
         logo.setPixmap(
             pixmap.scaled(
-                200, 200,
+                250, 125,
                 Qt.KeepAspectRatio,
                 Qt.SmoothTransformation
             )
@@ -102,7 +102,7 @@ class WelcomePage(QWidget):
         main_layout.addStretch()
 
     def translate_ui(self):
-        self.titl.setText(self.tr("¡Bienvenido a OlivOS!"))
+        self.titl.setText(self.tr("¡Bienvenido a CuerdOS!"))
         self.sbtitl.setText(self.tr('"Raíz que sostiene, ramas que responden"'))
         
         if self.has_net:

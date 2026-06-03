@@ -119,7 +119,7 @@ class InstallationPage(QWidget):
         self.install_finished = True
         self.texto_label.setText(self.tr("¡Instalación Completada!"))
         self.progress.setValue(100)
-        QMessageBox.information(self, self.tr("Éxito"), self.tr("OlivOS se ha instalado correctamente.\nPuede reiniciar su equipo."))
+        QMessageBox.information(self, self.tr("Éxito"), self.tr("CuerdOS se ha instalado correctamente.\nPuede reiniciar su equipo."))
         self.finished_success.emit()
 
     def on_error(self, msg):

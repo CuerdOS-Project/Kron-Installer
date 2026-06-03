@@ -22,7 +22,7 @@ class LanguagePage(QWidget):
         imagen = QLabel()
         pixmap = QPixmap("images/idiomas.png")
         imagen.setPixmap(
-            pixmap.scaled(200, 200, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            pixmap.scaled(150, 260, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         )
         imagen.setAlignment(Qt.AlignCenter)
         left_layout.addWidget(imagen)

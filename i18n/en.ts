@@ -4,7 +4,7 @@
 <context>
     <name>DisksPage</name>
     <message>
-        <location filename="../ui/disks.py" line="+132"/>
+        <location filename="../ui/disks.py" line="+133"/>
         <location line="+6"/>
         <source>Discos y particiones</source>
         <translation>Disks and partitions</translation>
@@ -112,7 +112,7 @@ Do you wish to continue?</translation>
 <context>
     <name>InstallWin</name>
     <message>
-        <location filename="../ui/install_win.py" line="+89"/>
+        <location filename="../ui/install_win.py" line="+92"/>
         <source>Instalador Almazara</source>
         <translation>Almazara Installer</translation>
     </message>
@@ -123,12 +123,12 @@ Do you wish to continue?</translation>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+68"/>
+        <location line="+70"/>
         <source>Siguiente</source>
         <translation>Next</translation>
     </message>
     <message>
-        <location line="-57"/>
+        <location line="-59"/>
         <source>Pulsa otra vez para instalar</source>
         <translation>Press again to install</translation>
     </message>
@@ -138,12 +138,12 @@ Do you wish to continue?</translation>
         <translation>Install</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Reiniciar</source>
         <translation>Restart</translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+35"/>
         <source>¿Salir del instalador?</source>
         <translation>Exit the installer?</translation>
     </message>
@@ -174,7 +174,7 @@ Do you wish to continue?</translation>
 <context>
     <name>InstallationPage</name>
     <message>
-        <location filename="../ui/installation.py" line="+70"/>
+        <location filename="../ui/installation.py" line="+66"/>
         <location line="+50"/>
         <source>Mostrar log</source>
         <translation>Show log</translation>
@@ -271,18 +271,18 @@ Do you wish to continue?</translation>
     </message>
     <message>
         <location line="+0"/>
-        <source>OlivOS se ha instalado correctamente.
+        <source>CuerdOS se ha instalado correctamente.
 Puede reiniciar su equipo.</source>
-        <translation>OlivOS has been installed successfully.
+        <translation>CuerdOS has been installed successfully.
 You can restart your computer.</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+6"/>
         <source>Error en la instalación</source>
         <translation>Installation error</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>Error Fatal</source>
         <translation>Fatal Error</translation>
     </message>
@@ -570,14 +570,14 @@ numbers, hyphens, and underscores, and cannot contain spaces.</translation>
 <context>
     <name>WelcomePage</name>
     <message>
-        <location filename="../ui/welcome.py" line="+114"/>
-        <source>¡Bienvenido a OlivOS!</source>
-        <translation>Welcome to OlivOS!</translation>
+        <location filename="../ui/welcome.py" line="+105"/>
+        <source>¡Bienvenido a CuerdOS!</source>
+        <translation>Welcome to CuerdOS!</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>"Raíz que sostiene, ramas que responden"</source>
-        <translation>"Root that holds, branches that respond"</translation>
+        <source>&quot;Raíz que sostiene, ramas que responden&quot;</source>
+        <translation>&quot;Root that holds, branches that respond&quot;</translation>
     </message>
     <message>
         <location line="+5"/>

@@ -24,7 +24,7 @@ class UsersPage(QWidget):
         imagen = QLabel()
         pixmap = QPixmap("images/userpc.png")
         imagen.setPixmap(
-            pixmap.scaled(200, 200, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            pixmap.scaled(150, 260, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         )
         left_layout.addWidget(imagen, alignment=Qt.AlignCenter)
         left_layout.addStretch()
@@ -45,14 +45,14 @@ class UsersPage(QWidget):
 
         # --- Fila 1: Nombre de equipo ---
         self.nombre_label = QLabel()
-        self.nombre_equipo = QLineEdit("olivos-pc")
+        self.nombre_equipo = QLineEdit("cuerdos-pc")
         self.nombre_equipo.setFixedWidth(330)
         right_layout.addWidget(self.nombre_label)
         right_layout.addWidget(self.nombre_equipo)
 
         # --- Fila 2: Nombre completo ---
         self.username_label = QLabel()
-        self.username_name = QLineEdit("OlivOS User")
+        self.username_name = QLineEdit("CuerdOS User")
         self.username_name.setFixedWidth(330)
         right_layout.addWidget(self.username_label)
         right_layout.addWidget(self.username_name)

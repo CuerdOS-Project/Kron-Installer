@@ -113,8 +113,8 @@ Jarraitu nahi duzu?</translation>
     <name>InstallWin</name>
     <message>
         <location filename="../ui/install_win.py" line="+89"/>
-        <source>Instalador Almazara</source>
-        <translation>Almazara instalatzailea</translation>
+        <source>Instalador Kron</source>
+        <translation>Kron instalatzailea</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -271,9 +271,9 @@ Jarraitu nahi duzu?</translation>
     </message>
     <message>
         <location line="+0"/>
-        <source>OlivOS se ha instalado correctamente.
+        <source>CuerdOS se ha instalado correctamente.
 Puede reiniciar su equipo.</source>
-        <translation>OlivOS ongi instalatu da.
+        <translation>CuerdOS ongi instalatu da.
 Zure ordenagailua berrabiarazi dezakezu.</translation>
     </message>
     <message>
@@ -571,8 +571,8 @@ zenbakiak, marrak eta azpimarrak soilik eduki ditzake, eta ezin du zuriunerik iz
     <name>WelcomePage</name>
     <message>
         <location filename="../ui/welcome.py" line="+114"/>
-        <source>¡Bienvenido a OlivOS!</source>
-        <translation>Ongi etorri OlivOSera!</translation>
+        <source>¡Bienvenido a CuerdOS!</source>
+        <translation>Ongi etorri CuerdOSera!</translation>
     </message>
     <message>
         <location line="+1"/>

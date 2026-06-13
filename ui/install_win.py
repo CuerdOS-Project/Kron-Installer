@@ -89,7 +89,7 @@ class InstallWin(QWidget):
         self.set_language("en")
     
     def translate_ui(self):
-        self.setWindowTitle(self.tr("Instalador Almazara"))
+        self.setWindowTitle(self.tr("Instalador Kron"))
         self.btn_atras.setText(self.tr("Atrás"))
         self.btn_siguiente.setText(self.tr("Siguiente"))
     

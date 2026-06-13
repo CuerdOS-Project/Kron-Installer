@@ -1,5 +1,5 @@
 #!/bin/bash
 export QT_SCALE_FACTOR=1
 export QT_QPA_PLATFORMTHEME=generic
-exec python3 /usr/share/almazara/main.py "$@"
+exec python3 /usr/share/kron-installer/main.py "$@"
 

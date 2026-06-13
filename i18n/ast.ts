@@ -113,8 +113,8 @@ Esta aición NON se pue desfacer.
     <name>InstallWin</name>
     <message>
         <location filename="../ui/install_win.py" line="+89"/>
-        <source>Instalador Almazara</source>
-        <translation>Instalador Almazara</translation>
+        <source>Instalador Kron</source>
+        <translation>Instalador Kron</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -271,9 +271,9 @@ Esta aición NON se pue desfacer.
     </message>
     <message>
         <location line="+0"/>
-        <source>OlivOS se ha instalado correctamente.
+        <source>CuerdOS se ha instalado correctamente.
 Puede reiniciar su equipo.</source>
-        <translation>OlivOS instalóse correutamente.
+        <translation>CuerdOS instalóse correutamente.
 Pues reaniciar el to equipu.</translation>
     </message>
     <message>
@@ -571,8 +571,8 @@ númberos, guiones y guiones baxos, y nun pue contener espacios.</translation>
     <name>WelcomePage</name>
     <message>
         <location filename="../ui/welcome.py" line="+114"/>
-        <source>¡Bienvenido a OlivOS!</source>
-        <translation>¡Bienveníu a OlivOS!</translation>
+        <source>¡Bienvenido a CuerdOS!</source>
+        <translation>¡Bienveníu a CuerdOS!</translation>
     </message>
     <message>
         <location line="+1"/>

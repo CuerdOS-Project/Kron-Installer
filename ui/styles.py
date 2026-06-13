@@ -1,4 +1,4 @@
-# styles.py — Paleta de colores Almazara Installer
+# styles.py — Paleta de colores Kron Installer
 # Colores base:
 #   Fondo principal:  #1f2421
 #   Fondo tarjetas:   #2a312d

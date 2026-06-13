@@ -113,8 +113,8 @@ Deseja continuar?</translation>
     <name>InstallWin</name>
     <message>
         <location filename="../ui/install_win.py" line="+89"/>
-        <source>Instalador Almazara</source>
-        <translation>Instalador Almazara</translation>
+        <source>Instalador Kron</source>
+        <translation>Instalador Kron</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -271,9 +271,9 @@ Deseja continuar?</translation>
     </message>
     <message>
         <location line="+0"/>
-        <source>OlivOS se ha instalado correctamente.
+        <source>CuerdOS se ha instalado correctamente.
 Puede reiniciar su equipo.</source>
-        <translation>O OlivOS foi instalado com sucesso.
+        <translation>O CuerdOS foi instalado com sucesso.
 Você pode reiniciar seu computador.</translation>
     </message>
     <message>
@@ -571,8 +571,8 @@ números, hífens e underscores, e não pode conter espaços.</translation>
     <name>WelcomePage</name>
     <message>
         <location filename="../ui/welcome.py" line="+114"/>
-        <source>¡Bienvenido a OlivOS!</source>
-        <translation>Bem-vindo ao OlivOS!</translation>
+        <source>¡Bienvenido a CuerdOS!</source>
+        <translation>Bem-vindo ao CuerdOS!</translation>
     </message>
     <message>
         <location line="+1"/>

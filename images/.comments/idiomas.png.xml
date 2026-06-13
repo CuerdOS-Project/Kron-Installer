@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <comment version="3.0">
   <caption/>
-  <note>Title: Language Vector 32 (Modified for OlivOS)
+  <note>Title: Language Vector 32 (Modified for CuerdOS)
 
 Original Author: primefaces (Primeng Interface Icons)
 Original License: MIT License
 
-Copyright (C) 2024 [PabloG-Dev / OlivOS Project]
+Copyright (C) 2024 [PabloG-Dev / CuerdOS Project]
 SPDX-License-Identifier: GPL-3.0-or-later WITH exception-maybe
 
 Source URL: https://www.svgrepo.com/svg/506518/language
 
 Modification Details:
 This icon is a vector graphic from the Language 32 SVG collection. 
-It has been modified and included in the OlivOS GNU/Linux Installer 
+It has been modified and included in the CuerdOS GNU/Linux Installer 
 project.
 
-The original work was licensed under the MIT License. The OlivOS 
+The original work was licensed under the MIT License. The CuerdOS 
 project distributes this modified version under the GPLv3 license, 
 compatible with the original MIT terms.</note>
   <place/>

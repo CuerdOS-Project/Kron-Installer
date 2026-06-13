@@ -1,8 +1,8 @@
 [Desktop Entry]
-Name=almazara-entry
+Name=kron-entry
 GenericName=
 Comment=
-Exec=/usr/bin/almazara-entry.sh
+Exec=/usr/bin/kron-entry.sh
 Type=Application
 Icon=application-x-desktop
 Terminal=false

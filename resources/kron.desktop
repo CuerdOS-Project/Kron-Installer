@@ -1,9 +1,9 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=Install OlivOS
+Name=Install CuerdOS
 Comment=
-Exec=almazara-installer
-Icon=/usr/share/pixmaps/install-olivos.png
+Exec=kron-installer
+Icon=/usr/share/pixmaps/install-cuerdos.png
 Terminal=false
 StartupNotify=false

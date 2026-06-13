@@ -1,8 +1,8 @@
-Almazara Installer - Image Assets License Summary
+Kron Installer - Image Assets License Summary
 ================================================
 SPDX-License-Identifier: GPL-3.0-or-later
 
-The Almazara Installer project uses images from various sources. 
+The Kron Installer project uses images from various sources. 
 While the project overall is licensed under GPLv3, individual assets 
 retain their original licenses as detailed below.
 
@@ -10,7 +10,7 @@ retain their original licenses as detailed below.
 
 1. ORIGINAL WORK (CC-BY-SA 4.0)
 ------------------------------
-Created exclusively for OlivOS GNU/Linux.
+Created exclusively for CuerdOS GNU/Linux.
 
 Author: Pablo G. Alba (@PabloG-Dev)
 License: Creative Commons Attribution-ShareAlike 4.0 International (CC-BY-SA 4.0)
@@ -18,7 +18,7 @@ Link: https://creativecommons.org/licenses/by-sa/4.0/
 
 Files:
 - instalar.png
-- olivos-logo.png
+- cuerdos-logo.png
 
 ---
 

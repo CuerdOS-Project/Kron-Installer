@@ -113,8 +113,8 @@ Do you wish to continue?</translation>
     <name>InstallWin</name>
     <message>
         <location filename="../ui/install_win.py" line="+92"/>
-        <source>Instalador Almazara</source>
-        <translation>Almazara Installer</translation>
+        <source>Instalador Kron</source>
+        <translation>Kron Installer</translation>
     </message>
     <message>
         <location line="+1"/>

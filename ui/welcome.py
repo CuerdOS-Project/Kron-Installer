@@ -1,6 +1,7 @@
-from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout, QComboBox
+from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout, QComboBox, QSizePolicy
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import Qt, Signal
+
 
 class WelcomePage(QWidget):
     languageChanged = Signal(str)
@@ -10,79 +11,91 @@ class WelcomePage(QWidget):
         self.setup_ui(sys_data)
         self.translate_ui()
 
-    def setup_ui(self, sys_data):       
+    def setup_ui(self, sys_data):
         main_layout = QVBoxLayout(self)
-        main_layout.setSpacing(20)
+        main_layout.setContentsMargins(32, 32, 32, 12)
+        main_layout.setSpacing(16)
 
-        # Selector idioma
-        form_layout = QHBoxLayout()
-        self.lang_combo = QComboBox()
+        # --- Selector idioma (esquina superior derecha) ---
+        top_bar = QHBoxLayout()
+        top_bar.addStretch()
 
         language_icon = QLabel()
         icon = QPixmap("images/i18n.png")
+        if not icon.isNull():
+            language_icon.setPixmap(
+                icon.scaled(20, 20, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            )
 
-        language_icon.setPixmap(icon.scaled(25, 25, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        self.lang_combo = QComboBox()
+        self.lang_combo.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.lang_combo.setMinimumWidth(120)
 
-        self.lang_combo.addItem("English", "en")
-        self.lang_combo.addItem("Español", "es")
-        self.lang_combo.addItem("Asturianu", "ast")
-        self.lang_combo.addItem("Català", "ca")
-        self.lang_combo.addItem("Galego", "gl")
-        self.lang_combo.addItem("Basque", "eu")
-        self.lang_combo.addItem("Deutsch", "de")
-        self.lang_combo.addItem("Français", "fr")
-        self.lang_combo.addItem("Italiano", "it")
+        self.lang_combo.addItem("Espanol", "es_ES")
+        self.lang_combo.addItem("English", "en_US")
+        self.lang_combo.addItem("Galego", "gl_ES")
         self.lang_combo.addItem("Português", "pt_BR")
-        self.lang_combo.setFixedWidth(120)
+        self.lang_combo.addItem("Català", "ca_ES")
+        self.lang_combo.addItem("Deutsch", "de_DE")
+        self.lang_combo.addItem("Français", "fr_FR")
+        self.lang_combo.addItem("日本語", "ja_JP")
+        self.lang_combo.addItem("한국어", "ko_KR")
+        self.lang_combo.addItem("Italiano", "it_IT")
+        self.lang_combo.addItem("Türkçe", "tr_TR")
+        self.lang_combo.addItem("Pусский", "ru_RU")
 
-        # Inglés por defecto
-        self.lang_combo.setCurrentIndex(0)
-
+        self.lang_combo.setCurrentIndex(1)
         self.lang_combo.currentIndexChanged.connect(self.on_language_changed)
 
-        form_layout.addWidget(language_icon)
-        form_layout.addWidget(self.lang_combo)
-        form_layout.setAlignment(Qt.AlignLeft)
+        top_bar.addWidget(language_icon)
+        top_bar.addWidget(self.lang_combo)
 
-        # Logo
+        main_layout.addLayout(top_bar)
+
+        # --- Contenido centrado ---
+        center = QVBoxLayout()
+        center.addStretch()
+
+        # Logo grande centrado
         logo = QLabel()
-        pixmap = QPixmap("images/identity.png")
-
-        logo.setPixmap(
-            pixmap.scaled(
-                250, 125,
-                Qt.KeepAspectRatio,
-                Qt.SmoothTransformation
-            )
-        )
-        
         logo.setAlignment(Qt.AlignCenter)
+        pixmap = QPixmap("images/identity.png")
+        if not pixmap.isNull():
+            logo.setPixmap(
+                pixmap.scaled(220, 110, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            )
+        center.addWidget(logo, alignment=Qt.AlignCenter)
 
-        # Mensaje bienvenida
+        center.addSpacing(18)
+
+        # Titulo
         self.titl = QLabel()
         self.titl.setObjectName("welcomeTitle")
-        self.titl.setWordWrap(True)
         self.titl.setAlignment(Qt.AlignCenter)
+        center.addWidget(self.titl, alignment=Qt.AlignCenter)
 
+        center.addSpacing(2)
+
+        # Subtitulo
         self.sbtitl = QLabel()
         self.sbtitl.setObjectName("welcomeSubtitle")
-        self.sbtitl.setWordWrap(True)
         self.sbtitl.setAlignment(Qt.AlignCenter)
+        center.addWidget(self.sbtitl, alignment=Qt.AlignCenter)
 
-        # Tarjeta de estado
+        center.addSpacing(18)
+
+        # Tarjeta de estado de red
         self.has_net = sys_data["net"]
-
         self.net_card = QWidget()
-        self.net_card.setFixedWidth(400)
+        self.net_card.setFixedWidth(380)
 
-        # ObjectName dinámico según estado de red
         if self.has_net:
             self.net_card.setObjectName("netCardOnline")
         else:
             self.net_card.setObjectName("netCardOffline")
 
         net_layout = QVBoxLayout(self.net_card)
-        net_layout.setContentsMargins(15, 10, 15, 10)
+        net_layout.setContentsMargins(20, 14, 20, 14)
         net_layout.setAlignment(Qt.AlignCenter)
 
         self.net_label = QLabel()
@@ -91,27 +104,28 @@ class WelcomePage(QWidget):
         self.net_label.setAlignment(Qt.AlignCenter)
 
         net_layout.addWidget(self.net_label)
+        center.addWidget(self.net_card, alignment=Qt.AlignCenter)
 
-        # Añadir widgets AL LAYOUT PRINCIPAL
-        main_layout.addLayout(form_layout)
-        main_layout.addStretch()
-        main_layout.addWidget(logo)
-        main_layout.addWidget(self.titl)
-        main_layout.addWidget(self.sbtitl)
-        main_layout.addWidget(self.net_card, alignment=Qt.AlignCenter)
-        main_layout.addStretch()
+        center.addStretch()
+        main_layout.addLayout(center, 1)
 
     def translate_ui(self):
-        self.titl.setText(self.tr("¡Bienvenido a CuerdOS!"))
-        self.sbtitl.setText(self.tr('"Raíz que sostiene, ramas que responden"'))
-        
+        self.titl.setText(self.tr("Bienvenido a CuerdOS!"))
+        self.sbtitl.setText(self.tr("“Optimizado hasta el último píxel”"))
+
         if self.has_net:
             self.net_label.setText(
-                self.tr("Se ha detectado conexión a internet.\nInstalador en modo online.")
+                self.tr(
+                    "Se ha detectado conexion a internet.\n"
+                    "Instalador en modo online."
+                )
             )
         else:
             self.net_label.setText(
-                self.tr("No se ha detectado conexión a internet.\nInstalador en modo offline.")
+                self.tr(
+                    "No se ha detectado conexion a internet.\n"
+                    "Instalador en modo offline."
+                )
             )
 
     def on_language_changed(self):

@@ -1,6 +1,9 @@
-from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout, QComboBox, QCheckBox
-from PySide6.QtGui import QPixmap
+from PySide6.QtWidgets import (
+    QWidget, QLabel, QVBoxLayout, QHBoxLayout, QComboBox, QCheckBox,
+    QFrame, QSizePolicy
+)
 from PySide6.QtCore import Qt
+
 
 class MirrorsPage(QWidget):
     def __init__(self, sys_data):
@@ -9,98 +12,88 @@ class MirrorsPage(QWidget):
         self.translate_ui()
 
     def setup_ui(self, sys_data):
-        # --- Layout vertical principal ---
         main_layout = QVBoxLayout(self)
-        main_layout.setSpacing(20)
+        main_layout.setContentsMargins(32, 24, 32, 12)
+        main_layout.setSpacing(0)
 
-        # --- Layout horizontal: izquierda/derecha ---
-        h_layout = QHBoxLayout()
-
-        # --- Lado izquierdo: imagen centrada ---
-        left_widget = QWidget()
-        left_layout = QVBoxLayout(left_widget)
-        left_layout.addStretch()
-        imagen = QLabel()
-        pixmap = QPixmap("images/repos.png")
-        imagen.setPixmap(
-            pixmap.scaled(150, 260, Qt.KeepAspectRatio, Qt.SmoothTransformation)
-        )
-        left_layout.addWidget(imagen, alignment=Qt.AlignCenter)
-        left_layout.addStretch()
-
-        # --- Lado derecho: formulario y checkboxes ---
-        right_widget = QWidget()
-        right_layout = QVBoxLayout(right_widget)
-        right_layout.setSpacing(15)
-        right_layout.setAlignment(Qt.AlignTop)
-
-        # Título
+        # Titulo de pagina
         self.titl = QLabel()
         self.titl.setObjectName("title")
-        self.titl.setWordWrap(True)
-        self.titl.setAlignment(Qt.AlignLeft)
-        right_layout.addWidget(self.titl)
+        main_layout.addWidget(self.titl)
+        main_layout.addSpacing(20)
 
-        # Mirror
+        # --- Card: Mirror ---
+        mirror_card = QFrame()
+        mirror_card.setObjectName("formCard")
+        mirror_card_layout = QVBoxLayout(mirror_card)
+        mirror_card_layout.setContentsMargins(24, 20, 24, 20)
+        mirror_card_layout.setSpacing(12)
+
         self.mirror_label = QLabel()
+        self.mirror_label.setObjectName("subtitle")
         self.mirror_combo = QComboBox()
-        self.mirror_combo.setFixedWidth(200)
+        self.mirror_combo.setMinimumWidth(200)
+        self.mirror_combo.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
-        right_layout.addWidget(self.mirror_label)
-        right_layout.addWidget(self.mirror_combo)
+        mirror_card_layout.addWidget(self.mirror_label)
+        mirror_card_layout.addWidget(self.mirror_combo)
 
-        # Espaciado
-        right_layout.addSpacing(15)
+        main_layout.addWidget(mirror_card)
 
-        # Software no libre
+        main_layout.addSpacing(12)
+
+        # --- Card: Software adicional ---
+        software_card = QFrame()
+        software_card.setObjectName("formCard")
+        software_card_layout = QVBoxLayout(software_card)
+        software_card_layout.setContentsMargins(24, 20, 24, 20)
+        software_card_layout.setSpacing(12)
+
+        self.software_title = QLabel()
+        self.software_title.setObjectName("subtitle")
+        software_card_layout.addWidget(self.software_title)
+
         self.chk_nonfree = QCheckBox()
         self.chk_nvidia = QCheckBox()
         self.chk_intel = QCheckBox()
 
-        # Inicialmente deshabilitados
         self.chk_nvidia.setEnabled(False)
         self.chk_intel.setEnabled(False)
 
-        # Conectar toggle
         self.chk_nonfree.toggled.connect(self.actualizar_nonfree)
 
-        right_layout.addWidget(self.chk_nonfree, alignment=Qt.AlignLeft)
-        right_layout.addWidget(self.chk_nvidia, alignment=Qt.AlignLeft)
-        right_layout.addWidget(self.chk_intel, alignment=Qt.AlignLeft)
+        software_card_layout.addWidget(self.chk_nonfree)
+        software_card_layout.addSpacing(4)
+        software_card_layout.addWidget(self.chk_nvidia)
+        software_card_layout.addSpacing(4)
+        software_card_layout.addWidget(self.chk_intel)
+        software_card_layout.addStretch()
 
-        right_layout.addStretch()
-
-        # --- Añadir widgets izquierdo/derecho al layout horizontal ---
-        h_layout.addWidget(left_widget)
-        h_layout.addWidget(right_widget)
-        h_layout.setStretch(0, 1)
-        h_layout.setStretch(1, 1)
-
-        # --- Añadir layout horizontal al layout principal ---
-        main_layout.addStretch()
-        main_layout.addLayout(h_layout)
-        main_layout.addStretch()
+        main_layout.addWidget(software_card, 1)
 
     def translate_ui(self):
         self.titl.setText(self.tr("Repositorios y software"))
         self.mirror_label.setText(self.tr("Servidor de descarga (mirror)"))
-        
-        self.mirror_combo.blockSignals(True)      
+        self.software_title.setText(self.tr("Software adicional"))
+
+        self.mirror_combo.blockSignals(True)
         self.mirror_combo.clear()
         self.mirror_combo.addItem(self.tr("Predeterminado"), "Default")
         self.mirror_combo.addItem(self.tr("Europa, Finlandia"), "Finland")
         self.mirror_combo.addItem(self.tr("Europa, Alemania"), "Germany")
         self.mirror_combo.addItem(self.tr("Global, CDN"), "Global")
-        self.mirror_combo.addItem(self.tr("Norte América, EEUU"), "USA")
+        self.mirror_combo.addItem(self.tr("Norte America, EEUU"), "USA")
 
         self.chk_nonfree.setText(self.tr("Activar repositorios no libres"))
         self.chk_nvidia.setText(self.tr("Instalar drivers NVIDIA"))
         self.chk_nvidia.setToolTip(self.tr(
-            "Instala los drivers propietarios de NVIDIA, optimizando el rendimiento gráfico y la compatibilidad con juegos y aplicaciones 3D."
+            "Instala los drivers propietarios de NVIDIA, optimizando el rendimiento "
+            "grafico y la compatibilidad con juegos y aplicaciones 3D."
         ))
-        self.chk_intel.setText(self.tr("Instalar microcódigos Intel"))
+        self.chk_intel.setText(self.tr("Instalar microcodigos Intel"))
         self.chk_intel.setToolTip(
-            "Instala microcódigos recientes de Intel para mejorar seguridad, estabilidad y compatibilidad con CPUs Intel modernas."
+            "Instala microcodigos recientes de Intel para mejorar seguridad, "
+            "estabilidad y compatibilidad con CPUs Intel modernas."
         )
 
     def actualizar_nonfree(self, activo):

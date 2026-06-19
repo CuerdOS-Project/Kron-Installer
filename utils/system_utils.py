@@ -60,6 +60,49 @@ class SystemDetector:
             return []
 
     @staticmethod
+    def _parse_size_to_bytes(size_str):
+        """Parse lsblk size string like '512M', '1G', '100K' to bytes."""
+        units = {"K": 1024, "M": 1024 ** 2, "G": 1024 ** 3, "T": 1024 ** 4}
+        size_str = size_str.strip()
+        if not size_str:
+            return 0
+        for unit, mult in units.items():
+            if size_str.upper().endswith(unit):
+                try:
+                    return float(size_str[:-1]) * mult
+                except ValueError:
+                    return 0
+        try:
+            return int(float(size_str))
+        except ValueError:
+            return 0
+
+    @staticmethod
+    def get_partitions_detailed():
+        """
+        Retorna una lista de dicts con info detallada de cada particion:
+          { "name": "/dev/sda1",
+            "display": "/dev/sda1 (512M)",
+            "size_bytes": 536870912,
+            "fstype": "vfat" }
+        Reutiliza detect_disks() y anade size_bytes + fstype por particion.
+        """
+        partitions = []
+        disks = SystemDetector.detect_disks()
+        for disk in disks:
+            for part in disk.get("children", []):
+                if part.get("type") == "part":
+                    name = f"/dev/{part['name']}"
+                    size_str = part.get("size", "0")
+                    partitions.append({
+                        "name": name,
+                        "display": f"{name} ({size_str})",
+                        "size_bytes": SystemDetector._parse_size_to_bytes(size_str),
+                        "fstype": (part.get("fstype") or "").lower(),
+                    })
+        return partitions
+
+    @staticmethod
     def get_flat_partitions():
         """
         Retorna una lista plana de todas las particiones disponibles en el sistema.

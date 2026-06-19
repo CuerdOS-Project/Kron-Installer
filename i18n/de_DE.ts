@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="pt_BR">
+<TS version="2.1" language="de_DE">
 <context>
     <name>DisksPage</name>
     <message>
         <location filename="../ui/disks.py" line="218"/>
         <source>Discos y particiones</source>
-        <translation>Discos e partições</translation>
+        <translation>Festplatten und Partitionen</translation>
     </message>
     <message>
         <location filename="../ui/disks.py" line="219"/>
         <source>Disco a particionar (automatico):</source>
-        <translation>Disco a particionar (automático):</translation>
+        <translation>Zu partitionierende Festplatte (automatisch):</translation>
     </message>
     <message>
         <location filename="../ui/disks.py" line="220"/>
         <source>Particionar</source>
-        <translation>Particionar</translation>
+        <translation>Partitionieren</translation>
     </message>
     <message>
         <location filename="../ui/disks.py" line="221"/>
         <source>O particionar manualmente:</source>
-        <translation>Ou particionar manualmente:</translation>
+        <translation>Oder manuell partitionieren:</translation>
     </message>
     <message>
         <location filename="../ui/disks.py" line="222"/>
         <source>Abrir KDE Partition Manager</source>
-        <translation>Abrir KDE Partition Manager</translation>
+        <translation>KDE Partition Manager öffnen</translation>
     </message>
     <message>
         <location filename="../ui/disks.py" line="223"/>
         <source>Sistema de archivos:</source>
-        <translation>Sistema de arquivos:</translation>
+        <translation>Dateisystem:</translation>
     </message>
     <message>
         <location filename="../ui/disks.py" line="224"/>
         <source>Asignar particiones</source>
-        <translation>Atribuir partições</translation>
+        <translation>Partitionen zuweisen</translation>
     </message>
     <message>
         <location filename="../ui/disks.py" line="225"/>
         <source>Resumen</source>
-        <translation>Resumo</translation>
+        <translation>Zusammenfassung</translation>
     </message>
     <message>
         <location filename="../ui/disks.py" line="227"/>
         <source>Raiz (/):</source>
-        <translation>Raiz (/):</translation>
+        <translation>Root (/):</translation>
     </message>
     <message>
         <location filename="../ui/disks.py" line="228"/>
@@ -66,38 +66,38 @@
     <message>
         <location filename="../ui/disks.py" line="233"/>
         <source>Pto. de montaje</source>
-        <translation>Pto. de montagem</translation>
+        <translation>Einhängepkt.</translation>
     </message>
     <message>
         <location filename="../ui/disks.py" line="233"/>
         <source>Particion</source>
-        <translation>Partição</translation>
+        <translation>Partition</translation>
     </message>
     <message>
         <location filename="../ui/disks.py" line="233"/>
         <source>Sistema</source>
-        <translation>Sistema</translation>
+        <translation>System</translation>
     </message>
     <message>
         <location filename="../ui/disks.py" line="259"/>
         <location filename="../ui/disks.py" line="260"/>
         <source>Seleccionar...</source>
-        <translation>Selecionar...</translation>
+        <translation>Auswählen...</translation>
     </message>
     <message>
         <location filename="../ui/disks.py" line="261"/>
         <source>Sin Home</source>
-        <translation>Sem Home</translation>
+        <translation>Ohne Home</translation>
     </message>
     <message>
         <location filename="../ui/disks.py" line="262"/>
         <source>Sin Swap</source>
-        <translation>Sem Swap</translation>
+        <translation>Ohne Swap</translation>
     </message>
     <message>
         <location filename="../ui/disks.py" line="344"/>
         <source>Advertencia: Particionado automatico</source>
-        <translation>Aviso: Particionamento automático</translation>
+        <translation>Warnung: Automatische Partitionierung</translation>
     </message>
     <message>
         <location filename="../ui/disks.py" line="346"/>
@@ -105,31 +105,31 @@
 Esta accion NO se puede deshacer.
 
 Deseas continuar?</source>
-        <translation>O disco {disk} será formatado e perderá todos os seus dados.
-Esta ação NÃO pode ser desfeita.
+        <translation>Die Festplatte {disk} wird formatiert und alle Daten gehen verloren.
+Diese Aktion kann NICHT rückgängig gemacht werden.
 
-Deseja continuar?</translation>
+Möchten Sie fortfahren?</translation>
     </message>
     <message>
         <location filename="../ui/disks.py" line="368"/>
         <source>Particionado completado</source>
-        <translation>Particionamento concluído</translation>
+        <translation>Partitionierung abgeschlossen</translation>
     </message>
     <message>
         <location filename="../ui/disks.py" line="370"/>
         <source>El disco {disk} ha sido particionado correctamente.</source>
-        <translation>O disco {disk} foi particionado corretamente.</translation>
+        <translation>Die Festplatte {disk} wurde erfolgreich partitioniert.</translation>
     </message>
     <message>
         <location filename="../ui/disks.py" line="378"/>
         <source>Error</source>
-        <translation>Erro</translation>
+        <translation>Fehler</translation>
     </message>
     <message>
         <location filename="../ui/disks.py" line="380"/>
         <source>Fallo al particionar {disk}:
 {e}</source>
-        <translation>Falha ao particionar {disk}:
+        <translation>Partitionieren von {disk} fehlgeschlagen:
 {e}</translation>
     </message>
 </context>
@@ -139,7 +139,7 @@ Deseja continuar?</translation>
         <location filename="../ui/install_win.py" line="129"/>
         <location filename="../ui/install_win.py" line="255"/>
         <source>Bienvenida</source>
-        <translation>Bem-vindo</translation>
+        <translation>Willkommen</translation>
     </message>
     <message>
         <location filename="../ui/install_win.py" line="130"/>
@@ -151,66 +151,66 @@ Deseja continuar?</translation>
         <location filename="../ui/install_win.py" line="131"/>
         <location filename="../ui/install_win.py" line="257"/>
         <source>Repositorios</source>
-        <translation>Repositórios</translation>
+        <translation>Repositories</translation>
     </message>
     <message>
         <location filename="../ui/install_win.py" line="132"/>
         <location filename="../ui/install_win.py" line="258"/>
         <source>Usuarios</source>
-        <translation>Usuários</translation>
+        <translation>Benutzer</translation>
     </message>
     <message>
         <location filename="../ui/install_win.py" line="133"/>
         <location filename="../ui/install_win.py" line="259"/>
         <source>Discos</source>
-        <translation>Discos</translation>
+        <translation>Festplatten</translation>
     </message>
     <message>
         <location filename="../ui/install_win.py" line="134"/>
         <location filename="../ui/install_win.py" line="260"/>
         <source>Instalacion</source>
-        <translation>Instalação</translation>
+        <translation>Installation</translation>
     </message>
     <message>
         <location filename="../ui/install_win.py" line="247"/>
         <source>Instalador Kron</source>
-        <translation>Instalador Kron</translation>
+        <translation>Kron-Installer</translation>
     </message>
     <message>
         <location filename="../ui/install_win.py" line="248"/>
         <source>Atras</source>
-        <translation>Voltar</translation>
+        <translation>Zurück</translation>
     </message>
     <message>
         <location filename="../ui/install_win.py" line="249"/>
         <location filename="../ui/install_win.py" line="349"/>
         <source>Siguiente</source>
-        <translation>Próximo</translation>
+        <translation>Weiter</translation>
     </message>
     <message>
         <location filename="../ui/install_win.py" line="288"/>
         <source>Pulsa otra vez para instalar</source>
-        <translation>Pressione novamente para instalar</translation>
+        <translation>Erneut drücken zum Installieren</translation>
     </message>
     <message>
         <location filename="../ui/install_win.py" line="338"/>
         <source>Instalar</source>
-        <translation>Instalar</translation>
+        <translation>Installieren</translation>
     </message>
     <message>
         <location filename="../ui/install_win.py" line="343"/>
         <source>Reiniciar</source>
-        <translation>Reiniciar</translation>
+        <translation>Neu starten</translation>
     </message>
     <message>
         <location filename="../ui/install_win.py" line="377"/>
         <source>Salir del instalador?</source>
-        <translation>Sair do instalador?</translation>
+        <translation>Installer verlassen?</translation>
     </message>
     <message>
         <location filename="../ui/install_win.py" line="378"/>
         <source>Estas seguro de que deseas salir? La instalacion no ha finalizado.</source>
-        <translation>Tem certeza de que deseja sair? A instalação não foi concluída.</translation>
+        <translation>Möchten Sie wirklich beenden? Die Installation ist noch nicht abgeschlossen.</translation>
     </message>
 </context>
 <context>
@@ -218,17 +218,17 @@ Deseja continuar?</translation>
     <message>
         <location filename="../install/install_thread.py" line="87"/>
         <source>Error al escribir la configuración: {e}</source>
-        <translation>Erro ao gravar a configuração: {e}</translation>
+        <translation>Fehler beim Schreiben der Konfiguration: {e}</translation>
     </message>
     <message>
         <location filename="../install/install_thread.py" line="162"/>
         <source>El instalador ha fallado. Mire en /tmp/installation.log.</source>
-        <translation>O instalador falhou. Verifique /tmp/installation.log.</translation>
+        <translation>Der Installer ist fehlgeschlagen. Siehe /tmp/installation.log.</translation>
     </message>
     <message>
         <location filename="../install/install_thread.py" line="168"/>
         <source>Error crítico al ejecutar el backend: {e}</source>
-        <translation>Erro crítico ao executar o backend: {e}</translation>
+        <translation>Kritischer Fehler beim Ausführen des Backends: {e}</translation>
     </message>
 </context>
 <context>
@@ -237,119 +237,119 @@ Deseja continuar?</translation>
         <location filename="../ui/installation.py" line="255"/>
         <location filename="../ui/installation.py" line="306"/>
         <source>Mostrar log</source>
-        <translation>Mostrar log</translation>
+        <translation>Protokoll anzeigen</translation>
     </message>
     <message>
         <location filename="../ui/installation.py" line="261"/>
         <source>Ocultar log</source>
-        <translation>Ocultar log</translation>
+        <translation>Protokoll ausblenden</translation>
     </message>
     <message>
         <location filename="../ui/installation.py" line="267"/>
         <source>Iniciando motor de instalacion (Root)...</source>
-        <translation>Iniciando motor de instalação (Root)...</translation>
+        <translation>Installations-Engine wird gestartet (Root)...</translation>
     </message>
     <message>
         <location filename="../ui/installation.py" line="285"/>
         <source>Realizando tareas del sistema...</source>
-        <translation>Executando tarefas do sistema...</translation>
+        <translation>Systemaufgaben werden ausgeführt...</translation>
     </message>
     <message>
         <location filename="../ui/installation.py" line="288"/>
         <source>Instalacion</source>
-        <translation>Instalação</translation>
+        <translation>Installation</translation>
     </message>
     <message>
         <location filename="../ui/installation.py" line="289"/>
         <source>Preparando instalacion...</source>
-        <translation>Preparando instalação...</translation>
+        <translation>Installation wird vorbereitet...</translation>
     </message>
     <message>
         <location filename="../ui/installation.py" line="292"/>
         <source>Iniciando motor de instalacion...</source>
-        <translation>Iniciando motor de instalação...</translation>
+        <translation>Installations-Engine wird gestartet...</translation>
     </message>
     <message>
         <location filename="../ui/installation.py" line="293"/>
         <source>Creando sistemas de archivos...</source>
-        <translation>Criando sistemas de arquivos...</translation>
+        <translation>Dateisysteme werden erstellt...</translation>
     </message>
     <message>
         <location filename="../ui/installation.py" line="294"/>
         <source>Copiando el sistema base...</source>
-        <translation>Copiando o sistema base...</translation>
+        <translation>Basissystem wird kopiert...</translation>
     </message>
     <message>
         <location filename="../ui/installation.py" line="295"/>
         <source>Configurando idioma y zona horaria...</source>
-        <translation>Configurando idioma e fuso horário...</translation>
+        <translation>Sprache und Zeitzone werden konfiguriert...</translation>
     </message>
     <message>
         <location filename="../ui/installation.py" line="296"/>
         <source>Actualizando el sistema...</source>
-        <translation>Atualizando o sistema...</translation>
+        <translation>System wird aktualisiert...</translation>
     </message>
     <message>
         <location filename="../ui/installation.py" line="297"/>
         <source>Configurando servidor de repositorios...</source>
-        <translation>Configurando servidor de repositórios...</translation>
+        <translation>Repository-Server wird konfiguriert...</translation>
     </message>
     <message>
         <location filename="../ui/installation.py" line="298"/>
         <source>Configurando repositorios de software propietario.</source>
-        <translation>Configurando repositórios de software proprietário.</translation>
+        <translation>Repositories für proprietäre Software werden konfiguriert.</translation>
     </message>
     <message>
         <location filename="../ui/installation.py" line="299"/>
         <source>Instalando controladores NVIDIA...</source>
-        <translation>Instalando drivers NVIDIA...</translation>
+        <translation>NVIDIA-Treiber werden installiert...</translation>
     </message>
     <message>
         <location filename="../ui/installation.py" line="300"/>
         <source>Instalando microcodigos de Intel...</source>
-        <translation>Instalando microcódigos da Intel...</translation>
+        <translation>Intel-Microcodes werden installiert...</translation>
     </message>
     <message>
         <location filename="../ui/installation.py" line="301"/>
         <source>Creando usuarios y contrasenas...</source>
-        <translation>Criando usuários e senhas...</translation>
+        <translation>Benutzer und Passwörter werden erstellt...</translation>
     </message>
     <message>
         <location filename="../ui/installation.py" line="302"/>
         <source>Instalando el cargador de arranque...</source>
-        <translation>Instalando o gerenciador de boot...</translation>
+        <translation>Bootloader wird installiert...</translation>
     </message>
     <message>
         <location filename="../ui/installation.py" line="303"/>
         <source>Instalacion completada correctamente</source>
-        <translation>Instalação concluída com sucesso</translation>
+        <translation>Installation erfolgreich abgeschlossen</translation>
     </message>
     <message>
         <location filename="../ui/installation.py" line="311"/>
         <source>Instalacion Completada!</source>
-        <translation>Instalação Concluída!</translation>
+        <translation>Installation abgeschlossen!</translation>
     </message>
     <message>
         <location filename="../ui/installation.py" line="314"/>
         <source>Exito</source>
-        <translation>Sucesso</translation>
+        <translation>Erfolg</translation>
     </message>
     <message>
         <location filename="../ui/installation.py" line="315"/>
         <source>CuerdOS se ha instalado correctamente.
 Puede reiniciar su equipo.</source>
-        <translation>O CuerdOS foi instalado corretamente.
-Você pode reiniciar o computador.</translation>
+        <translation>CuerdOS wurde erfolgreich installiert.
+Sie können den Computer neu starten.</translation>
     </message>
     <message>
         <location filename="../ui/installation.py" line="324"/>
         <source>Error en la instalacion</source>
-        <translation>Erro na instalação</translation>
+        <translation>Installationsfehler</translation>
     </message>
     <message>
         <location filename="../ui/installation.py" line="325"/>
         <source>Error Fatal</source>
-        <translation>Erro Fatal</translation>
+        <translation>Schwerwiegender Fehler</translation>
     </message>
 </context>
 <context>
@@ -357,118 +357,118 @@ Você pode reiniciar o computador.</translation>
     <message>
         <location filename="../install/config_collector.py" line="32"/>
         <source>Error en contraseñas</source>
-        <translation>Erro nas senhas</translation>
+        <translation>Passwortfehler</translation>
     </message>
     <message>
         <location filename="../install/config_collector.py" line="33"/>
         <source>Las contraseñas no coinciden o están vacías. Por favor, verifica los campos de contraseña.</source>
-        <translation>As senhas não coincidem ou estão vazias. Por favor, verifique os campos de senha.</translation>
+        <translation>Passwörter stimmen nicht überein oder sind leer. Bitte überprüfen Sie die Passwortfelder.</translation>
     </message>
     <message>
         <location filename="../install/config_collector.py" line="46"/>
         <source>Nombre del equipo (hostname)</source>
-        <translation>Nome do computador (hostname)</translation>
+        <translation>Computername (Hostname)</translation>
     </message>
     <message>
         <location filename="../install/config_collector.py" line="47"/>
         <source>Usuario (login)</source>
-        <translation>Usuário (login)</translation>
+        <translation>Benutzer (Login)</translation>
     </message>
     <message>
         <location filename="../install/config_collector.py" line="48"/>
         <source>Nombre completo</source>
-        <translation>Nome completo</translation>
+        <translation>Vollständiger Name</translation>
     </message>
     <message>
         <location filename="../install/config_collector.py" line="49"/>
         <location filename="../install/config_collector.py" line="94"/>
         <source>Contraseña del usuario</source>
-        <translation>Senha do usuário</translation>
+        <translation>Benutzerpasswort</translation>
     </message>
     <message>
         <location filename="../install/config_collector.py" line="50"/>
         <location filename="../install/config_collector.py" line="95"/>
         <source>Contraseña de root</source>
-        <translation>Senha de root</translation>
+        <translation>Root-Passwort</translation>
     </message>
     <message>
         <location filename="../install/config_collector.py" line="56"/>
         <source>Faltan datos</source>
-        <translation>Dados ausentes</translation>
+        <translation>Daten fehlen</translation>
     </message>
     <message>
         <location filename="../install/config_collector.py" line="57"/>
         <source>Debes completar los siguientes campos:
 
 - </source>
-        <translation>Você deve preencher os seguintes campos:
+        <translation>Sie müssen die folgenden Felder ausfüllen:
 
 - </translation>
     </message>
     <message>
         <location filename="../install/config_collector.py" line="74"/>
         <source>Hostname inválido</source>
-        <translation>Hostname inválido</translation>
+        <translation>Ungültiger Hostname</translation>
     </message>
     <message>
         <location filename="../install/config_collector.py" line="76"/>
         <source>El nombre del equipo solo puede contener letras minúsculas,
 números y guiones, y no puede empezar ni terminar con un guión.</source>
-        <translation>O nome do computador só pode conter letras minúsculas,
-números e hífens, e não pode começar ou terminar com hífen.</translation>
+        <translation>Der Computername darf nur Kleinbuchstaben,
+Zahlen und Bindestriche enthalten und darf nicht mit einem Bindestrich beginnen oder enden.</translation>
     </message>
     <message>
         <location filename="../install/config_collector.py" line="85"/>
         <source>Usuario inválido</source>
-        <translation>Usuário inválido</translation>
+        <translation>Ungültiger Benutzer</translation>
     </message>
     <message>
         <location filename="../install/config_collector.py" line="87"/>
         <source>El nombre de usuario solo puede contener letras minúsculas,
 números, guiones y guiones bajos, y no puede contener espacios.</source>
-        <translation>O nome de usuário só pode conter letras minúsculas,
-números, hífens e sublinhados, e não pode conter espaços.</translation>
+        <translation>Der Benutzername darf nur Kleinbuchstaben,
+Zahlen, Bindestriche und Unterstriche enthalten und keine Leerzeichen.</translation>
     </message>
     <message>
         <location filename="../install/config_collector.py" line="100"/>
         <source>Contraseña inválida</source>
-        <translation>Senha inválida</translation>
+        <translation>Ungültiges Passwort</translation>
     </message>
     <message>
         <location filename="../install/config_collector.py" line="101"/>
         <source>{label} no puede empezar ni terminar con espacios.</source>
-        <translation>{label} não pode começar ou terminar com espaços.</translation>
+        <translation>{label} darf nicht mit Leerzeichen beginnen oder enden.</translation>
     </message>
     <message>
         <location filename="../install/config_collector.py" line="108"/>
         <source>Contraseña demasiado corta</source>
-        <translation>Senha muito curta</translation>
+        <translation>Passwort zu kurz</translation>
     </message>
     <message>
         <location filename="../install/config_collector.py" line="109"/>
         <source>{label} debe tener al menos 4 caracteres.</source>
-        <translation>{label} deve ter pelo menos 4 caracteres.</translation>
+        <translation>{label} muss mindestens 4 Zeichen lang sein.</translation>
     </message>
     <message>
         <location filename="../install/config_collector.py" line="133"/>
         <source>Debe seleccionar una partición Raíz (/).</source>
-        <translation>Você deve selecionar uma partição Raiz (/).</translation>
+        <translation>Sie müssen eine Root-Partition (/) auswählen.</translation>
     </message>
     <message>
         <location filename="../install/config_collector.py" line="136"/>
         <source>Debe seleccionar una partición EFI (/boot/efi).</source>
-        <translation>Você deve selecionar uma partição EFI (/boot/efi).</translation>
+        <translation>Sie müssen eine EFI-Partition (/boot/efi) auswählen.</translation>
     </message>
     <message>
         <location filename="../install/config_collector.py" line="140"/>
         <location filename="../install/config_collector.py" line="169"/>
         <source>Error</source>
-        <translation>Erro</translation>
+        <translation>Fehler</translation>
     </message>
     <message>
         <location filename="../install/config_collector.py" line="169"/>
         <source>Error procesando datos: </source>
-        <translation>Erro ao processar dados: </translation>
+        <translation>Fehler beim Verarbeiten der Daten: </translation>
     </message>
 </context>
 <context>
@@ -476,27 +476,27 @@ números, hífens e sublinhados, e não pode conter espaços.</translation>
     <message>
         <location filename="../ui/language.py" line="80"/>
         <source>Configuracion regional</source>
-        <translation>Configuração regional</translation>
+        <translation>Regionale Einstellungen</translation>
     </message>
     <message>
         <location filename="../ui/language.py" line="82"/>
         <source>Zona horaria:</source>
-        <translation>Fuso horário:</translation>
+        <translation>Zeitzone:</translation>
     </message>
     <message>
         <location filename="../ui/language.py" line="83"/>
         <source>Ciudad:</source>
-        <translation>Cidade:</translation>
+        <translation>Stadt:</translation>
     </message>
     <message>
         <location filename="../ui/language.py" line="84"/>
         <source>Idioma:</source>
-        <translation>Idioma:</translation>
+        <translation>Sprache:</translation>
     </message>
     <message>
         <location filename="../ui/language.py" line="85"/>
         <source>Teclado:</source>
-        <translation>Teclado:</translation>
+        <translation>Tastatur:</translation>
     </message>
 </context>
 <context>
@@ -504,32 +504,32 @@ números, hífens e sublinhados, e não pode conter espaços.</translation>
     <message>
         <location filename="../ui/mirrors.py" line="75"/>
         <source>Repositorios y software</source>
-        <translation>Repositórios e software</translation>
+        <translation>Repositories und Software</translation>
     </message>
     <message>
         <location filename="../ui/mirrors.py" line="76"/>
         <source>Servidor de descarga (mirror)</source>
-        <translation>Servidor de download (mirror)</translation>
+        <translation>Download-Server (Mirror)</translation>
     </message>
     <message>
         <location filename="../ui/mirrors.py" line="77"/>
         <source>Software adicional</source>
-        <translation>Software adicional</translation>
+        <translation>Zusätzliche Software</translation>
     </message>
     <message>
         <location filename="../ui/mirrors.py" line="81"/>
         <source>Predeterminado</source>
-        <translation>Padrão</translation>
+        <translation>Standard</translation>
     </message>
     <message>
         <location filename="../ui/mirrors.py" line="82"/>
         <source>Europa, Finlandia</source>
-        <translation>Europa, Finlândia</translation>
+        <translation>Europa, Finnland</translation>
     </message>
     <message>
         <location filename="../ui/mirrors.py" line="83"/>
         <source>Europa, Alemania</source>
-        <translation>Europa, Alemanha</translation>
+        <translation>Europa, Deutschland</translation>
     </message>
     <message>
         <location filename="../ui/mirrors.py" line="84"/>
@@ -539,27 +539,27 @@ números, hífens e sublinhados, e não pode conter espaços.</translation>
     <message>
         <location filename="../ui/mirrors.py" line="85"/>
         <source>Norte America, EEUU</source>
-        <translation>América do Norte, EUA</translation>
+        <translation>Nordamerika, USA</translation>
     </message>
     <message>
         <location filename="../ui/mirrors.py" line="87"/>
         <source>Activar repositorios no libres</source>
-        <translation>Ativar repositórios não livres</translation>
+        <translation>Non-free-Repositories aktivieren</translation>
     </message>
     <message>
         <location filename="../ui/mirrors.py" line="88"/>
         <source>Instalar drivers NVIDIA</source>
-        <translation>Instalar drivers NVIDIA</translation>
+        <translation>NVIDIA-Treiber installieren</translation>
     </message>
     <message>
         <location filename="../ui/mirrors.py" line="90"/>
         <source>Instala los drivers propietarios de NVIDIA, optimizando el rendimiento grafico y la compatibilidad con juegos y aplicaciones 3D.</source>
-        <translation>Instala os drivers proprietários da NVIDIA, otimizando o desempenho gráfico e a compatibilidade com jogos e aplicativos 3D.</translation>
+        <translation>Installiert die proprietären NVIDIA-Treiber und optimiert so die Grafikleistung sowie die Kompatibilität mit Spielen und 3D-Anwendungen.</translation>
     </message>
     <message>
         <location filename="../ui/mirrors.py" line="93"/>
         <source>Instalar microcodigos Intel</source>
-        <translation>Instalar microcódigos da Intel</translation>
+        <translation>Intel-Microcodes installieren</translation>
     </message>
 </context>
 <context>
@@ -567,84 +567,84 @@ números, hífens e sublinhados, e não pode conter espaços.</translation>
     <message>
         <location filename="../ui/users.py" line="187"/>
         <source>Nombre de equipo y usuarios</source>
-        <translation>Nome do computador e usuários</translation>
+        <translation>Computername und Benutzer</translation>
     </message>
     <message>
         <location filename="../ui/users.py" line="188"/>
         <source>Nombre del equipo:</source>
-        <translation>Nome do computador:</translation>
+        <translation>Computername:</translation>
     </message>
     <message>
         <location filename="../ui/users.py" line="189"/>
         <source>Nombre completo:</source>
-        <translation>Nome completo:</translation>
+        <translation>Vollständiger Name:</translation>
     </message>
     <message>
         <location filename="../ui/users.py" line="190"/>
         <source>Usuario (login):</source>
-        <translation>Usuário (login):</translation>
+        <translation>Benutzer (Login):</translation>
     </message>
     <message>
         <location filename="../ui/users.py" line="191"/>
         <source>Contrasena del usuario</source>
-        <translation>Senha do usuário</translation>
+        <translation>Benutzerpasswort</translation>
     </message>
     <message>
         <location filename="../ui/users.py" line="192"/>
         <source>Contrasena de root</source>
-        <translation>Senha de root</translation>
+        <translation>Root-Passwort</translation>
     </message>
     <message>
         <location filename="../ui/users.py" line="194"/>
         <location filename="../ui/users.py" line="196"/>
         <source>Contrasena:</source>
-        <translation>Senha:</translation>
+        <translation>Passwort:</translation>
     </message>
     <message>
         <location filename="../ui/users.py" line="195"/>
         <location filename="../ui/users.py" line="197"/>
         <source>Confirmar:</source>
-        <translation>Confirmar:</translation>
+        <translation>Bestätigen:</translation>
     </message>
     <message>
         <location filename="../ui/users.py" line="199"/>
         <location filename="../ui/users.py" line="200"/>
         <source>Contrasena</source>
-        <translation>Senha</translation>
+        <translation>Passwort</translation>
     </message>
     <message>
         <location filename="../ui/users.py" line="201"/>
         <location filename="../ui/users.py" line="202"/>
         <source>Repetir contrasena</source>
-        <translation>Repetir senha</translation>
+        <translation>Passwort wiederholen</translation>
     </message>
     <message>
         <location filename="../ui/users.py" line="205"/>
         <location filename="../ui/users.py" line="248"/>
         <source>Las contrasenas de usuario no coinciden</source>
-        <translation>As senhas do usuário não coincidem</translation>
+        <translation>Die Benutzerpasswörter stimmen nicht überein</translation>
     </message>
     <message>
         <location filename="../ui/users.py" line="208"/>
         <location filename="../ui/users.py" line="269"/>
         <source>Las contrasenas de root no coinciden</source>
-        <translation>As senhas de root não coincidem</translation>
+        <translation>Die Root-Passwörter stimmen nicht überein</translation>
     </message>
     <message>
         <location filename="../ui/users.py" line="242"/>
         <location filename="../ui/users.py" line="263"/>
         <source>Debe repetir la contrasena</source>
-        <translation>Você deve repetir a senha</translation>
+        <translation>Sie müssen das Passwort wiederholen</translation>
     </message>
     <message>
         <location filename="../ui/users.py" line="283"/>
         <source>La contrasena de usuario es obligatoria</source>
-        <translation>A senha do usuário é obrigatória</translation>
+        <translation>Das Benutzerpasswort ist erforderlich</translation>
     </message>
     <message>
         <location filename="../ui/users.py" line="290"/>
         <source>La contrasena de root es obligatoria</source>
-        <translation>A senha de root é obrigatória</translation>
+        <translation>Das Root-Passwort ist erforderlich</translation>
     </message>
 </context>
 <context>
@@ -652,26 +652,26 @@ números, hífens e sublinhados, e não pode conter espaços.</translation>
     <message>
         <location filename="../ui/welcome.py" line="111"/>
         <source>Bienvenido a CuerdOS!</source>
-        <translation>Bem-vindo ao CuerdOS!</translation>
+        <translation>Willkommen bei CuerdOS!</translation>
     </message>
     <message>
         <location filename="../ui/welcome.py" line="112"/>
         <source>“Optimizado hasta el último píxel”</source>
-        <translation>&quot;Otimizado até o último pixel&quot;</translation>
+        <translation>&quot;Bis zum letzten Pixel optimiert&quot;</translation>
     </message>
     <message>
         <location filename="../ui/welcome.py" line="117"/>
         <source>Se ha detectado conexion a internet.
 Instalador en modo online.</source>
-        <translation>Conexão com a internet detectada.
-Instalador no modo online.</translation>
+        <translation>Internetverbindung erkannt.
+Installer im Online-Modus.</translation>
     </message>
     <message>
         <location filename="../ui/welcome.py" line="124"/>
         <source>No se ha detectado conexion a internet.
 Instalador en modo offline.</source>
-        <translation>Nenhuma conexão com a internet detectada.
-Instalador no modo offline.</translation>
+        <translation>Keine Internetverbindung erkannt.
+Installer im Offline-Modus.</translation>
     </message>
 </context>
 </TS>

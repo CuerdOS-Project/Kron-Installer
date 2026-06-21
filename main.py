@@ -1,5 +1,8 @@
-import sys, os
+import sys
+import os
+
 from PySide6.QtWidgets import QApplication
+
 from ui.install_win import InstallWin
 from ui.styles import global_stylesheet
 

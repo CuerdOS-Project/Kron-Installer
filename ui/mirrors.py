@@ -91,10 +91,10 @@ class MirrorsPage(QWidget):
             "grafico y la compatibilidad con juegos y aplicaciones 3D."
         ))
         self.chk_intel.setText(self.tr("Instalar microcodigos Intel"))
-        self.chk_intel.setToolTip(
+        self.chk_intel.setToolTip(self.tr(
             "Instala microcodigos recientes de Intel para mejorar seguridad, "
             "estabilidad y compatibilidad con CPUs Intel modernas."
-        )
+        ))
 
     def actualizar_nonfree(self, activo):
         self.chk_nvidia.setEnabled(activo)

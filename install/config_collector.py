@@ -1,5 +1,8 @@
+import re
+
 from PySide6.QtWidgets import QMessageBox
 from PySide6.QtCore import QObject
+
 
 class InstallerConfigCollector(QObject):
     def __init__(self, parent, paginas, system_data):
@@ -9,8 +12,6 @@ class InstallerConfigCollector(QObject):
         self.system_data = system_data
         
     def collect_data(self):
-        import re
-
         data = {}
         try:
             # --- 1. Idiomas ---
@@ -126,7 +127,8 @@ class InstallerConfigCollector(QObject):
             partitions = []
             filesys = pag_discos.filesys_combo.currentText().lower()
 
-            def clean(txt): return txt.split(" ")[0]
+            def clean(txt):
+                return txt.split(" ")[0]
 
             # Validaciones y creación de particiones
             part_checks = [
@@ -159,7 +161,7 @@ class InstallerConfigCollector(QObject):
             # --- BOOTLOADER ---
             root_dev = clean(raw_parts["root"])
             disk_dev = re.sub(r'\d+$', '', root_dev)
-            if "nvme" in disk_dev and disk_dev.endswith("p"): 
+            if "nvme" in disk_dev and disk_dev.endswith("p"):
                 disk_dev = disk_dev[:-1]
             data["BOOTLOADER"] = disk_dev
 

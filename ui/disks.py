@@ -1,9 +1,14 @@
+import os
+import subprocess
+
 from PySide6.QtWidgets import (
     QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout,
     QFormLayout, QComboBox, QMessageBox, QFrame,
     QTableWidget, QTableWidgetItem, QHeaderView, QSizePolicy
 )
 from PySide6.QtCore import Qt
+
+from utils.system_utils import SystemDetector
 
 
 class DisksPage(QWidget):
@@ -236,7 +241,6 @@ class DisksPage(QWidget):
         self.cargar_particiones()
 
     def abrir_partition_manager(self):
-        import subprocess
         try:
             subprocess.run(["partitionmanager"])
             # Tras cerrar el partition manager, recargar particiones
@@ -247,8 +251,6 @@ class DisksPage(QWidget):
             print("No se pudo abrir KDE Partition Manager:", e)
 
     def cargar_particiones(self):
-        from utils.system_utils import SystemDetector
-
         partitions = SystemDetector.get_partitions_detailed()
         if not partitions:
             self._update_table()
@@ -326,15 +328,12 @@ class DisksPage(QWidget):
 
     def cargar_discos(self):
         self.disk_combo.clear()
-        from utils.system_utils import SystemDetector
 
         for disk in SystemDetector.detect_disks():
             label = f"{disk['model']} ({disk['size']})"
             self.disk_combo.addItem(label, disk['name'])
 
     def autoparticionado(self):
-        import os
-
         disk = self.disk_combo.currentData()
         if not disk:
             return
@@ -351,7 +350,6 @@ class DisksPage(QWidget):
         )
 
         if reply == QMessageBox.StandardButton.Yes:
-            import subprocess
             try:
                 self.part_script = os.path.join(
                     os.path.dirname(os.path.abspath(__file__)),

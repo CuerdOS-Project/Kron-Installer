@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import (
     QApplication, QWidget, QPushButton, QVBoxLayout, QHBoxLayout,
-    QStackedWidget, QMessageBox, QLabel, QSizePolicy, QSpacerItem
+    QStackedWidget, QMessageBox, QLabel, QSizePolicy
 )
 from PySide6.QtCore import Qt, QTranslator
 from PySide6.QtGui import QPixmap
@@ -310,7 +310,11 @@ class InstallWin(QWidget):
             return
 
         if isinstance(curr_widget, InstallationPage):
-            subprocess.Popen(["pkexec", "reboot"])
+            subprocess.Popen(
+                ["pkexec", "reboot"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
             return
 
         if index < self.stack.count() - 1:

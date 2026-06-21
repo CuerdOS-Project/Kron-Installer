@@ -139,6 +139,7 @@ def LanguageName(codigo: str) -> str:
     """Devuelve nombre legible del idioma a partir del código ISO-639"""
     return LANGUAGES.get(codigo, codigo)
 
+
 def KeymapName(codigo: str) -> str:
     """Devuelve nombre legible del layout a partir del kbd"""
     return KEYMAPS.get(codigo, codigo)

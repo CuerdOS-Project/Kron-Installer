@@ -19,7 +19,7 @@ class InstallWorker(QThread):
 
         # Calcular ruta al backend
         self.backend_script = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),  # carpeta ui/
+            os.path.dirname(os.path.abspath(__file__)),  # carpeta install/
             "..",  # subida a raíz
             "install",
             "backend_install.sh"

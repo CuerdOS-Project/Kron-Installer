@@ -1,11 +1,13 @@
 import os
+import re
+import unicodedata
+
 from PySide6.QtWidgets import (
     QWidget, QLabel, QVBoxLayout, QHBoxLayout, QLineEdit, QFrame,
     QPushButton, QSizePolicy, QFormLayout
 )
 from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QIcon
-import unicodedata, re
 
 
 # Rutas a los iconos de ojo (crearlos en ui/assets/)

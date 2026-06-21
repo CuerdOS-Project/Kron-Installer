@@ -23,7 +23,7 @@ def global_stylesheet(assets_dir=None):
     _arrow_url = "ui/assets/arrow-down.svg"
     if assets_dir:
         _arrow_url = os.path.join(assets_dir, "arrow-down.svg")
-    return f"""
+    _sheet = """
     /* ============================
        GLOBAL
        ============================ */
@@ -358,7 +358,7 @@ def global_stylesheet(assets_dir=None):
     QComboBox::down-arrow {
         width: 16px;
         height: 16px;
-        image: url({_arrow_url});
+        image: url(_ARROW_URL_PLACEHOLDER_);
     }
 
     QComboBox QAbstractItemView {
@@ -716,4 +716,5 @@ def global_stylesheet(assets_dir=None):
     QPushButton#slideNavButton:pressed {
         background-color: #26302a;
     }
-    """
+    """.replace("_ARROW_URL_PLACEHOLDER_", _arrow_url)
+    return _sheet

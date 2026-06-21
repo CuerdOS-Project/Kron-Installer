@@ -103,20 +103,6 @@ class SystemDetector:
         return partitions
 
     @staticmethod
-    def get_flat_partitions():
-        """
-        Retorna una lista plana de todas las particiones disponibles en el sistema.
-        Útil para llenar los ComboBoxes.
-        """
-        partitions = []
-        disks = SystemDetector.detect_disks()
-        for disk in disks:
-            for part in disk.get("children", []):
-                if part.get("type") == "part":
-                    partitions.append(f"/dev/{part['name']} ({part['size']})")
-        return partitions
-
-    @staticmethod
     def detect_timezones():
         """
         Escanea /usr/share/zoneinfo para obtener Regiones y Ciudades.
@@ -161,23 +147,23 @@ class SystemDetector:
     @staticmethod
     def detect_locales():
         """
-        Lee /etc/default/libc-locales ignorando las 10 primeras líneas,
-        y devuelve solo locales UTF-8.
+        Lee /etc/default/libc-locales y devuelve solo locales UTF-8.
+
+        Busca lineas que contengan ".UTF-8" y las extrae, eliminando
+        el prefijo "#" si esta comentada. Esto evita depender de un
+        numero fijo de lineas de cabecera.
         """
         locales = []
         target = "/etc/default/libc-locales"
         if os.path.exists(target):
             with open(target, "r") as f:
-                # Saltar las 10 primeras líneas
-                for _ in range(10):
-                    next(f, None)
-
                 for line in f:
                     line = line.strip()
-                    if not line:
+                    if not line or ".UTF-8" not in line:
                         continue
-                    # Quitar comentarios al inicio de línea
-                    parts = line.lstrip("#").split()
+                    # Quitar comentario al inicio y extraer el locale
+                    cleaned = line.lstrip("#").strip()
+                    parts = cleaned.split()
                     if parts and parts[0].endswith("UTF-8"):
                         locales.append(parts[0])
 

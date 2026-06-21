@@ -127,9 +127,6 @@ class InstallerConfigCollector(QObject):
             partitions = []
             filesys = pag_discos.filesys_combo.currentText().lower()
 
-            def clean(txt):
-                return txt.split(" ")[0]
-
             # Validaciones y creación de particiones
             part_checks = [
                 ("root", "/", True, self.tr("Debe seleccionar una partición Raíz (/)."))
@@ -142,7 +139,7 @@ class InstallerConfigCollector(QObject):
                     QMessageBox.warning(self.parent, self.tr("Error"), msg)
                     return None
                 partitions.append({
-                    "dev": clean(raw_parts[key]),
+                    "dev": raw_parts[key],
                     "point": point,
                     "fs": "vfat" if key == "efi" else filesys,
                     "format": "1" if must_format else "0"
@@ -150,16 +147,16 @@ class InstallerConfigCollector(QObject):
 
             # SWAP
             if raw_parts["swap"] is not None:
-                partitions.append({"dev": clean(raw_parts["swap"]), "point": "none", "fs": "swap", "format": "1"})
+                partitions.append({"dev": raw_parts["swap"], "point": "none", "fs": "swap", "format": "1"})
 
             # HOME
             if raw_parts["home"] is not None:
-                partitions.append({"dev": clean(raw_parts["home"]), "point": "/home", "fs": filesys, "format": "0"})
+                partitions.append({"dev": raw_parts["home"], "point": "/home", "fs": filesys, "format": "0"})
 
             data["PARTITIONS"] = partitions
 
             # --- BOOTLOADER ---
-            root_dev = clean(raw_parts["root"])
+            root_dev = raw_parts["root"]
             disk_dev = re.sub(r'\d+$', '', root_dev)
             if "nvme" in disk_dev and disk_dev.endswith("p"):
                 disk_dev = disk_dev[:-1]

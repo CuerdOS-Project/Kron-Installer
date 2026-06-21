@@ -12,8 +12,18 @@
 # Error:            #d46b6b
 # ============================================================
 
-def global_stylesheet():
-    return """
+import os
+
+def global_stylesheet(assets_dir=None):
+    """Retorna el stylesheet global.
+
+    Si *assets_dir* se proporciona (ruta absoluta al directorio ui/assets),
+    la flecha del QComboBox usara esa ruta en vez de una relativa al CWD.
+    """
+    _arrow_url = "ui/assets/arrow-down.svg"
+    if assets_dir:
+        _arrow_url = os.path.join(assets_dir, "arrow-down.svg")
+    return f"""
     /* ============================
        GLOBAL
        ============================ */
@@ -348,7 +358,7 @@ def global_stylesheet():
     QComboBox::down-arrow {
         width: 16px;
         height: 16px;
-        image: url(ui/assets/arrow-down.svg);
+        image: url({_arrow_url});
     }
 
     QComboBox QAbstractItemView {
@@ -660,7 +670,6 @@ def global_stylesheet():
     QLabel#slideBody {
         color: #9fb7a7;
         font-size: 14px;
-        line-height: 1.5;
         background-color: transparent;
     }
 

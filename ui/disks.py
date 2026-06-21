@@ -293,7 +293,9 @@ class DisksPage(QWidget):
 
         efi_parts = [p for p in partitions if "vfat" in p["fstype"] or "fat" in p["fstype"]]
         swap_parts = [p for p in partitions if "swap" in p["fstype"]]
-        other_parts = [p for p in partitions if p not in efi_parts and p not in swap_parts]
+        efi_names = {p["name"] for p in efi_parts}
+        swap_names = {p["name"] for p in swap_parts}
+        other_parts = [p for p in partitions if p["name"] not in efi_names | swap_names]
         other_sorted = sorted(other_parts, key=lambda p: p["size_bytes"], reverse=True)
 
         def _set(combo, part):

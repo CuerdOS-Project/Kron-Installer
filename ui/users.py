@@ -234,47 +234,43 @@ class UsersPage(QWidget):
         self.root_pass.setEchoMode(QLineEdit.Normal if checked else QLineEdit.Password)
         self._set_eye_icon(self.btn_show_root_pass, visible=checked)
 
-    def _validate_user_password(self):
-        pass1 = self.user_pass.text()
-        pass2 = self.user_pass_confirm.text()
+    def _check_match(self, pass1, pass2, error_label, ctx_user):
+        """Valida que dos campos de contrasena coincidan.
 
+        Returns True si son validos (coinciden o estan vacios),
+        False si hay error y muestra el mensaje en *error_label*.
+        """
         if pass1:
             if not pass2:
-                self.user_pass_error.setText(
+                error_label.setText(
                     self.tr("Debe repetir la contrasena")
                 )
-                self.user_pass_error.show()
+                error_label.show()
                 return False
             elif pass1 != pass2:
-                self.user_pass_error.setText(
-                    self.tr("Las contrasenas de usuario no coinciden")
+                error_label.setText(
+                    self.tr(f"Las contrasenas de {ctx_user} no coinciden")
                 )
-                self.user_pass_error.show()
+                error_label.show()
                 return False
-
-        self.user_pass_error.hide()
+        error_label.hide()
         return True
+
+    def _validate_user_password(self):
+        return self._check_match(
+            self.user_pass.text(),
+            self.user_pass_confirm.text(),
+            self.user_pass_error,
+            "usuario",
+        )
 
     def _validate_root_password(self):
-        pass1 = self.root_pass.text()
-        pass2 = self.root_pass_confirm.text()
-
-        if pass1:
-            if not pass2:
-                self.root_pass_error.setText(
-                    self.tr("Debe repetir la contrasena")
-                )
-                self.root_pass_error.show()
-                return False
-            elif pass1 != pass2:
-                self.root_pass_error.setText(
-                    self.tr("Las contrasenas de root no coinciden")
-                )
-                self.root_pass_error.show()
-                return False
-
-        self.root_pass_error.hide()
-        return True
+        return self._check_match(
+            self.root_pass.text(),
+            self.root_pass_confirm.text(),
+            self.root_pass_error,
+            "root",
+        )
 
     def validate_passwords(self):
         user_valid = self._validate_user_password()
@@ -296,12 +292,3 @@ class UsersPage(QWidget):
 
         return user_valid and root_valid
 
-    def get_user_password(self):
-        if self._validate_user_password() and self.user_pass.text():
-            return self.user_pass.text()
-        return None
-
-    def get_root_password(self):
-        if self._validate_root_password() and self.root_pass.text():
-            return self.root_pass.text()
-        return None

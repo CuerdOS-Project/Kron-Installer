@@ -1,13 +1,15 @@
 from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout, QComboBox, QSizePolicy
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import Qt, Signal
+import os
 
 
 class WelcomePage(QWidget):
     languageChanged = Signal(str)
 
-    def __init__(self, sys_data):
+    def __init__(self, sys_data, images_dir=None):
         super().__init__()
+        self._images_dir = images_dir
         self.setup_ui(sys_data)
         self.translate_ui()
 
@@ -21,7 +23,8 @@ class WelcomePage(QWidget):
         top_bar.addStretch()
 
         language_icon = QLabel()
-        icon = QPixmap("images/i18n.png")
+        i18n_path = os.path.join(self._images_dir, "i18n.png") if self._images_dir else "images/i18n.png"
+        icon = QPixmap(i18n_path)
         if not icon.isNull():
             language_icon.setPixmap(
                 icon.scaled(20, 20, Qt.KeepAspectRatio, Qt.SmoothTransformation)
@@ -59,7 +62,8 @@ class WelcomePage(QWidget):
         # Logo grande centrado
         logo = QLabel()
         logo.setAlignment(Qt.AlignCenter)
-        pixmap = QPixmap("images/identity.png")
+        identity_path = os.path.join(self._images_dir, "identity.png") if self._images_dir else "images/identity.png"
+        pixmap = QPixmap(identity_path)
         if not pixmap.isNull():
             logo.setPixmap(
                 pixmap.scaled(220, 110, Qt.KeepAspectRatio, Qt.SmoothTransformation)

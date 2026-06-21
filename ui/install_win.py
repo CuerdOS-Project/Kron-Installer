@@ -13,6 +13,7 @@ from ui.installation import InstallationPage
 from utils.system_utils import SystemDetector
 from install.config_collector import InstallerConfigCollector
 import subprocess
+import os
 
 
 class StepIndicator(QWidget):
@@ -92,8 +93,9 @@ class StepIndicator(QWidget):
 
 
 class InstallWin(QWidget):
-    def __init__(self):
+    def __init__(self, images_dir=None):
         super().__init__()
+        self._images_dir = images_dir
         self.translator = QTranslator()
         self.has_net = True
         self._confirm_install = False
@@ -115,7 +117,7 @@ class InstallWin(QWidget):
         self.has_net = self.system_data["net"]
 
         # --- Crear paginas ---
-        self.pag_bienvenida = WelcomePage(self.system_data)
+        self.pag_bienvenida = WelcomePage(self.system_data, images_dir=self._images_dir)
         self.pag_bienvenida.languageChanged.connect(self.set_language)
 
         self.pag_idiomas = LanguagePage(self.system_data)
@@ -154,7 +156,8 @@ class InstallWin(QWidget):
         sidebar_logo = QLabel()
         sidebar_logo.setObjectName("sidebarLogo")
         sidebar_logo.setAlignment(Qt.AlignCenter)
-        logo_pixmap = QPixmap("images/identity.png")
+        logo_path = os.path.join(self._images_dir, "identity.png") if self._images_dir else "images/identity.png"
+        logo_pixmap = QPixmap(logo_path)
         if not logo_pixmap.isNull():
             sidebar_logo.setPixmap(
                 logo_pixmap.scaled(100, 50, Qt.KeepAspectRatio, Qt.SmoothTransformation)

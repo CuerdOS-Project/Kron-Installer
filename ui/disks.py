@@ -102,7 +102,7 @@ class DisksPage(QWidget):
         self.part_table = QTableWidget()
         self.part_table.setColumnCount(3)
         self.part_table.setHorizontalHeaderLabels(
-            ["Mount", "Particion", "FS"]
+            ["Mount", "Partición", "FS"]
         )
         self.part_table.horizontalHeader().setSectionResizeMode(
             QHeaderView.ResizeMode.Stretch
@@ -221,7 +221,7 @@ class DisksPage(QWidget):
 
     def translate_ui(self):
         self.titl.setText(self.tr("Discos y particiones"))
-        self.auto_label.setText(self.tr("Disco a particionar (automatico):"))
+        self.auto_label.setText(self.tr("Disco a particionar (automático):"))
         self.btn_autopart.setText(self.tr("Particionar"))
         self.part_label.setText(self.tr("O particionar manualmente:"))
         self.btn_partman.setText(self.tr("Abrir KDE Partition Manager"))
@@ -229,13 +229,13 @@ class DisksPage(QWidget):
         self.assign_label.setText(self.tr("Asignar particiones"))
         self.table_title.setText(self.tr("Resumen"))
 
-        self.lbl_root.setText(self.tr("Raiz (/):"))
+        self.lbl_root.setText(self.tr("Raíz (/):"))
         self.lbl_efi.setText(self.tr("EFI (/boot/efi):"))
         self.lbl_home.setText(self.tr("Home (/home):"))
         self.lbl_swap.setText(self.tr("Swap:"))
 
         self.part_table.setHorizontalHeaderLabels(
-            [self.tr("Pto. de montaje"), self.tr("Particion"), self.tr("Sistema")]
+            [self.tr("Pto. de montaje"), self.tr("Partición"), self.tr("Sistema")]
         )
 
         self.cargar_particiones()
@@ -342,7 +342,7 @@ class DisksPage(QWidget):
 
         reply = QMessageBox.warning(
             self,
-            self.tr("Advertencia: Particionado automatico"),
+            self.tr("Advertencia: Particionado automático"),
             self.tr(
                 "El disco {disk} se formateara y perdera todos sus datos.\n"
                 "Esta accion NO se puede deshacer.\n\n"

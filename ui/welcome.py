@@ -3,6 +3,9 @@ from PySide6.QtGui import QPixmap
 from PySide6.QtCore import Qt, Signal
 import os
 
+_UI_DIR = os.path.dirname(os.path.abspath(__file__))
+_SLIDES_DIR = os.path.join(_UI_DIR, "assets", "slides")
+
 
 class WelcomePage(QWidget):
     languageChanged = Signal(str)
@@ -34,7 +37,7 @@ class WelcomePage(QWidget):
         self.lang_combo.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.lang_combo.setMinimumWidth(120)
 
-        self.lang_combo.addItem("Espanol", "es_ES")
+        self.lang_combo.addItem("Español", "es_ES")
         self.lang_combo.addItem("English", "en_US")
         self.lang_combo.addItem("Galego", "gl_ES")
         self.lang_combo.addItem("Português", "pt_BR")
@@ -46,6 +49,7 @@ class WelcomePage(QWidget):
         self.lang_combo.addItem("Italiano", "it_IT")
         self.lang_combo.addItem("Türkçe", "tr_TR")
         self.lang_combo.addItem("Pусский", "ru_RU")
+        self.lang_combo.addItem("Polski", "pl_PL")
 
         self.lang_combo.setCurrentIndex(1)
         self.lang_combo.currentIndexChanged.connect(self.on_language_changed)
@@ -62,11 +66,11 @@ class WelcomePage(QWidget):
         # Logo grande centrado
         logo = QLabel()
         logo.setAlignment(Qt.AlignCenter)
-        identity_path = os.path.join(self._images_dir, "identity.png") if self._images_dir else "images/identity.png"
+        identity_path = os.path.join(_SLIDES_DIR, "ps1.webp")
         pixmap = QPixmap(identity_path)
         if not pixmap.isNull():
             logo.setPixmap(
-                pixmap.scaled(220, 110, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+                pixmap.scaled(340, 340, Qt.KeepAspectRatio, Qt.SmoothTransformation)
             )
         center.addWidget(logo, alignment=Qt.AlignCenter)
 
@@ -114,7 +118,7 @@ class WelcomePage(QWidget):
         main_layout.addLayout(center, 1)
 
     def translate_ui(self):
-        self.titl.setText(self.tr("Bienvenido a CuerdOS!"))
+        self.titl.setText(self.tr("¡Bienvenido a CuerdOS!"))
         self.sbtitl.setText(self.tr("“Optimizado hasta el último píxel”"))
 
         if self.has_net:

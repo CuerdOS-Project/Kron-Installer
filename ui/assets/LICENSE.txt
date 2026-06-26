@@ -1,0 +1,59 @@
+Kron Installer - Image Assets License Summary
+================================================
+SPDX-License-Identifier: GPL-3.0-or-later
+
+The Kron Installer project uses images from various sources. 
+While the project overall is licensed under GPLv3, individual assets 
+retain their original licenses as detailed below.
+
+---
+
+1. ORIGINAL WORK (CC-BY-SA 4.0)
+------------------------------
+Created exclusively for CuerdOS GNU/Linux.
+
+Author: Pablo G. Alba (@PabloG-Dev)
+License: Creative Commons Attribution-ShareAlike 4.0 International (CC-BY-SA 4.0)
+Link: https://creativecommons.org/licenses/by-sa/4.0/
+
+Files:
+- instalar.png
+- cuerdos-logo.png
+
+---
+
+2. MIT LICENSE
+--------------
+Source: Primeng Interface Icons (Primefaces)
+Original License: MIT License
+Link: https://www.svgrepo.com/collection/primeng-interface-icons/
+
+Files (Modified):
+- idiomas.png
+- disco.png
+- i18n.png
+
+---
+
+3. CREATIVE COMMONS ATTRIBUTION (CC-BY)
+---------------------------------------
+Source: Solar Bold Icons (Solar Icons)
+Original License: Creative Commons Attribution (CC-BY)
+Modification: Image created by combining/mixing two original assets.
+Link: https://www.svgrepo.com/collection/solar-bold-icons/
+
+Files (Modified):
+- userpc.png
+
+---
+
+4. PUBLIC DOMAIN (CC0)
+----------------------
+Source: Bowtie Icons (Jimlamb)
+Original License: Public Domain (CC0). No copyright reserved.
+Link: https://www.svgrepo.com/collection/bowtie-icons/
+
+Files:
+- repos.png
+
+---

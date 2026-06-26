@@ -126,6 +126,22 @@ def global_stylesheet(assets_dir=None):
         background-color: transparent;
     }
 
+    QPushButton#sidebarAboutButton {
+        background-color: transparent;
+        border: 1px solid #3a4a42;
+        border-radius: 6px;
+        color: #7f9688;
+        font-size: 11px;
+        padding: 5px 8px;
+        margin: 0px 16px 4px 16px;
+    }
+
+    QPushButton#sidebarAboutButton:hover {
+        background-color: #2a312d;
+        color: #9fb7a7;
+        border: 1px solid #4a5a50;
+    }
+
     /* ============================
        FORM CARD
        ============================ */
@@ -647,6 +663,10 @@ def global_stylesheet(assets_dir=None):
         border-top: 1px solid #2a312d;
     }
 
+    QWidget#footerCenterWrap {
+        background-color: transparent;
+    }
+
     QLabel#stepCounter {
         color: #7f9688;
         font-size: 12px;
@@ -657,6 +677,10 @@ def global_stylesheet(assets_dir=None):
        SLIDES (Carrusel instalacion)
        ============================ */
     QFrame#slideWidget {
+        background-color: transparent;
+    }
+
+    QLabel#slideImage {
         background-color: transparent;
     }
 

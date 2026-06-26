@@ -74,8 +74,8 @@ class InstallerConfigCollector(QObject):
                     self.parent,
                     self.tr("Hostname inválido"),
                     self.tr(
-                        "El nombre del equipo solo puede contener letras minúsculas,\n"
-                        "números y guiones, y no puede empezar ni terminar con un guión."
+                        "El nombre del equipo solo puede contener letras minusculas,\n"
+                        "numeros y guiones, y no puede empezar ni terminar con un guion."
                     ),
                 )
                 return None
@@ -85,8 +85,8 @@ class InstallerConfigCollector(QObject):
                     self.parent,
                     self.tr("Usuario inválido"),
                     self.tr(
-                        "El nombre de usuario solo puede contener letras minúsculas,\n"
-                        "números, guiones y guiones bajos, y no puede contener espacios."
+                        "El nombre de usuario solo puede contener letras minusculas,\n"
+                        "numeros, guiones y guiones bajos, y no puede contener espacios."
                     ),
                 )
                 return None

@@ -4,7 +4,7 @@ import unicodedata
 
 from PySide6.QtWidgets import (
     QWidget, QLabel, QVBoxLayout, QHBoxLayout, QLineEdit, QFrame,
-    QPushButton, QSizePolicy, QFormLayout
+    QPushButton, QSizePolicy, QFormLayout, QCheckBox
 )
 from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QIcon
@@ -117,6 +117,13 @@ class UsersPage(QWidget):
 
         card_layout.addLayout(pass_form)
 
+        # --- Usar la misma contrasena para root ---
+        self.chk_same_pass = QCheckBox()
+        self.chk_same_pass.setObjectName("samePasswordCheck")
+        self.chk_same_pass.toggled.connect(self._on_same_pass_toggled)
+        card_layout.addSpacing(6)
+        card_layout.addWidget(self.chk_same_pass)
+
         # --- Separador ---
         sep2 = QFrame()
         sep2.setFixedHeight(1)
@@ -185,29 +192,36 @@ class UsersPage(QWidget):
         self.root_pass.textChanged.connect(self._validate_root_password)
         self.root_pass_confirm.textChanged.connect(self._validate_root_password)
 
+        self.user_pass.textChanged.connect(self._sync_root_pass_if_needed)
+        self.user_pass_confirm.textChanged.connect(self._sync_root_pass_if_needed)
+
     def translate_ui(self):
         self.titl.setText(self.tr("Nombre de equipo y usuarios"))
         self.nombre_label.setText(self.tr("Nombre del equipo:"))
         self.username_label.setText(self.tr("Nombre completo:"))
         self.user_label.setText(self.tr("Usuario (login):"))
-        self.pass_label.setText(self.tr("Contrasena del usuario"))
-        self.root_label.setText(self.tr("Contrasena de root"))
+        self.pass_label.setText(self.tr("Contraseña del usuario"))
+        self.root_label.setText(self.tr("Contraseña de root"))
 
-        self.user_pass_label.setText(self.tr("Contrasena:"))
+        self.user_pass_label.setText(self.tr("Contraseña:"))
         self.user_pass_confirm_label.setText(self.tr("Confirmar:"))
-        self.root_pass_label.setText(self.tr("Contrasena:"))
+        self.root_pass_label.setText(self.tr("Contraseña:"))
         self.root_pass_confirm_label.setText(self.tr("Confirmar:"))
 
-        self.user_pass.setPlaceholderText(self.tr("Contrasena"))
-        self.root_pass.setPlaceholderText(self.tr("Contrasena"))
-        self.user_pass_confirm.setPlaceholderText(self.tr("Repetir contrasena"))
-        self.root_pass_confirm.setPlaceholderText(self.tr("Repetir contrasena"))
+        self.user_pass.setPlaceholderText(self.tr("Contraseña"))
+        self.root_pass.setPlaceholderText(self.tr("Contraseña"))
+        self.user_pass_confirm.setPlaceholderText(self.tr("Repetir contraseña"))
+        self.root_pass_confirm.setPlaceholderText(self.tr("Repetir contraseña"))
 
         self.user_pass_error.setText(
-            self.tr("Las contrasenas de usuario no coinciden")
+            self.tr("Las contraseñas de usuario no coinciden")
         )
         self.root_pass_error.setText(
-            self.tr("Las contrasenas de root no coinciden")
+            self.tr("Las contraseñas de root no coinciden")
+        )
+
+        self.chk_same_pass.setText(
+            self.tr("Usar la misma contraseña para el usuario root")
         )
 
     def _update_login(self, text):
@@ -234,6 +248,23 @@ class UsersPage(QWidget):
         self.root_pass.setEchoMode(QLineEdit.Normal if checked else QLineEdit.Password)
         self._set_eye_icon(self.btn_show_root_pass, visible=checked)
 
+    def _on_same_pass_toggled(self, checked):
+        self.root_pass.setReadOnly(checked)
+        self.root_pass_confirm.setReadOnly(checked)
+        self.btn_show_root_pass.setEnabled(not checked)
+
+        if checked:
+            self.root_pass.setText(self.user_pass.text())
+            self.root_pass_confirm.setText(self.user_pass_confirm.text())
+            self.root_pass_error.hide()
+        else:
+            self._validate_root_password()
+
+    def _sync_root_pass_if_needed(self):
+        if self.chk_same_pass.isChecked():
+            self.root_pass.setText(self.user_pass.text())
+            self.root_pass_confirm.setText(self.user_pass_confirm.text())
+
     def _check_match(self, pass1, pass2, error_label, ctx_user):
         """Valida que dos campos de contrasena coincidan.
 
@@ -243,13 +274,13 @@ class UsersPage(QWidget):
         if pass1:
             if not pass2:
                 error_label.setText(
-                    self.tr("Debe repetir la contrasena")
+                    self.tr("Debe repetir la contraseña")
                 )
                 error_label.show()
                 return False
             elif pass1 != pass2:
                 error_label.setText(
-                    self.tr(f"Las contrasenas de {ctx_user} no coinciden")
+                    self.tr(f"Las contraseñas de {ctx_user} no coinciden")
                 )
                 error_label.show()
                 return False
@@ -274,18 +305,33 @@ class UsersPage(QWidget):
 
     def validate_passwords(self):
         user_valid = self._validate_user_password()
+
+        if self.chk_same_pass.isChecked():
+            self.root_pass_error.hide()
+            root_valid = user_valid
+
+            if not self.user_pass.text():
+                self.user_pass_error.setText(
+                    self.tr("La contraseña de usuario es obligatoria")
+                )
+                self.user_pass_error.show()
+                user_valid = False
+                root_valid = False
+
+            return user_valid and root_valid
+
         root_valid = self._validate_root_password()
 
         if not self.user_pass.text():
             self.user_pass_error.setText(
-                self.tr("La contrasena de usuario es obligatoria")
+                self.tr("La contraseña de usuario es obligatoria")
             )
             self.user_pass_error.show()
             user_valid = False
 
         if not self.root_pass.text():
             self.root_pass_error.setText(
-                self.tr("La contrasena de root es obligatoria")
+                self.tr("La contraseña de root es obligatoria")
             )
             self.root_pass_error.show()
             root_valid = False

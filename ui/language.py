@@ -77,7 +77,7 @@ class LanguagePage(QWidget):
         main_layout.addWidget(card, 1)
 
     def translate_ui(self):
-        self.titl.setText(self.tr("Configuracion regional"))
+        self.titl.setText(self.tr("Configuración regional"))
 
         self.lbl_timezone.setText(self.tr("Zona horaria:"))
         self.lbl_city.setText(self.tr("Ciudad:"))

@@ -10,6 +10,7 @@ from ui.mirrors import MirrorsPage
 from ui.users import UsersPage
 from ui.disks import DisksPage
 from ui.installation import InstallationPage
+from ui.about import AboutDialog
 from utils.system_utils import SystemDetector
 from install.config_collector import InstallerConfigCollector
 import subprocess
@@ -93,9 +94,10 @@ class StepIndicator(QWidget):
 
 
 class InstallWin(QWidget):
-    def __init__(self, images_dir=None):
+    def __init__(self, images_dir=None, demo=False):
         super().__init__()
         self._images_dir = images_dir
+        self.demo = demo
         self.translator = QTranslator()
         self.has_net = True
         self._confirm_install = False
@@ -124,7 +126,7 @@ class InstallWin(QWidget):
         self.pag_mirrors = MirrorsPage(self.system_data)
         self.pag_usuarios = UsersPage()
         self.pag_discos = DisksPage(self.system_data)
-        self.pag_instalacion = InstallationPage()
+        self.pag_instalacion = InstallationPage(demo=self.demo)
 
         # --- Definir orden de pasos ---
         self.steps = [
@@ -133,7 +135,7 @@ class InstallWin(QWidget):
             ("mirrors", self.tr("Repositorios")),
             ("users", self.tr("Usuarios")),
             ("disks", self.tr("Discos")),
-            ("install", self.tr("Instalacion")),
+            ("install", self.tr("Instalación")),
         ]
         if not self.has_net:
             # Sin internet: quitar mirrors
@@ -175,11 +177,10 @@ class InstallWin(QWidget):
 
         sidebar_layout.addStretch()
 
-        # Texto version pequeno
-        version_label = QLabel("Kron Installer")
-        version_label.setObjectName("stepLabel")
-        version_label.setAlignment(Qt.AlignCenter)
-        sidebar_layout.addWidget(version_label)
+        self.btn_about = QPushButton()
+        self.btn_about.setObjectName("sidebarAboutButton")
+        self.btn_about.clicked.connect(lambda: AboutDialog(self).exec())
+        sidebar_layout.addWidget(self.btn_about)
 
         root_layout.addWidget(self.sidebar)
 
@@ -213,17 +214,27 @@ class InstallWin(QWidget):
         self.btn_atras.setObjectName("backButton")
         self.btn_atras.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
 
-        self.step_counter = QLabel()
-        self.step_counter.setObjectName("stepCounter")
-        self.step_counter.setAlignment(Qt.AlignCenter)
-        self.step_counter.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        self.btn_toggle_log = QPushButton()
+        self.btn_toggle_log.setObjectName("actionButton")
+        self.btn_toggle_log.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.btn_toggle_log.clicked.connect(self._on_toggle_log_clicked)
+        self.btn_toggle_log.hide()
+
+        center_wrap = QWidget()
+        center_wrap.setObjectName("footerCenterWrap")
+        center_layout = QHBoxLayout(center_wrap)
+        center_layout.setContentsMargins(0, 0, 0, 0)
+        center_layout.setSpacing(16)
+        center_layout.addStretch()
+        center_wrap.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
 
         self.btn_siguiente = QPushButton()
         self.btn_siguiente.setObjectName("nextButton")
         self.btn_siguiente.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
 
         footer_layout.addWidget(self.btn_atras)
-        footer_layout.addWidget(self.step_counter)
+        footer_layout.addWidget(self.btn_toggle_log)
+        footer_layout.addWidget(center_wrap)
         footer_layout.addWidget(self.btn_siguiente)
 
         central_layout.addWidget(self.footer_bar)
@@ -239,6 +250,10 @@ class InstallWin(QWidget):
             lambda: self.btn_siguiente.setVisible(True)
         )
 
+        # Boton "Mostrar/Ocultar log": solo visible en la pagina de instalacion
+        self.pag_instalacion.log_state_changed.connect(self._sync_log_button_text)
+        self.stack.currentChanged.connect(self._on_stack_page_changed)
+
         # Estado inicial
         self.actualizar_botones()
         self._update_stepper()
@@ -247,10 +262,14 @@ class InstallWin(QWidget):
         self.set_language("en_US")
 
     def translate_ui(self):
-        self.setWindowTitle(self.tr("Instalador Kron"))
-        self.btn_atras.setText(self.tr("Atras"))
+        title = self.tr("Instalador Kron")
+        if self.demo:
+            title += " " + self.tr("(Modo demo)")
+        self.setWindowTitle(title)
+        self.btn_atras.setText(self.tr("Atrás"))
         self.btn_siguiente.setText(self.tr("Siguiente"))
-        self._update_step_counter()
+        self.btn_about.setText(self.tr("Acerca de"))
+        self._sync_log_button_text(self.pag_instalacion._showing_log)
         self._translate_stepper()
 
     def _translate_stepper(self):
@@ -260,7 +279,7 @@ class InstallWin(QWidget):
             "mirrors": self.tr("Repositorios"),
             "users": self.tr("Usuarios"),
             "disks": self.tr("Discos"),
-            "install": self.tr("Instalacion"),
+            "install": self.tr("Instalación"),
         }
         for ind in self.step_indicators:
             ind.translate(texts)
@@ -275,10 +294,20 @@ class InstallWin(QWidget):
             else:
                 ind.set_state("pending")
 
-    def _update_step_counter(self):
-        idx = self.stack.currentIndex()
-        total = self.stack.count()
-        self.step_counter.setText(f"{idx + 1} / {total}")
+
+    def _on_stack_page_changed(self, index):
+        is_install_page = isinstance(self.stack.widget(index), InstallationPage)
+        self.btn_toggle_log.setVisible(is_install_page)
+        if is_install_page:
+            self._sync_log_button_text(self.pag_instalacion._showing_log)
+
+    def _sync_log_button_text(self, showing_log):
+        self.btn_toggle_log.setText(
+            self.tr("Ocultar log") if showing_log else self.tr("Mostrar log")
+        )
+
+    def _on_toggle_log_clicked(self):
+        self.pag_instalacion.toggle_log()
 
     # --- Boton 'Siguiente' ---
     def ir_siguiente(self):
@@ -308,11 +337,13 @@ class InstallWin(QWidget):
                 self.stack.setCurrentIndex(index + 1)
                 self.actualizar_botones()
                 self._update_stepper()
-                self._update_step_counter()
                 self.pag_instalacion.iniciar_instalacion(config)
             return
 
         if isinstance(curr_widget, InstallationPage):
+            if self.demo:
+                self.close()
+                return
             subprocess.Popen(
                 ["pkexec", "reboot"],
                 stdout=subprocess.DEVNULL,
@@ -324,16 +355,14 @@ class InstallWin(QWidget):
             self.stack.setCurrentIndex(index + 1)
         self.actualizar_botones()
         self._update_stepper()
-        self._update_step_counter()
 
-    # --- Boton 'Atras' ---
+    # --- Boton 'Atrás' ---
     def ir_atras(self):
         index = self.stack.currentIndex()
         if index > 0:
             self.stack.setCurrentIndex(index - 1)
         self.actualizar_botones()
         self._update_stepper()
-        self._update_step_counter()
 
     def actualizar_botones(self):
         index = self.stack.currentIndex()
@@ -357,7 +386,6 @@ class InstallWin(QWidget):
             self.btn_siguiente.setObjectName("nextButton")
             self.btn_siguiente.setStyle(self.btn_siguiente.style())
 
-        self._update_step_counter()
 
     def set_language(self, lang_code):
         QApplication.instance().removeTranslator(self.translator)
@@ -381,8 +409,8 @@ class InstallWin(QWidget):
 
         reply = QMessageBox.question(
             self,
-            self.tr("Salir del instalador?"),
-            self.tr("Estas seguro de que deseas salir? La instalacion no ha finalizado."),
+            self.tr("¿Salir del instalador?"),
+            self.tr("¿Estás seguro de que deseas salir? La instalación no ha finalizado."),
             QMessageBox.Yes | QMessageBox.No,
             QMessageBox.No
         )

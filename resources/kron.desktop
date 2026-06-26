@@ -2,8 +2,9 @@
 Version=1.0
 Type=Application
 Name=Install CuerdOS
-Comment=
+Comment=CuerdOS Installer
 Exec=kron-installer
-Icon=/usr/share/pixmaps/install-cuerdos.png
+Icon=kron-installer
 Terminal=false
-StartupNotify=false
+StartupNotify=true
+StartupWMClass=kron-installer

@@ -4,86 +4,184 @@ from PySide6.QtWidgets import (
     QStackedWidget
 )
 from PySide6.QtCore import Qt, Signal, QTimer
+from PySide6.QtGui import QPixmap
+import os
 from install.install_thread import InstallWorker
+
+_ASSETS_DIR = os.path.dirname(os.path.abspath(__file__))
+_SLIDES_DIR = os.path.join(_ASSETS_DIR, "assets", "slides")
 
 
 class _SlideWidget(QFrame):
-    """Un slide individual: titulo + parrafo, centrado."""
+    """Un slide individual: imagen a un lado, titulo y parrafo al otro,
+    todo centrado como un unico bloque dentro del slide. La imagen se
+    reescala segun el espacio disponible para que nunca quede recortada."""
 
-    def __init__(self, title, body, parent=None):
+    IMAGE_SIZE = 512
+
+    def __init__(self, title, body, image=None, parent=None):
         super().__init__(parent)
         self.setObjectName("slideWidget")
 
-        layout = QVBoxLayout(self)
-        layout.setContentsMargins(24, 20, 24, 16)
-        layout.addStretch()
+        outer = QHBoxLayout(self)
+        outer.setContentsMargins(32, 16, 32, 16)
+        outer.setSpacing(0)
+        outer.addStretch(1)
+
+        content = QHBoxLayout()
+        content.setSpacing(32)
+
+        self._orig_pixmap = None
+        self._lbl_image = None
+
+        if image:
+            image_path = os.path.join(_SLIDES_DIR, image)
+            if os.path.isfile(image_path):
+                pm = QPixmap(image_path)
+                if not pm.isNull():
+                    self._orig_pixmap = pm
+                    lbl_image = QLabel()
+                    lbl_image.setObjectName("slideImage")
+                    lbl_image.setAlignment(Qt.AlignCenter)
+                    lbl_image.setScaledContents(False)
+                    lbl_image.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+                    self._lbl_image = lbl_image
+                    content.addWidget(lbl_image, 0, Qt.AlignCenter)
+
+        has_image = self._orig_pixmap is not None
+
+        text_col = QVBoxLayout()
+        text_col.setSpacing(12)
+        text_col.addStretch()
 
         lbl_title = QLabel(title)
         lbl_title.setObjectName("slideTitle")
-        lbl_title.setAlignment(Qt.AlignCenter)
+        lbl_title.setAlignment(Qt.AlignLeft | Qt.AlignVCenter if has_image else Qt.AlignCenter)
         lbl_title.setWordWrap(True)
-        layout.addWidget(lbl_title)
-
-        layout.addSpacing(12)
+        text_col.addWidget(lbl_title)
 
         lbl_body = QLabel(body)
         lbl_body.setObjectName("slideBody")
-        lbl_body.setAlignment(Qt.AlignCenter)
+        lbl_body.setAlignment(Qt.AlignLeft | Qt.AlignVCenter if has_image else Qt.AlignCenter)
         lbl_body.setWordWrap(True)
-        layout.addWidget(lbl_body)
+        lbl_body.setMaximumWidth(420)
+        text_col.addWidget(lbl_body)
 
-        layout.addStretch()
+        text_col.addStretch()
+
+        text_wrap = QWidget()
+        text_wrap.setLayout(text_col)
+        text_wrap.setMaximumWidth(420)
+        content.addWidget(text_wrap, 0, Qt.AlignVCenter)
+
+        outer.addLayout(content)
+        outer.addStretch(1)
+
+        self._lbl_title = lbl_title
+        self._lbl_body = lbl_body
+
+        self._update_image_pixmap()
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self._update_image_pixmap()
+
+    def _update_image_pixmap(self):
+        if self._orig_pixmap is None or self._lbl_image is None:
+            return
+
+        # Espacio vertical disponible dentro del slide (restando margenes
+        # y un colchon para que nunca se desborde ni se vea recortada).
+        available_h = max(self.height() - 64, 60)
+        available_w = max(int(self.width() * 0.45), 60)
+        target = min(self.IMAGE_SIZE, available_h, available_w)
+
+        scaled = self._orig_pixmap.scaled(
+            target, target,
+            Qt.AspectRatioMode.KeepAspectRatio,
+            Qt.TransformationMode.SmoothTransformation,
+        )
+        self._lbl_image.setPixmap(scaled)
+        self._lbl_image.setFixedSize(scaled.size())
+
+    def update_text(self, title, body):
+        self._lbl_title.setText(title)
+        self._lbl_body.setText(body)
 
 
 class InstallationPage(QWidget):
     finished_success = Signal()
     finished_error = Signal(str)
+    log_state_changed = Signal(bool)
 
-    # Datos de slides: (titulo, cuerpo). Editar a gusto.
-    SLIDES_DATA = [
-        (
-            "Bienvenido a CuerdOS",
-            "CuerdOS es una distribucion GNU/Linux basada en Void Linux, "
-            "pensada para ofrecer una experiencia limpia, rapida y personalizable. "
-            "Gracias por elegirla."
-        ),
-        (
-            "Gestor de paquetes XBPS",
-            "CuerdOS utiliza XBPS, un gestor de paquetes extremadamente rapido "
-            "que resuelve dependencias de forma transaccional y eficiente. "
-            "Instala software con: xbps-install <paquete>"
-        ),
-        (
-            "Runlevel por defecto: runit",
-            "A diferencia de systemd, CuerdOS usa runit como sistema de init. "
-            "Es simple, ligero y facil de entender. "
-            "Los servicios se gestionan en /etc/sv/"
-        ),
-        (
-            "Personaliza tu escritorio",
-            "Tras la instalacion puedes instalar el entorno de escritorio "
-            "que prefieras: KDE Plasma, GNOME, XFCE, i3, y muchos mas. "
-            "Solo ejecuta: xbps-install <entorno>"
-        ),
-        (
-            "Mantente actualizado",
-            "Para mantener tu sistema al dia solo necesitas dos comandos: "
-            "xbps-install -Su para actualizar paquetes y "
-            "xpkg-upgrade para una actualizacion completa del sistema."
-        ),
-        (
-            "Comunidad y recursos",
-            "Unete a la comunidad de CuerdOS para obtener ayuda, "
-            "reportar errores y compartir tu experiencia. "
-            "Encuentranos en nuestros canales oficiales."
-        ),
+    # Imagenes de cada slide, en el mismo orden que _slide_texts().
+    SLIDE_IMAGES = [
+        "welcome.webp",
+        "package.webp",
+        "init.webp",
+        "desktop.webp",
+        "update.webp",
+        "community.webp",
     ]
 
-    def __init__(self):
+    def _slide_texts(self):
+        """Textos de los slides (titulo, cuerpo), traducibles y pensados
+        para cualquier persona, sin tecnicismos."""
+        return [
+            (
+                self.tr("Bienvenido a CuerdOS"),
+                self.tr(
+                    "Estás a punto de descubrir un sistema rápido, ligero "
+                    "y pensado para que todo simplemente funcione. "
+                    "Gracias por darle una oportunidad."
+                ),
+            ),
+            (
+                self.tr("Instalar programas, muy fácil"),
+                self.tr(
+                    "Encontrar y añadir nuevas aplicaciones es tan sencillo "
+                    "como un par de clics, sin complicaciones ni pasos "
+                    "técnicos de por medio."
+                ),
+            ),
+            (
+                self.tr("Rápido desde que enciendes"),
+                self.tr(
+                    "Tu equipo arrancará en segundos. Por debajo, CuerdOS "
+                    "está optimizado para que tú solo te preocupes de usarlo."
+                ),
+            ),
+            (
+                self.tr("Tu escritorio, a tu gusto"),
+                self.tr(
+                    "Elige el aspecto que más te guste: simple y minimalista, "
+                    "o lleno de detalles. Tú decides cómo se ve tu equipo."
+                ),
+            ),
+            (
+                self.tr("Siempre al día, sin esfuerzo"),
+                self.tr(
+                    "Mantener tu sistema actualizado es muy sencillo: con un "
+                    "clic tendrás las últimas mejoras y parches de seguridad."
+                ),
+            ),
+            (
+                self.tr("Una comunidad que te acompaña"),
+                self.tr(
+                    "Si tienes dudas o quieres compartir tu experiencia, "
+                    "nuestra comunidad está lista para ayudarte en todo momento."
+                ),
+            ),
+        ]
+
+    def __init__(self, demo=False):
         super().__init__()
+        self.demo = demo
         self.install_finished = False
+        self.install_error = False
+        self.worker = None
         self._current_slide = 0
-        self._slide_count = len(self.SLIDES_DATA)
+        self._slide_count = len(self.SLIDE_IMAGES)
         self._showing_log = False
         self.setup_ui()
         self.translate_ui()
@@ -143,8 +241,11 @@ class InstallationPage(QWidget):
         sp_layout.setSpacing(0)
 
         self.slide_stack = QStackedWidget()
-        for title, body in self.SLIDES_DATA:
-            self.slide_stack.addWidget(_SlideWidget(title, body))
+        self._slide_widgets = []
+        for (title, body), image in zip(self._slide_texts(), self.SLIDE_IMAGES):
+            widget = _SlideWidget(title, body, image=image)
+            self._slide_widgets.append(widget)
+            self.slide_stack.addWidget(widget)
         sp_layout.addWidget(self.slide_stack, 1)
 
         # Barra de navegacion de slides
@@ -194,19 +295,6 @@ class InstallationPage(QWidget):
 
         container_layout.addWidget(self._content_stack)
         main_layout.addWidget(container_card, 1)
-        main_layout.addSpacing(10)
-
-        # ---- Boton toggle log ----
-        self.btn_toggle_log = QPushButton()
-        self.btn_toggle_log.setObjectName("actionButton")
-        self.btn_toggle_log.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        self.btn_toggle_log.clicked.connect(self._toggle_log)
-
-        log_row = QHBoxLayout()
-        log_row.addStretch()
-        log_row.addWidget(self.btn_toggle_log)
-        log_row.addStretch()
-        main_layout.addLayout(log_row)
 
         # Timer para auto-rotar slides
         self._slide_timer = QTimer(self)
@@ -246,28 +334,30 @@ class InstallationPage(QWidget):
     # ------------------------------------------------------------------ #
     #  Toggle log (slides <-> terminal en el mismo espacio)
     # ------------------------------------------------------------------ #
-    def _toggle_log(self):
+    def toggle_log(self):
         if self._showing_log:
             # Volver a slides
             self._content_stack.setCurrentIndex(0)
             self._slide_timer.start()
             self._showing_log = False
-            self.btn_toggle_log.setText(self.tr("Mostrar log"))
         else:
             # Mostrar terminal
             self._content_stack.setCurrentIndex(1)
             self._slide_timer.stop()
             self._showing_log = True
-            self.btn_toggle_log.setText(self.tr("Ocultar log"))
+        self.log_state_changed.emit(self._showing_log)
 
     # ------------------------------------------------------------------ #
     #  Instalacion
     # ------------------------------------------------------------------ #
     def iniciar_instalacion(self, config_data):
-        self.texto_label.setText(self.tr("Iniciando motor de instalacion (Root)..."))
+        if self.demo:
+            self.texto_label.setText(self.tr("Iniciando simulación (modo demo)..."))
+        else:
+            self.texto_label.setText(self.tr("Iniciando motor de instalación (Root)..."))
         self.progress.setValue(0)
 
-        self.worker = InstallWorker(config_data)
+        self.worker = InstallWorker(config_data, demo=self.demo)
 
         self.worker.status_update.connect(self.on_status_update)
         self.worker.progress_update.connect(self.progress.setValue)
@@ -285,11 +375,10 @@ class InstallationPage(QWidget):
             self.texto_label.setText(self.tr("Realizando tareas del sistema..."))
 
     def translate_ui(self):
-        self.titl.setText(self.tr("Instalacion"))
-        self.texto_label.setText(self.tr("Preparando instalacion..."))
+        self.titl.setText(self.tr("Instalación"))
 
         self.UI_STATUS_TEXTS = {
-            "INIT": self.tr("Iniciando motor de instalacion..."),
+            "INIT": self.tr("Iniciando motor de instalación..."),
             "CREATE_FS": self.tr("Creando sistemas de archivos..."),
             "COPY": self.tr("Copiando el sistema base..."),
             "REGIONAL_CONFIG": self.tr("Configurando idioma y zona horaria..."),
@@ -297,21 +386,31 @@ class InstallationPage(QWidget):
             "MIRROR": self.tr("Configurando servidor de repositorios..."),
             "NON-FREE": self.tr("Configurando repositorios de software propietario."),
             "NVIDIA": self.tr("Instalando controladores NVIDIA..."),
-            "INTEL": self.tr("Instalando microcodigos de Intel..."),
-            "USER_CONFIG": self.tr("Creando usuarios y contrasenas..."),
+            "INTEL": self.tr("Instalando microcódigos de Intel..."),
+            "USER_CONFIG": self.tr("Creando usuarios y contraseñas..."),
             "GRUB_INSTALL": self.tr("Instalando el cargador de arranque..."),
-            "DONE": self.tr("Instalacion completada correctamente"),
+            "DONE": self.tr("Instalación completada correctamente"),
         }
 
-        self.btn_toggle_log.setText(self.tr("Mostrar log"))
+        # No pisar el estado actual si la instalacion ya termino (bien o mal):
+        # solo se usa este texto inicial mientras aun no ha arrancado nada.
+        if not self.install_finished and not self.install_error and self.worker is None:
+            self.texto_label.setText(self.tr("Preparando instalación..."))
+        elif self.install_finished:
+            self.texto_label.setText(self.tr("¡Instalación completada!"))
+        elif self.install_error:
+            self.texto_label.setText(self.tr("Error en la instalación"))
+
+        for widget, (title, body) in zip(self._slide_widgets, self._slide_texts()):
+            widget.update_text(title, body)
 
     def on_success(self):
         self._slide_timer.stop()
         self.install_finished = True
-        self.texto_label.setText(self.tr("Instalacion Completada!"))
+        self.texto_label.setText(self.tr("¡Instalación completada!"))
         self.progress.setValue(100)
         QMessageBox.information(
-            self, self.tr("Exito"),
+            self, self.tr("Éxito"),
             self.tr("CuerdOS se ha instalado correctamente.\n"
                    "Puede reiniciar su equipo.")
         )
@@ -319,7 +418,8 @@ class InstallationPage(QWidget):
 
     def on_error(self, msg):
         self._slide_timer.stop()
+        self.install_error = True
         self.texto_label.setObjectName("errorStatusLabel")
         self.texto_label.setStyle(self.texto_label.style())
-        self.texto_label.setText(self.tr("Error en la instalacion"))
+        self.texto_label.setText(self.tr("Error en la instalación"))
         QMessageBox.critical(self, self.tr("Error Fatal"), msg)

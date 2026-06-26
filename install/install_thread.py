@@ -12,9 +12,10 @@ class InstallWorker(QThread):
     finished_success = Signal()         # Fin exitoso
     finished_error = Signal(str)        # Fin con error
 
-    def __init__(self, config_data):
+    def __init__(self, config_data, demo=False):
         super().__init__()
         self.config_data = config_data
+        self.demo = demo
         self.conf_file = "/tmp/.void-installer.conf"
 
         # Calcular ruta al backend
@@ -65,6 +66,35 @@ class InstallWorker(QThread):
         )
         self._progress_thread.start()
 
+    def _run_demo(self):
+        """
+        Simulacion para desarrolladores (--demo): reproduce la secuencia
+        de estados y el avance de la barra de progreso sin ejecutar el
+        backend real, sin pkexec y sin tocar discos ni archivos del sistema.
+        """
+        steps = [
+            ("INIT", 5, 0.4),
+            ("CREATE_FS", 15, 0.4),
+            ("COPY", 45, 1.2),
+            ("REGIONAL_CONFIG", 55, 0.4),
+            ("UPDATE", 65, 1.0),
+            ("USER_CONFIG", 85, 0.4),
+            ("GRUB_INSTALL", 95, 0.4),
+            ("DONE", 100, 0.2),
+        ]
+
+        self.log_update.emit("[DEMO] Modo demo activo: no se realizarán cambios reales.")
+
+        for token, value, delay in steps:
+            if self.isInterruptionRequested():
+                return
+            self.status_update.emit(token)
+            self.log_update.emit(f"[DEMO] Simulando paso: {token}")
+            self.progress_update.emit(value)
+            time.sleep(delay)
+
+        self.finished_success.emit()
+
     def generate_conf_file(self):
         """Genera el archivo .conf que espera el backend bash."""
         try:
@@ -89,7 +119,11 @@ class InstallWorker(QThread):
             return False
 
     def run(self):
-        # 1. Generar configuración
+        if self.demo:
+            self._run_demo()
+            return
+
+        # 1. Generar configuracion
         self.status_update.emit("INIT")
         if not self.generate_conf_file():
             return

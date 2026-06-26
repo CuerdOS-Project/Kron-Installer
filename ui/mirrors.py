@@ -82,17 +82,17 @@ class MirrorsPage(QWidget):
         self.mirror_combo.addItem(self.tr("Europa, Finlandia"), "Finland")
         self.mirror_combo.addItem(self.tr("Europa, Alemania"), "Germany")
         self.mirror_combo.addItem(self.tr("Global, CDN"), "Global")
-        self.mirror_combo.addItem(self.tr("Norte America, EEUU"), "USA")
+        self.mirror_combo.addItem(self.tr("Norteamérica, EE. UU."), "USA")
 
         self.chk_nonfree.setText(self.tr("Activar repositorios no libres"))
         self.chk_nvidia.setText(self.tr("Instalar drivers NVIDIA"))
         self.chk_nvidia.setToolTip(self.tr(
             "Instala los drivers propietarios de NVIDIA, optimizando el rendimiento "
-            "grafico y la compatibilidad con juegos y aplicaciones 3D."
+            "gráfico y la compatibilidad con juegos y aplicaciones 3D."
         ))
-        self.chk_intel.setText(self.tr("Instalar microcodigos Intel"))
+        self.chk_intel.setText(self.tr("Instalar microcódigos Intel"))
         self.chk_intel.setToolTip(self.tr(
-            "Instala microcodigos recientes de Intel para mejorar seguridad, "
+            "Instala microcódigos recientes de Intel para mejorar seguridad, "
             "estabilidad y compatibilidad con CPUs Intel modernas."
         ))
 

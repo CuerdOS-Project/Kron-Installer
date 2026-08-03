@@ -1,5 +1,9 @@
 # Kron Intaller
 
+<p align="center">
+  <img src="img/pst.png" alt="Capture" width="450"/>
+</p>
+
 Graphical installer for **CuerdOS GNU/Linux**, inspired by the official Void Linux installer, but rewritten in **Python + PySide6 (Qt6)**.  
 It allows you to configure partitions, user, system language, keyboard layout, and timezone in a simple and safe way.
 

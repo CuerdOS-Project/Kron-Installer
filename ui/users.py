@@ -9,6 +9,8 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QIcon
 
+from ui.title_widget import make_page_title
+
 
 # Rutas a los iconos de ojo (crearlos en ui/assets/)
 _ASSETS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
@@ -30,7 +32,7 @@ class UsersPage(QWidget):
         # Titulo de pagina
         self.titl = QLabel()
         self.titl.setObjectName("title")
-        main_layout.addWidget(self.titl)
+        main_layout.addWidget(make_page_title(self.titl, "system-users"))
         main_layout.addSpacing(14)
 
         # ===== Unica card con todo el formulario =====

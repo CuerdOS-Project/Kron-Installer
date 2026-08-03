@@ -3,6 +3,7 @@ from PySide6.QtWidgets import (
     QFrame, QSizePolicy
 )
 from PySide6.QtCore import Qt
+from ui.title_widget import make_page_title
 
 
 class MirrorsPage(QWidget):
@@ -19,7 +20,7 @@ class MirrorsPage(QWidget):
         # Titulo de pagina
         self.titl = QLabel()
         self.titl.setObjectName("title")
-        main_layout.addWidget(self.titl)
+        main_layout.addWidget(make_page_title(self.titl, "network-server"))
         main_layout.addSpacing(20)
 
         # --- Card: Mirror ---

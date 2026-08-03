@@ -9,6 +9,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt
 
 from utils.system_utils import SystemDetector
+from ui.title_widget import make_page_title
 
 
 class DisksPage(QWidget):
@@ -26,7 +27,7 @@ class DisksPage(QWidget):
         # Titulo de pagina
         self.titl = QLabel()
         self.titl.setObjectName("title")
-        main_layout.addWidget(self.titl)
+        main_layout.addWidget(make_page_title(self.titl, "drive-harddisk"))
         main_layout.addSpacing(14)
 
         # Layout horizontal: dos columnas

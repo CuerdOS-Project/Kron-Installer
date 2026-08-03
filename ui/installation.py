@@ -7,6 +7,7 @@ from PySide6.QtCore import Qt, Signal, QTimer
 from PySide6.QtGui import QPixmap
 import os
 from install.install_thread import InstallWorker
+from ui.title_widget import make_page_title
 
 _ASSETS_DIR = os.path.dirname(os.path.abspath(__file__))
 _SLIDES_DIR = os.path.join(_ASSETS_DIR, "assets", "slides")
@@ -121,6 +122,7 @@ class InstallationPage(QWidget):
         "init.webp",
         "desktop.webp",
         "update.webp",
+        "secure.webp",
         "community.webp",
     ]
 
@@ -166,6 +168,14 @@ class InstallationPage(QWidget):
                 ),
             ),
             (
+                self.tr("Seguro y preparado para errores"),
+                self.tr(
+                    "CuerdOS protege tu equipo desde el primer momento y está "
+                    "pensado para que, si algo falla, todo siga funcionando: "
+                    "la estabilidad es siempre la prioridad."
+                ),
+            ),
+            (
                 self.tr("Una comunidad que te acompaña"),
                 self.tr(
                     "Si tienes dudas o quieres compartir tu experiencia, "
@@ -197,7 +207,7 @@ class InstallationPage(QWidget):
         # Titulo de pagina
         self.titl = QLabel()
         self.titl.setObjectName("title")
-        main_layout.addWidget(self.titl)
+        main_layout.addWidget(make_page_title(self.titl, "system-software-install"))
         main_layout.addSpacing(12)
 
         # ---- Zona superior: estado + progreso ----
@@ -298,7 +308,7 @@ class InstallationPage(QWidget):
 
         # Timer para auto-rotar slides
         self._slide_timer = QTimer(self)
-        self._slide_timer.setInterval(8000)
+        self._slide_timer.setInterval(10000)
         self._slide_timer.timeout.connect(self._next_slide)
         self._slide_timer.start()
 
@@ -405,19 +415,12 @@ class InstallationPage(QWidget):
             widget.update_text(title, body)
 
     def on_success(self):
-        self._slide_timer.stop()
         self.install_finished = True
         self.texto_label.setText(self.tr("¡Instalación completada!"))
         self.progress.setValue(100)
-        QMessageBox.information(
-            self, self.tr("Éxito"),
-            self.tr("CuerdOS se ha instalado correctamente.\n"
-                   "Puede reiniciar su equipo.")
-        )
         self.finished_success.emit()
 
     def on_error(self, msg):
-        self._slide_timer.stop()
         self.install_error = True
         self.texto_label.setObjectName("errorStatusLabel")
         self.texto_label.setStyle(self.texto_label.style())

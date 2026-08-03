@@ -45,8 +45,17 @@ def global_stylesheet(assets_dir=None):
         font-size: 20px;
         font-weight: 600;
         color: #dff5e4;
+        background-color: transparent;
+    }
+
+    QWidget#titleRow {
+        background-color: transparent;
         padding-bottom: 10px;
         border-bottom: 1px solid #3a4a42;
+    }
+
+    QLabel#titleIcon {
+        background-color: transparent;
     }
 
     QLabel#welcomeTitle {
@@ -59,6 +68,18 @@ def global_stylesheet(assets_dir=None):
         font-size: 15px;
         font-weight: 500;
         color: #9fb7a7;
+    }
+
+    QLabel#completionTitle {
+        font-weight: 600;
+        color: #dff5e4;
+        background: transparent;
+    }
+
+    QLabel#completionSubtitle {
+        font-weight: 400;
+        color: #9fb7a7;
+        background: transparent;
     }
 
     QLabel#subtitle {
@@ -431,6 +452,14 @@ def global_stylesheet(assets_dir=None):
         spacing: 8px;
         color: #b7d6c2;
         font-size: 14px;
+        background-color: transparent;
+    }
+
+    QRadioButton {
+        spacing: 8px;
+        color: #b7d6c2;
+        font-size: 14px;
+        background-color: transparent;
     }
 
     QCheckBox::indicator {

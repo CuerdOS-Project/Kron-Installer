@@ -10,6 +10,7 @@ from ui.mirrors import MirrorsPage
 from ui.users import UsersPage
 from ui.disks import DisksPage
 from ui.installation import InstallationPage
+from ui.completion import CompletionPage
 from ui.about import AboutDialog
 from utils.system_utils import SystemDetector
 from install.config_collector import InstallerConfigCollector
@@ -127,6 +128,7 @@ class InstallWin(QWidget):
         self.pag_usuarios = UsersPage()
         self.pag_discos = DisksPage(self.system_data)
         self.pag_instalacion = InstallationPage(demo=self.demo)
+        self.pag_finalizacion = CompletionPage(images_dir=self._images_dir)
 
         # --- Definir orden de pasos ---
         self.steps = [
@@ -136,6 +138,7 @@ class InstallWin(QWidget):
             ("users", self.tr("Usuarios")),
             ("disks", self.tr("Discos")),
             ("install", self.tr("Instalación")),
+            ("completion", self.tr("Finalización")),
         ]
         if not self.has_net:
             # Sin internet: quitar mirrors
@@ -200,6 +203,7 @@ class InstallWin(QWidget):
         self.stack.addWidget(self.pag_usuarios)
         self.stack.addWidget(self.pag_discos)
         self.stack.addWidget(self.pag_instalacion)
+        self.stack.addWidget(self.pag_finalizacion)
 
         central_layout.addWidget(self.stack, 1)
 
@@ -246,9 +250,7 @@ class InstallWin(QWidget):
         self.btn_siguiente.clicked.connect(self.ir_siguiente)
 
         # Mensaje de finalizacion
-        self.pag_instalacion.finished_success.connect(
-            lambda: self.btn_siguiente.setVisible(True)
-        )
+        self.pag_instalacion.finished_success.connect(self._on_installation_success)
 
         # Boton "Mostrar/Ocultar log": solo visible en la pagina de instalacion
         self.pag_instalacion.log_state_changed.connect(self._sync_log_button_text)
@@ -280,6 +282,7 @@ class InstallWin(QWidget):
             "users": self.tr("Usuarios"),
             "disks": self.tr("Discos"),
             "install": self.tr("Instalación"),
+            "completion": self.tr("Finalización"),
         }
         for ind in self.step_indicators:
             ind.translate(texts)
@@ -297,6 +300,7 @@ class InstallWin(QWidget):
 
     def _on_stack_page_changed(self, index):
         is_install_page = isinstance(self.stack.widget(index), InstallationPage)
+        is_completion_page = isinstance(self.stack.widget(index), CompletionPage)
         self.btn_toggle_log.setVisible(is_install_page)
         if is_install_page:
             self._sync_log_button_text(self.pag_instalacion._showing_log)
@@ -313,6 +317,10 @@ class InstallWin(QWidget):
     def ir_siguiente(self):
         index = self.stack.currentIndex()
         curr_widget = self.stack.currentWidget()
+
+        if isinstance(curr_widget, UsersPage):
+            if not curr_widget.validate_passwords():
+                return
 
         if isinstance(curr_widget, DisksPage):
             if not getattr(self, "_confirm_install", False):
@@ -340,7 +348,7 @@ class InstallWin(QWidget):
                 self.pag_instalacion.iniciar_instalacion(config)
             return
 
-        if isinstance(curr_widget, InstallationPage):
+        if isinstance(curr_widget, CompletionPage):
             if self.demo:
                 self.close()
                 return
@@ -381,11 +389,25 @@ class InstallWin(QWidget):
             self.btn_siguiente.setStyle(self.btn_siguiente.style())
             self.btn_atras.setVisible(False)
             self.btn_siguiente.setVisible(False)
+        elif isinstance(self.stack.currentWidget(), CompletionPage):
+            self.btn_siguiente.setText(self.tr("Reiniciar"))
+            self.btn_siguiente.setObjectName("rebootButton")
+            self.btn_siguiente.setStyle(self.btn_siguiente.style())
+            self.btn_atras.setVisible(False)
+            self.btn_siguiente.setVisible(True)
         else:
             self.btn_siguiente.setText(self.tr("Siguiente"))
             self.btn_siguiente.setObjectName("nextButton")
             self.btn_siguiente.setStyle(self.btn_siguiente.style())
 
+
+    def _on_installation_success(self):
+        """Navega a la página de finalización cuando la instalación termina."""
+        index = self.stack.currentIndex()
+        if index < self.stack.count() - 1:
+            self.stack.setCurrentIndex(index + 1)
+        self.actualizar_botones()
+        self._update_stepper()
 
     def set_language(self, lang_code):
         QApplication.instance().removeTranslator(self.translator)
@@ -400,9 +422,10 @@ class InstallWin(QWidget):
         self.pag_usuarios.translate_ui()
         self.pag_discos.translate_ui()
         self.pag_instalacion.translate_ui()
+        self.pag_finalizacion.translate_ui()
 
     def closeEvent(self, event):
-        if isinstance(self.stack.currentWidget(), InstallationPage):
+        if isinstance(self.stack.currentWidget(), (InstallationPage, CompletionPage)):
             if self.pag_instalacion.install_finished:
                 event.accept()
                 return

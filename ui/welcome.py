@@ -4,7 +4,6 @@ from PySide6.QtCore import Qt, Signal
 import os
 
 _UI_DIR = os.path.dirname(os.path.abspath(__file__))
-_SLIDES_DIR = os.path.join(_UI_DIR, "assets", "slides")
 
 
 class WelcomePage(QWidget):
@@ -66,11 +65,11 @@ class WelcomePage(QWidget):
         # Logo grande centrado
         logo = QLabel()
         logo.setAlignment(Qt.AlignCenter)
-        identity_path = os.path.join(_SLIDES_DIR, "ps1.webp")
+        identity_path = os.path.join(self._images_dir, "ps1.webp") if self._images_dir else "images/ps1.webp"
         pixmap = QPixmap(identity_path)
         if not pixmap.isNull():
             logo.setPixmap(
-                pixmap.scaled(340, 340, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+                pixmap.scaled(500, 350, Qt.KeepAspectRatio, Qt.SmoothTransformation)
             )
         center.addWidget(logo, alignment=Qt.AlignCenter)
 

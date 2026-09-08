@@ -7,6 +7,35 @@ from utils.utils_locales import LanguageName, KeymapName
 from ui.title_widget import make_page_title
 
 
+_TIMEZONE_REGION_NAMES = {
+    "Africa": "África",
+    "America": "América",
+    "Antarctica": "Antártida",
+    "Arctic": "Ártico",
+    "Asia": "Asia",
+    "Atlantic": "Atlántico",
+    "Australia": "Australia",
+    "Europe": "Europa",
+    "Indian": "Índico",
+    "Pacific": "Pacífico",
+}
+
+
+def locale_display_name(locale):
+    # Devuelve un nombre legible sin perder el locale real como dato.
+    if locale.upper() in {"ES_ES.UTF-8", "ES_ES.UTF8"}:
+        return "Spanish (ES)"
+
+    normalized = locale.replace("-", "_")
+    parts = normalized.split("_", 1)
+    language_code = parts[0].split(".", 1)[0].split("@", 1)[0]
+    if len(parts) == 2:
+        region = parts[1].split(".", 1)[0].split("@", 1)[0]
+    else:
+        region = language_code.upper()
+    return f"{LanguageName(language_code)} ({region.upper()})"
+
+
 class LanguagePage(QWidget):
     def __init__(self, sys_data):
         super().__init__()
@@ -49,18 +78,28 @@ class LanguagePage(QWidget):
 
         if sys_data:
             self.timezones = sys_data["timezones"]
-            self.region_combo.addItems(sorted(self.timezones.keys()))
+            for region in sorted(self.timezones.keys()):
+                self.region_combo.addItem(_TIMEZONE_REGION_NAMES.get(region, region), region)
 
-            self.region_combo.currentTextChanged.connect(self.actualizar_ciudades)
-            self.actualizar_ciudades(self.region_combo.currentText())
+            self.region_combo.currentIndexChanged.connect(
+                lambda _index: self.actualizar_ciudades(self.region_combo.currentData())
+            )
+            self.actualizar_ciudades(self.region_combo.currentData())
 
-            for l in sys_data["locales"]:
-                display = f"{LanguageName(l[:2])} ({l})"
-                self.idioma_combo.addItem(display, l)
+            locale_entries = list(sys_data.get("locales", []))
+            default_locale = "es_ES.UTF-8"
+            if default_locale not in locale_entries:
+                locale_entries.append(default_locale)
+            for l in sorted(set(locale_entries)):
+                self.idioma_combo.addItem(locale_display_name(l), l)
 
-            for k in sys_data["keymaps"]:
-                display = f"{KeymapName(k)} ({k})"
-                self.teclado_combo.addItem(display, k)
+            # Usar únicamente los mapas realmente encontrados en la ISO.
+            # No se agregan alias, cabeceras regionales ni variantes sintéticas.
+            detected_keymaps = sorted(set(sys_data.get("keymaps", [])))
+            self._populate_keyboards([(keymap_id, keymap_id) for keymap_id in detected_keymaps])
+
+            # Valores iniciales solicitados para una instalación española.
+            self._select_default_regional_values()
 
         # Tamanos flexibles
         for combo in (self.region_combo, self.ciudad_combo,
@@ -76,6 +115,32 @@ class LanguagePage(QWidget):
         card_layout.addLayout(self.form_layout)
 
         main_layout.addWidget(card, 1)
+
+    def _populate_keyboards(self, keymap_entries):
+        # Construye una lista plana con los mapas disponibles en la ISO.
+        self.teclado_combo.clear()
+        for keymap_id, keymap_value in sorted(
+            keymap_entries, key=lambda item: KeymapName(item[0]).lower()
+        ):
+            self.teclado_combo.addItem(
+                f"{KeymapName(keymap_id)} ({keymap_id})", keymap_value
+            )
+
+    def _select_default_regional_values(self):
+        region_index = self.region_combo.findData("Europe")
+        if region_index >= 0:
+            self.region_combo.setCurrentIndex(region_index)
+        city_index = self.ciudad_combo.findText("Madrid")
+        if city_index >= 0:
+            self.ciudad_combo.setCurrentIndex(city_index)
+
+        locale_index = self.idioma_combo.findData("es_ES.UTF-8")
+        if locale_index >= 0:
+            self.idioma_combo.setCurrentIndex(locale_index)
+
+        keyboard_index = self.teclado_combo.findData("es")
+        if keyboard_index >= 0:
+            self.teclado_combo.setCurrentIndex(keyboard_index)
 
     def translate_ui(self):
         self.titl.setText(self.tr("Configuración regional"))

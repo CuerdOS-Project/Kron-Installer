@@ -4,15 +4,6 @@ from PySide6.QtCore import QSize
 
 
 def make_page_title(title_label: QLabel, icon_name: str, size: int = 22) -> QWidget:
-    """Envuelve el QLabel de titulo (objectName='title') en una fila con un
-    icono del tema del sistema a la izquierda. El titulo debe crearse antes
-    y ya tener setObjectName('title') aplicado; esta funcion solo lo inserta
-    en una fila junto al icono, conservando su estilo.
-
-    *icon_name* debe ser un nombre de icono freedesktop.org (icon-naming-spec),
-    p.ej. "system-users", "drive-harddisk", "network-server". Si el tema
-    actual no lo tiene, la fila simplemente se muestra sin icono.
-    """
     row = QWidget()
     row.setObjectName("titleRow")
 

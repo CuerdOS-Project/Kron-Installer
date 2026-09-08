@@ -1,8 +1,7 @@
 from PySide6.QtWidgets import (
-    QWidget, QLabel, QVBoxLayout, QHBoxLayout, QComboBox, QCheckBox,
+    QWidget, QLabel, QVBoxLayout, QComboBox, QCheckBox,
     QFrame, QSizePolicy
 )
-from PySide6.QtCore import Qt
 from ui.title_widget import make_page_title
 
 
@@ -22,6 +21,12 @@ class MirrorsPage(QWidget):
         self.titl.setObjectName("title")
         main_layout.addWidget(make_page_title(self.titl, "network-server"))
         main_layout.addSpacing(20)
+
+        self.page_help = QLabel()
+        self.page_help.setObjectName("hintLabel")
+        self.page_help.setWordWrap(True)
+        main_layout.addWidget(self.page_help)
+        main_layout.addSpacing(12)
 
         # --- Card: Mirror ---
         mirror_card = QFrame()
@@ -62,6 +67,7 @@ class MirrorsPage(QWidget):
         self.chk_intel.setEnabled(False)
 
         self.chk_nonfree.toggled.connect(self.actualizar_nonfree)
+        self.mirror_combo.currentIndexChanged.connect(self._actualizar_fuente)
 
         software_card_layout.addWidget(self.chk_nonfree)
         software_card_layout.addSpacing(4)
@@ -73,17 +79,23 @@ class MirrorsPage(QWidget):
         main_layout.addWidget(software_card, 1)
 
     def translate_ui(self):
-        self.titl.setText(self.tr("Repositorios y software"))
+        self.titl.setText(self.tr("Canal de software"))
+        self.page_help.setText(self.tr(
+            "Aquí eliges el servidor desde el que se descargarán los paquetes y qué componentes adicionales se instalarán. "
+            "Los repositorios no libres permiten acceder a software y firmware con licencias distintas a la base libre del sistema."
+        ))
         self.mirror_label.setText(self.tr("Servidor de descarga (mirror)"))
         self.software_title.setText(self.tr("Software adicional"))
 
         self.mirror_combo.blockSignals(True)
         self.mirror_combo.clear()
+        self.mirror_combo.addItem(self.tr("ISO local (actualizaré después)"), "Local")
         self.mirror_combo.addItem(self.tr("Predeterminado"), "Default")
         self.mirror_combo.addItem(self.tr("Europa, Finlandia"), "Finland")
         self.mirror_combo.addItem(self.tr("Europa, Alemania"), "Germany")
         self.mirror_combo.addItem(self.tr("Global, CDN"), "Global")
         self.mirror_combo.addItem(self.tr("Norteamérica, EE. UU."), "USA")
+        self.mirror_combo.setCurrentIndex(0)
 
         self.chk_nonfree.setText(self.tr("Activar repositorios no libres"))
         self.chk_nvidia.setText(self.tr("Instalar drivers NVIDIA"))
@@ -96,8 +108,19 @@ class MirrorsPage(QWidget):
             "Instala microcódigos recientes de Intel para mejorar seguridad, "
             "estabilidad y compatibilidad con CPUs Intel modernas."
         ))
+        self.mirror_combo.blockSignals(False)
+        self._actualizar_fuente(self.mirror_combo.currentIndex())
+
+    def _actualizar_fuente(self, _index):
+        # Las opciones de repositorio solo aplican a una fuente en red.
+        es_local = self.mirror_combo.currentData() == "Local"
+        self.chk_nonfree.setEnabled(not es_local)
+        if es_local:
+            self.chk_nonfree.setChecked(False)
+        self.actualizar_nonfree(self.chk_nonfree.isChecked())
 
     def actualizar_nonfree(self, activo):
+        activo = bool(activo) and self.mirror_combo.currentData() != "Local"
         self.chk_nvidia.setEnabled(activo)
         self.chk_intel.setEnabled(activo)
 

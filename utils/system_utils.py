@@ -2,6 +2,7 @@ import os
 import subprocess
 import json
 import glob
+import urllib.request
 from utils.utils_locales import KeymapName
 
 class SystemDetector:
@@ -11,20 +12,17 @@ class SystemDetector:
         return os.path.exists("/sys/firmware/efi")
 
     @staticmethod
-    def has_internet(timeout=2):
+    def has_internet(timeout=3):
         """
-        Comprueba si hay conexión a Internet.
-        Devuelve True / False.
+        Comprueba conectividad HTTP a repositorios de Void Linux.
         """
-        try:
-            result = subprocess.run(
-                ["ping", "-c", "1", "-W", str(timeout), "1.1.1.1"],
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-            return result.returncode == 0
-        except Exception:
-            return False
+        for url in ("https://repo-default.voidlinux.org/", "https://repo-fastly.voidlinux.org/"):
+            try:
+                urllib.request.urlopen(url, timeout=timeout)
+                return True
+            except Exception:
+                continue
+        return False
 
     @staticmethod
     def detect_disks():
@@ -120,7 +118,6 @@ class SystemDetector:
             if os.path.isdir(region_path) and region not in ignore:
                 cities = []
                 for city in os.listdir(region_path):
-                    # Filtrar solo archivos binarios de zona
                     if os.path.isfile(os.path.join(region_path, city)):
                         cities.append(city)
                 if cities:
@@ -161,10 +158,43 @@ class SystemDetector:
                     line = line.strip()
                     if not line or ".UTF-8" not in line:
                         continue
-                    # Quitar comentario al inicio y extraer el locale
                     cleaned = line.lstrip("#").strip()
                     parts = cleaned.split()
                     if parts and parts[0].endswith("UTF-8"):
                         locales.append(parts[0])
 
         return sorted(locales)
+
+    @staticmethod
+    def detect_display_manager():
+        """
+        Detecta el gestor de pantalla (display manager) instalado.
+        Devuelve el nombre del DM o cadena vacía si no se encuentra.
+        Nota: Void Linux usa runit, no systemd.
+        """
+        # Buscar por servicios runit activos (método principal en Void)
+        runit_services = {
+            "/var/service/greetd": "greetd",
+            "/var/service/sddm": "sddm",
+            "/var/service/lightdm": "lightdm",
+            "/var/service/gdm": "gdm",
+        }
+        
+        for path, name in runit_services.items():
+            if os.path.exists(path):
+                return name
+        
+        # Fallback: buscar binarios
+        dm_bins = {
+            "/usr/bin/sddm": "sddm",
+            "/usr/bin/lightdm": "lightdm",
+            "/usr/bin/gdm": "gdm",
+            "/usr/bin/gdm3": "gdm",
+            "/usr/bin/greetd": "greetd",
+        }
+        
+        for path, name in dm_bins.items():
+            if os.path.exists(path):
+                return name
+        
+        return ""

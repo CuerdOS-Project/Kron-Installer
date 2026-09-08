@@ -170,6 +170,65 @@ Deseas continuar?</source>
         <translation>Ошибка разметки {disk}:
 {e}</translation>
     </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Dónde instalar CuerdOS</source>
+        <translation>Куда установить CuerdOS</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>En esta pantalla eliges el disco y las particiones donde se instalará CuerdOS. Puedes usar el particionado automático o asignar manualmente cada punto de montaje.</source>
+        <translation>Выберите диск и разделы для установки CuerdOS. Можно использовать автоматическую разметку или назначить точки монтирования вручную.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>BTRFS y EXT4 son las opciones recomendadas. BTRFS ofrece funciones avanzadas; EXT4 prioriza sencillez y compatibilidad.</source>
+        <translation>Рекомендуются BTRFS и EXT4. BTRFS предоставляет расширенные возможности, а EXT4 — простоту и совместимость.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Raíz (/): contiene el sistema instalado.
+</source>
+        <translation>Корень (/): содержит установленную систему.
+</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Home (/home): guarda tus archivos personales y configuraciones.
+</source>
+        <translation>Home (/home): хранит личные файлы и настройки.
+</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>EFI (/boot/efi): contiene los archivos de arranque en equipos UEFI.</source>
+        <translation>EFI (/boot/efi): содержит загрузочные файлы систем UEFI.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Swap: espacio de intercambio usado cuando falta memoria RAM.</source>
+        <translation>Swap: область подкачки при нехватке оперативной памяти.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Contiene el sistema instalado y sus programas.</source>
+        <translation>Содержит установленную систему и программы.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Contiene los archivos de arranque de equipos UEFI.</source>
+        <translation>Содержит загрузочные файлы систем UEFI.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Guarda los archivos personales y las configuraciones de los usuarios.</source>
+        <translation>Хранит личные файлы и настройки пользователей.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Espacio de intercambio usado cuando falta memoria RAM.</source>
+        <translation>Область подкачки при нехватке оперативной памяти.</translation>
+    </message>
 </context>
 <context>
     <name>InstallWin</name>
@@ -270,7 +329,27 @@ Deseas continuar?</source>
         <source>Reiniciar</source>
         <translation>Перезагрузить</translation>
     </message>
-<message><location filename="../ui/install_win.py" line="285" /><source>Finalización</source><translation>Завершение</translation></message></context>
+<message><location filename="../ui/install_win.py" line="285" /><source>Finalización</source><translation>Завершение</translation></message>    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Configuración regional</source>
+        <translation>Региональные настройки</translation>
+    </message>
+    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Canal de software</source>
+        <translation>Канал программного обеспечения</translation>
+    </message>
+    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Usuario</source>
+        <translation>Пользователь</translation>
+    </message>
+    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Dónde instalar CuerdOS</source>
+        <translation>Куда установить CuerdOS</translation>
+    </message>
+</context>
 <context>
     <name>InstallWorker</name>
     <message>
@@ -690,6 +769,16 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <source>Instalar drivers NVIDIA</source>
         <translation>Установить драйверы NVIDIA</translation>
     </message>
+    <message>
+        <location filename="../ui/mirrors.py" />
+        <source>Canal de software</source>
+        <translation>Канал программного обеспечения</translation>
+    </message>
+    <message>
+        <location filename="../ui/mirrors.py" />
+        <source>Aquí eliges el servidor desde el que se descargarán los paquetes y qué componentes adicionales se instalarán. Los repositorios no libres permiten acceder a software y firmware con licencias distintas a la base libre del sistema.</source>
+        <translation>Выберите сервер для загрузки пакетов и дополнительные компоненты. Неф свободные репозитории предоставляют ПО и прошивки с лицензиями, отличными от свободной основы системы.</translation>
+    </message>
 </context>
 <context>
     <name>UsersPage</name>
@@ -783,6 +872,31 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <source>Confirmar:</source>
         <translation>Подтвердите:</translation>
     </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Iniciar sesión automáticamente</source>
+        <translation>Входить автоматически</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Disponible con SDDM, LightDM o GDM. Con greetd no es posible configurarlo desde este instalador.</source>
+        <translation>Доступно для SDDM, LightDM или GDM. В greetd это нельзя настроить с помощью этого установщика.</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Autologin disponible mediante {manager}.</source>
+        <translation>Автоматический вход доступен через {manager}.</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Con greetd no es posible configurar autologin con este instalador.</source>
+        <translation>В greetd нельзя настроить автоматический вход с помощью этого установщика.</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Información personal</source>
+        <translation>Личная информация</translation>
+    </message>
 </context>
 <context>
     <name>WelcomePage</name>
@@ -813,4 +927,67 @@ Instalador en modo offline.</source>
 </context>
 <context><name>CompletionPage</name><message><source>Instalación completada</source><translation>Установка завершена</translation></message><message><source>¡Bienvenido a CuerdOS!</source><translation>Добро пожаловать в CuerdOS!</translation></message><message><source>Tu sistema ha sido instalado correctamente.
 Haz clic en 'Reiniciar' para completar el proceso.</source><translation>Ваша система была успешно установлена.
-Нажмите «Перезагрузить», чтобы завершить процесс.</translation></message><message><source>Imagen de finalización</source><translation>Изображение завершения</translation></message></context></TS>
+Нажмите «Перезагрузить», чтобы завершить процесс.</translation></message><message><source>Imagen de finalización</source><translation>Изображение завершения</translation></message></context>    <context>
+        <name>InstallationErrorPage</name>
+        <message>
+            <source>Instalación fallida</source>
+            <translation>Установка не выполнена</translation>
+        </message>
+        <message>
+            <source>La instalación no se pudo completar.</source>
+            <translation>Не удалось завершить установку.</translation>
+        </message>
+        <message>
+            <source>Se produjo el siguiente error:</source>
+            <translation>Произошла следующая ошибка:</translation>
+        </message>
+        <message>
+            <source>El registro puede ayudar a diagnosticar el problema.</source>
+            <translation>Журнал поможет диагностировать проблему.</translation>
+        </message>
+        <message>
+            <source>Abrir log</source>
+            <translation>Открыть журнал</translation>
+        </message>
+        <message>
+            <source>Exportar log</source>
+            <translation>Экспортировать журнал</translation>
+        </message>
+        <message>
+            <source>El archivo de registro no está disponible.</source>
+            <translation>Файл журнала недоступен.</translation>
+        </message>
+        <message>
+            <source>No se pudo abrir el registro de instalación.</source>
+            <translation>Не удалось открыть журнал установки.</translation>
+        </message>
+        <message>
+            <source>Exportar registro de instalación</source>
+            <translation>Экспортировать журнал установки</translation>
+        </message>
+        <message>
+            <source>No se pudo exportar el registro de instalación.</source>
+            <translation>Не удалось экспортировать журнал установки.</translation>
+        </message>
+        <message>
+            <source>Registro exportado</source>
+            <translation>Журнал экспортирован</translation>
+        </message>
+        <message>
+            <source>El registro se exportó correctamente.</source>
+            <translation>Журнал успешно экспортирован.</translation>
+        </message>
+        <message>
+            <source>Error desconocido</source>
+            <translation>Неизвестная ошибка</translation>
+        </message>
+        <message>
+            <source>Registro no disponible</source>
+            <translation>Журнал недоступен</translation>
+        </message>
+        <message>
+            <source>Error</source>
+            <translation>Ошибка</translation>
+        </message>
+    </context>
+</TS>

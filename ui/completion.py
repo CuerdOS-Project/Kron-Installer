@@ -1,16 +1,11 @@
-from PySide6.QtWidgets import (
-    QWidget, QLabel, QVBoxLayout, QHBoxLayout, QPushButton, QSizePolicy
-)
-from PySide6.QtCore import Qt, QEvent
-from PySide6.QtGui import QPixmap, QFont, QFontMetrics
+from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QPixmap, QFontMetrics
 import os
 from ui.title_widget import make_page_title
 
-_UI_DIR = os.path.dirname(os.path.abspath(__file__))
-
-
 class AdaptiveLabel(QLabel):
-    """Un QLabel que ajusta automáticamente su tamaño de fuente para caber en su ancho."""
+    # Un QLabel que ajusta automáticamente su tamaño de fuente para caber en su ancho.
     
     def __init__(self, text="", min_font_size=10, max_font_size=28, parent=None):
         super().__init__(text, parent)
@@ -56,7 +51,7 @@ class AdaptiveLabel(QLabel):
 
 
 class CompletionPage(QWidget):
-    """Página de finalización que se muestra después de completar la instalación."""
+    # Página de finalización que se muestra después de completar la instalación.
 
     def __init__(self, images_dir=None):
         super().__init__()

@@ -10,6 +10,7 @@ from ui.mirrors import MirrorsPage
 from ui.users import UsersPage
 from ui.disks import DisksPage
 from ui.installation import InstallationPage
+from ui.installation_error import InstallationErrorPage
 from ui.completion import CompletionPage
 from ui.about import AboutDialog
 from utils.system_utils import SystemDetector
@@ -19,7 +20,7 @@ import os
 
 
 class StepIndicator(QWidget):
-    """Un item individual del sidebar stepper."""
+    # Un item individual del sidebar stepper.
 
     def __init__(self, number, text_key, parent=None):
         super().__init__(parent)
@@ -27,15 +28,15 @@ class StepIndicator(QWidget):
         self.text_key = text_key
         self.state = "pending"  # "pending", "active", "done"
 
-        self.setFixedHeight(36)
+        self.setFixedHeight(46)
 
         layout = QHBoxLayout(self)
-        layout.setContentsMargins(12, 4, 12, 4)
-        layout.setSpacing(10)
+        layout.setContentsMargins(18, 4, 18, 4)
+        layout.setSpacing(12)
 
         # Numero / check en circulo
         self.circle_label = QLabel()
-        self.circle_label.setFixedSize(24, 24)
+        self.circle_label.setFixedSize(30, 30)
         self.circle_label.setAlignment(Qt.AlignCenter)
         self.circle_label.setStyleSheet(
             "background-color: #3a4a42; border-radius: 12px; "
@@ -106,8 +107,8 @@ class InstallWin(QWidget):
         self.translate_ui()
 
     def setup_ui(self):
-        self.setMinimumSize(900, 520)
-        self.resize(1024, 600)
+        self.setMinimumSize(980, 620)
+        self.resize(1120, 720)
 
         # --- DETECCION DE HARDWARE ---
         self.system_data = {
@@ -116,6 +117,7 @@ class InstallWin(QWidget):
             "timezones": SystemDetector.detect_timezones(),
             "locales": SystemDetector.detect_locales(),
             "keymaps": SystemDetector.detect_keymaps(),
+            "display_manager": SystemDetector.detect_display_manager(),
         }
         self.has_net = self.system_data["net"]
 
@@ -126,17 +128,19 @@ class InstallWin(QWidget):
         self.pag_idiomas = LanguagePage(self.system_data)
         self.pag_mirrors = MirrorsPage(self.system_data)
         self.pag_usuarios = UsersPage()
+        self.pag_usuarios.set_autologin_support(self.system_data["display_manager"])
         self.pag_discos = DisksPage(self.system_data)
         self.pag_instalacion = InstallationPage(demo=self.demo)
+        self.pag_error = InstallationErrorPage(self)
         self.pag_finalizacion = CompletionPage(images_dir=self._images_dir)
 
         # --- Definir orden de pasos ---
         self.steps = [
             ("welcome", self.tr("Bienvenida")),
-            ("language", self.tr("Regional")),
-            ("mirrors", self.tr("Repositorios")),
-            ("users", self.tr("Usuarios")),
-            ("disks", self.tr("Discos")),
+            ("language", self.tr("Configuración regional")),
+            ("mirrors", self.tr("Canal de software")),
+            ("users", self.tr("Usuario")),
+            ("disks", self.tr("Dónde instalar CuerdOS")),
             ("install", self.tr("Instalación")),
             ("completion", self.tr("Finalización")),
         ]
@@ -152,10 +156,10 @@ class InstallWin(QWidget):
         # ===== SIDEBAR =====
         self.sidebar = QWidget()
         self.sidebar.setObjectName("sidebar")
-        self.sidebar.setFixedWidth(190)
+        self.sidebar.setFixedWidth(238)
         sidebar_layout = QVBoxLayout(self.sidebar)
-        sidebar_layout.setContentsMargins(0, 20, 0, 20)
-        sidebar_layout.setSpacing(4)
+        sidebar_layout.setContentsMargins(0, 28, 0, 24)
+        sidebar_layout.setSpacing(6)
 
         # Logo en sidebar
         sidebar_logo = QLabel()
@@ -165,10 +169,10 @@ class InstallWin(QWidget):
         logo_pixmap = QPixmap(logo_path)
         if not logo_pixmap.isNull():
             sidebar_logo.setPixmap(
-                logo_pixmap.scaled(100, 50, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+                logo_pixmap.scaled(122, 58, Qt.KeepAspectRatio, Qt.SmoothTransformation)
             )
         sidebar_layout.addWidget(sidebar_logo)
-        sidebar_layout.addSpacing(16)
+        sidebar_layout.addSpacing(24)
 
         # Stepper items
         self.step_indicators = []
@@ -204,15 +208,16 @@ class InstallWin(QWidget):
         self.stack.addWidget(self.pag_discos)
         self.stack.addWidget(self.pag_instalacion)
         self.stack.addWidget(self.pag_finalizacion)
+        self.stack.addWidget(self.pag_error)
 
         central_layout.addWidget(self.stack, 1)
 
         # ===== FOOTER BAR =====
         self.footer_bar = QWidget()
         self.footer_bar.setObjectName("footerBar")
-        self.footer_bar.setFixedHeight(52)
+        self.footer_bar.setFixedHeight(68)
         footer_layout = QHBoxLayout(self.footer_bar)
-        footer_layout.setContentsMargins(20, 0, 20, 0)
+        footer_layout.setContentsMargins(28, 0, 28, 0)
 
         self.btn_atras = QPushButton()
         self.btn_atras.setObjectName("backButton")
@@ -251,6 +256,7 @@ class InstallWin(QWidget):
 
         # Mensaje de finalizacion
         self.pag_instalacion.finished_success.connect(self._on_installation_success)
+        self.pag_instalacion.finished_error.connect(self._on_installation_error)
 
         # Boton "Mostrar/Ocultar log": solo visible en la pagina de instalacion
         self.pag_instalacion.log_state_changed.connect(self._sync_log_button_text)
@@ -277,10 +283,10 @@ class InstallWin(QWidget):
     def _translate_stepper(self):
         texts = {
             "welcome": self.tr("Bienvenida"),
-            "language": self.tr("Regional"),
-            "mirrors": self.tr("Repositorios"),
-            "users": self.tr("Usuarios"),
-            "disks": self.tr("Discos"),
+            "language": self.tr("Configuración regional"),
+            "mirrors": self.tr("Canal de software"),
+            "users": self.tr("Usuario"),
+            "disks": self.tr("Dónde instalar CuerdOS"),
             "install": self.tr("Instalación"),
             "completion": self.tr("Finalización"),
         }
@@ -301,7 +307,9 @@ class InstallWin(QWidget):
     def _on_stack_page_changed(self, index):
         is_install_page = isinstance(self.stack.widget(index), InstallationPage)
         is_completion_page = isinstance(self.stack.widget(index), CompletionPage)
+        is_error_page = isinstance(self.stack.widget(index), InstallationErrorPage)
         self.btn_toggle_log.setVisible(is_install_page)
+        self.footer_bar.setVisible(not is_error_page)
         if is_install_page:
             self._sync_log_button_text(self.pag_instalacion._showing_log)
 
@@ -395,6 +403,9 @@ class InstallWin(QWidget):
             self.btn_siguiente.setStyle(self.btn_siguiente.style())
             self.btn_atras.setVisible(False)
             self.btn_siguiente.setVisible(True)
+        elif isinstance(self.stack.currentWidget(), InstallationErrorPage):
+            self.btn_siguiente.setVisible(False)
+            self.btn_atras.setVisible(False)
         else:
             self.btn_siguiente.setText(self.tr("Siguiente"))
             self.btn_siguiente.setObjectName("nextButton")
@@ -402,10 +413,16 @@ class InstallWin(QWidget):
 
 
     def _on_installation_success(self):
-        """Navega a la página de finalización cuando la instalación termina."""
-        index = self.stack.currentIndex()
-        if index < self.stack.count() - 1:
-            self.stack.setCurrentIndex(index + 1)
+        # Navega a la página de finalización cuando la instalación termina.
+        index = self.stack.indexOf(self.pag_finalizacion)
+        self.stack.setCurrentIndex(index)
+        self.actualizar_botones()
+        self._update_stepper()
+
+    def _on_installation_error(self, message):
+        # Muestra el detalle del fallo y conserva el log para el usuario.
+        self.pag_error.set_error(message, "/tmp/installation.log")
+        self.stack.setCurrentWidget(self.pag_error)
         self.actualizar_botones()
         self._update_stepper()
 
@@ -422,10 +439,11 @@ class InstallWin(QWidget):
         self.pag_usuarios.translate_ui()
         self.pag_discos.translate_ui()
         self.pag_instalacion.translate_ui()
+        self.pag_error.translate_ui()
         self.pag_finalizacion.translate_ui()
 
     def closeEvent(self, event):
-        if isinstance(self.stack.currentWidget(), (InstallationPage, CompletionPage)):
+        if isinstance(self.stack.currentWidget(), (InstallationPage, CompletionPage, InstallationErrorPage)):
             if self.pag_instalacion.install_finished:
                 event.accept()
                 return

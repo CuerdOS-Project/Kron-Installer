@@ -3,8 +3,6 @@ from PySide6.QtGui import QPixmap
 from PySide6.QtCore import Qt, Signal
 import os
 
-_UI_DIR = os.path.dirname(os.path.abspath(__file__))
-
 
 class WelcomePage(QWidget):
     languageChanged = Signal(str)

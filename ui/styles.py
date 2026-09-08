@@ -1,17 +1,3 @@
-# styles.py — Paleta de colores Kron Installer (v2 Professional)
-# ============================================================
-# Fondo principal:  #1f2421
-# Fondo sidebar:    #181d1a
-# Fondo tarjetas:   #2a312d
-# Acento verde:     #6fa67a
-# Acento brillante: #7bcf93
-# Texto principal:  #e6f1ea
-# Texto secundario: #9fb7a7
-# Texto terciario:  #7f9688
-# Borde sutil:      #3a4a42
-# Error:            #d46b6b
-# ============================================================
-
 import os
 
 def global_stylesheet(assets_dir=None):
@@ -106,6 +92,16 @@ def global_stylesheet(assets_dir=None):
     QLabel#errorStatusLabel {
         font-size: 18px;
         color: #d46b6b;
+    }
+
+    QLabel#errorDetailLabel {
+        color: #f0b2b2;
+        font-size: 13px;
+        font-weight: 500;
+        background-color: #2a2424;
+        border: 1px solid #5a3d3d;
+        border-radius: 8px;
+        padding: 10px 14px;
     }
 
     QLabel#netCardLabel {

@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import (
     QWidget, QLabel, QVBoxLayout, QHBoxLayout, QPlainTextEdit,
-    QProgressBar, QMessageBox, QPushButton, QFrame, QSizePolicy,
+    QProgressBar, QPushButton, QFrame, QSizePolicy,
     QStackedWidget
 )
 from PySide6.QtCore import Qt, Signal, QTimer
@@ -192,13 +192,12 @@ class InstallationPage(QWidget):
         self.worker = None
         self._current_slide = 0
         self._slide_count = len(self.SLIDE_IMAGES)
+        self._demo_success_pending = False
         self._showing_log = False
         self.setup_ui()
         self.translate_ui()
 
-    # ------------------------------------------------------------------ #
     #  UI
-    # ------------------------------------------------------------------ #
     def setup_ui(self):
         main_layout = QVBoxLayout(self)
         main_layout.setContentsMargins(32, 24, 32, 12)
@@ -315,11 +314,20 @@ class InstallationPage(QWidget):
         # Estado inicial de dots
         self._update_dots()
 
-    # ------------------------------------------------------------------ #
     #  Slides
-    # ------------------------------------------------------------------ #
     def _next_slide(self):
-        self._current_slide = (self._current_slide + 1) % self._slide_count
+        # En modo demo no se permite volver al inicio una vez que la
+        # instalación terminó: el último slide debe verse completo.
+        if self.demo and self._demo_success_pending and self._current_slide == self._slide_count - 1:
+            self._slide_timer.stop()
+            self._complete_success()
+            return
+
+        if self.demo and self._demo_success_pending:
+            self._current_slide = min(self._current_slide + 1, self._slide_count - 1)
+        else:
+            self._current_slide = (self._current_slide + 1) % self._slide_count
+
         self.slide_stack.setCurrentIndex(self._current_slide)
         self._update_dots()
         self._slide_timer.start()
@@ -341,9 +349,7 @@ class InstallationPage(QWidget):
                     "color: #3a4a42; font-size: 10px; background: transparent;"
                 )
 
-    # ------------------------------------------------------------------ #
     #  Toggle log (slides <-> terminal en el mismo espacio)
-    # ------------------------------------------------------------------ #
     def toggle_log(self):
         if self._showing_log:
             # Volver a slides
@@ -357,14 +363,22 @@ class InstallationPage(QWidget):
             self._showing_log = True
         self.log_state_changed.emit(self._showing_log)
 
-    # ------------------------------------------------------------------ #
     #  Instalacion
-    # ------------------------------------------------------------------ #
+    def _set_progress_mode(self, indeterminate):
+        # Cambia entre descarga sin porcentaje y progreso determinado.
+        if indeterminate:
+            self.progress.setRange(0, 0)
+            self.progress.setTextVisible(False)
+        else:
+            self.progress.setRange(0, 100)
+            self.progress.setTextVisible(True)
+
     def iniciar_instalacion(self, config_data):
         if self.demo:
             self.texto_label.setText(self.tr("Iniciando simulación (modo demo)..."))
         else:
             self.texto_label.setText(self.tr("Iniciando motor de instalación (Root)..."))
+        self._set_progress_mode(False)
         self.progress.setValue(0)
 
         self.worker = InstallWorker(config_data, demo=self.demo)
@@ -378,6 +392,10 @@ class InstallationPage(QWidget):
         self.worker.start()
 
     def on_status_update(self, token: str):
+        if token == "UPDATE_DOWNLOAD":
+            self._set_progress_mode(True)
+        elif token == "UPDATE_INSTALL":
+            self._set_progress_mode(False)
         texto = self.UI_STATUS_TEXTS.get(token)
         if texto:
             self.texto_label.setText(texto)
@@ -392,13 +410,15 @@ class InstallationPage(QWidget):
             "CREATE_FS": self.tr("Creando sistemas de archivos..."),
             "COPY": self.tr("Copiando el sistema base..."),
             "REGIONAL_CONFIG": self.tr("Configurando idioma y zona horaria..."),
-            "UPDATE": self.tr("Actualizando el sistema..."),
+            "UPDATE_DOWNLOAD": self.tr("Descargando actualizaciones..."),
+            "UPDATE_INSTALL": self.tr("Instalando actualizaciones..."),
             "MIRROR": self.tr("Configurando servidor de repositorios..."),
             "NON-FREE": self.tr("Configurando repositorios de software propietario."),
             "NVIDIA": self.tr("Instalando controladores NVIDIA..."),
             "INTEL": self.tr("Instalando microcódigos de Intel..."),
             "USER_CONFIG": self.tr("Creando usuarios y contraseñas..."),
             "GRUB_INSTALL": self.tr("Instalando el cargador de arranque..."),
+            "REMOVE_PACKAGES": self.tr("Eliminando paquetes seleccionados..."),
             "DONE": self.tr("Instalación completada correctamente"),
         }
 
@@ -414,15 +434,29 @@ class InstallationPage(QWidget):
         for widget, (title, body) in zip(self._slide_widgets, self._slide_texts()):
             widget.update_text(title, body)
 
-    def on_success(self):
+    def _complete_success(self):
+        if self.install_finished:
+            return
         self.install_finished = True
+        self._demo_success_pending = False
         self.texto_label.setText(self.tr("¡Instalación completada!"))
+        self._set_progress_mode(False)
         self.progress.setValue(100)
         self.finished_success.emit()
+
+    def on_success(self):
+        # El modo demo conserva el carrusel visible hasta pasar por el
+        # último slide. La instalación real mantiene su comportamiento normal.
+        if self.demo:
+            self._demo_success_pending = True
+            self._slide_timer.start()
+            return
+        self._complete_success()
 
     def on_error(self, msg):
         self.install_error = True
         self.texto_label.setObjectName("errorStatusLabel")
         self.texto_label.setStyle(self.texto_label.style())
         self.texto_label.setText(self.tr("Error en la instalación"))
-        QMessageBox.critical(self, self.tr("Error Fatal"), msg)
+        self._slide_timer.stop()
+        self.finished_error.emit(msg)

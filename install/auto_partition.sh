@@ -1,6 +1,5 @@
 #!/bin/bash
 # auto_partition.sh
-# Uso: pkexec bash auto_partition.sh /dev/sdX
 
 DISK="$1"
 TARGET="/mnt/target"

@@ -170,6 +170,65 @@ Do you want to continue?</translation>
         <translation>Failed to partition {disk}:
 {e}</translation>
     </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Dónde instalar CuerdOS</source>
+        <translation>Where to install CuerdOS</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>En esta pantalla eliges el disco y las particiones donde se instalará CuerdOS. Puedes usar el particionado automático o asignar manualmente cada punto de montaje.</source>
+        <translation>Choose the disk and partitions where CuerdOS will be installed. You can use automatic partitioning or assign each mount point manually.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>BTRFS y EXT4 son las opciones recomendadas. BTRFS ofrece funciones avanzadas; EXT4 prioriza sencillez y compatibilidad.</source>
+        <translation>BTRFS and EXT4 are the recommended options. BTRFS provides advanced features; EXT4 prioritizes simplicity and compatibility.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Raíz (/): contiene el sistema instalado.
+</source>
+        <translation>Root (/): contains the installed system.
+</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Home (/home): guarda tus archivos personales y configuraciones.
+</source>
+        <translation>Home (/home): stores your personal files and settings.
+</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>EFI (/boot/efi): contiene los archivos de arranque en equipos UEFI.</source>
+        <translation>EFI (/boot/efi): contains boot files on UEFI systems.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Swap: espacio de intercambio usado cuando falta memoria RAM.</source>
+        <translation>Swap: swap space used when RAM is insufficient.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Contiene el sistema instalado y sus programas.</source>
+        <translation>Contains the installed system and its programs.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Contiene los archivos de arranque de equipos UEFI.</source>
+        <translation>Contains boot files for UEFI systems.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Guarda los archivos personales y las configuraciones de los usuarios.</source>
+        <translation>Stores users' personal files and settings.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Espacio de intercambio usado cuando falta memoria RAM.</source>
+        <translation>Swap space used when RAM is insufficient.</translation>
+    </message>
 </context>
 <context>
     <name>InstallWin</name>
@@ -270,7 +329,27 @@ Do you want to continue?</translation>
         <source>Reiniciar</source>
         <translation>Reboot</translation>
     </message>
-<message><location filename="../ui/install_win.py" line="285" /><source>Finalización</source><translation>Completion</translation></message></context>
+<message><location filename="../ui/install_win.py" line="285" /><source>Finalización</source><translation>Completion</translation></message>    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Configuración regional</source>
+        <translation>Regional settings</translation>
+    </message>
+    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Canal de software</source>
+        <translation>Software channel</translation>
+    </message>
+    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Usuario</source>
+        <translation>User</translation>
+    </message>
+    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Dónde instalar CuerdOS</source>
+        <translation>Where to install CuerdOS</translation>
+    </message>
+</context>
 <context>
     <name>InstallWorker</name>
     <message>
@@ -690,6 +769,16 @@ numbers, hyphens and underscores, and cannot contain spaces.</translation>
         <source>Instalar drivers NVIDIA</source>
         <translation>Install NVIDIA drivers</translation>
     </message>
+    <message>
+        <location filename="../ui/mirrors.py" />
+        <source>Canal de software</source>
+        <translation>Software channel</translation>
+    </message>
+    <message>
+        <location filename="../ui/mirrors.py" />
+        <source>Aquí eliges el servidor desde el que se descargarán los paquetes y qué componentes adicionales se instalarán. Los repositorios no libres permiten acceder a software y firmware con licencias distintas a la base libre del sistema.</source>
+        <translation>Choose the server from which packages will be downloaded and which additional components will be installed. Non-free repositories provide access to software and firmware with licenses different from the system's free base.</translation>
+    </message>
 </context>
 <context>
     <name>UsersPage</name>
@@ -783,6 +872,31 @@ numbers, hyphens and underscores, and cannot contain spaces.</translation>
         <source>Confirmar:</source>
         <translation>Confirm:</translation>
     </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Iniciar sesión automáticamente</source>
+        <translation>Log in automatically</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Disponible con SDDM, LightDM o GDM. Con greetd no es posible configurarlo desde este instalador.</source>
+        <translation>Available with SDDM, LightDM or GDM. With greetd, it cannot be configured by this installer.</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Autologin disponible mediante {manager}.</source>
+        <translation>Autologin available through {manager}.</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Con greetd no es posible configurar autologin con este instalador.</source>
+        <translation>Autologin cannot be configured with greetd by this installer.</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Información personal</source>
+        <translation>Personal information</translation>
+    </message>
 </context>
 <context>
     <name>WelcomePage</name>
@@ -813,4 +927,67 @@ Installer in offline mode.</translation>
 </context>
 <context><name>CompletionPage</name><message><source>Instalación completada</source><translation>Installation completed</translation></message><message><source>¡Bienvenido a CuerdOS!</source><translation>Welcome to CuerdOS!</translation></message><message><source>Tu sistema ha sido instalado correctamente.
 Haz clic en 'Reiniciar' para completar el proceso.</source><translation>Your system has been installed correctly.
-Click 'Restart' to complete the process.</translation></message><message><source>Imagen de finalización</source><translation>Completion image</translation></message></context></TS>
+Click 'Restart' to complete the process.</translation></message><message><source>Imagen de finalización</source><translation>Completion image</translation></message></context>    <context>
+        <name>InstallationErrorPage</name>
+        <message>
+            <source>Instalación fallida</source>
+            <translation>Installation failed</translation>
+        </message>
+        <message>
+            <source>La instalación no se pudo completar.</source>
+            <translation>The installation could not be completed.</translation>
+        </message>
+        <message>
+            <source>Se produjo el siguiente error:</source>
+            <translation>The following error occurred:</translation>
+        </message>
+        <message>
+            <source>El registro puede ayudar a diagnosticar el problema.</source>
+            <translation>The log can help diagnose the problem.</translation>
+        </message>
+        <message>
+            <source>Abrir log</source>
+            <translation>Open log</translation>
+        </message>
+        <message>
+            <source>Exportar log</source>
+            <translation>Export log</translation>
+        </message>
+        <message>
+            <source>El archivo de registro no está disponible.</source>
+            <translation>The log file is not available.</translation>
+        </message>
+        <message>
+            <source>No se pudo abrir el registro de instalación.</source>
+            <translation>The installation log could not be opened.</translation>
+        </message>
+        <message>
+            <source>Exportar registro de instalación</source>
+            <translation>Export installation log</translation>
+        </message>
+        <message>
+            <source>No se pudo exportar el registro de instalación.</source>
+            <translation>The installation log could not be exported.</translation>
+        </message>
+        <message>
+            <source>Registro exportado</source>
+            <translation>Log exported</translation>
+        </message>
+        <message>
+            <source>El registro se exportó correctamente.</source>
+            <translation>The log was exported successfully.</translation>
+        </message>
+        <message>
+            <source>Error desconocido</source>
+            <translation>Unknown error</translation>
+        </message>
+        <message>
+            <source>Registro no disponible</source>
+            <translation>Log unavailable</translation>
+        </message>
+        <message>
+            <source>Error</source>
+            <translation>Error</translation>
+        </message>
+    </context>
+</TS>

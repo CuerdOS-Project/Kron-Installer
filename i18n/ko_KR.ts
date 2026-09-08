@@ -170,6 +170,65 @@ Deseas continuar?</source>
         <translation>{disk} 파티션 실패:
 {e}</translation>
     </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Dónde instalar CuerdOS</source>
+        <translation>CuerdOS 설치 위치</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>En esta pantalla eliges el disco y las particiones donde se instalará CuerdOS. Puedes usar el particionado automático o asignar manualmente cada punto de montaje.</source>
+        <translation>CuerdOS를 설치할 디스크와 파티션을 선택합니다. 자동 파티션 또는 각 마운트 지점의 수동 할당을 사용할 수 있습니다.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>BTRFS y EXT4 son las opciones recomendadas. BTRFS ofrece funciones avanzadas; EXT4 prioriza sencillez y compatibilidad.</source>
+        <translation>BTRFS와 EXT4를 권장합니다. BTRFS는 고급 기능을 제공하고 EXT4는 단순성과 호환성을 중시합니다.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Raíz (/): contiene el sistema instalado.
+</source>
+        <translation>루트(/): 설치된 시스템을 포함합니다.
+</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Home (/home): guarda tus archivos personales y configuraciones.
+</source>
+        <translation>Home(/home): 개인 파일과 설정을 저장합니다.
+</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>EFI (/boot/efi): contiene los archivos de arranque en equipos UEFI.</source>
+        <translation>EFI(/boot/efi): UEFI 시스템의 부팅 파일을 포함합니다.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Swap: espacio de intercambio usado cuando falta memoria RAM.</source>
+        <translation>Swap: RAM이 부족할 때 사용하는 스왑 공간입니다.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Contiene el sistema instalado y sus programas.</source>
+        <translation>설치된 시스템과 프로그램을 포함합니다.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Contiene los archivos de arranque de equipos UEFI.</source>
+        <translation>UEFI 시스템의 부팅 파일을 포함합니다.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Guarda los archivos personales y las configuraciones de los usuarios.</source>
+        <translation>사용자의 개인 파일과 설정을 저장합니다.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Espacio de intercambio usado cuando falta memoria RAM.</source>
+        <translation>RAM 부족 시 사용하는 스왑 공간입니다.</translation>
+    </message>
 </context>
 <context>
     <name>InstallWin</name>
@@ -270,7 +329,27 @@ Deseas continuar?</source>
         <source>Reiniciar</source>
         <translation>재부팅</translation>
     </message>
-<message><location filename="../ui/install_win.py" line="285" /><source>Finalización</source><translation>완료</translation></message></context>
+<message><location filename="../ui/install_win.py" line="285" /><source>Finalización</source><translation>완료</translation></message>    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Configuración regional</source>
+        <translation>지역 설정</translation>
+    </message>
+    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Canal de software</source>
+        <translation>소프트웨어 채널</translation>
+    </message>
+    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Usuario</source>
+        <translation>사용자</translation>
+    </message>
+    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Dónde instalar CuerdOS</source>
+        <translation>CuerdOS 설치 위치</translation>
+    </message>
+</context>
 <context>
     <name>InstallWorker</name>
     <message>
@@ -690,6 +769,16 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <source>Instalar drivers NVIDIA</source>
         <translation>NVIDIA 드라이버 설치</translation>
     </message>
+    <message>
+        <location filename="../ui/mirrors.py" />
+        <source>Canal de software</source>
+        <translation>소프트웨어 채널</translation>
+    </message>
+    <message>
+        <location filename="../ui/mirrors.py" />
+        <source>Aquí eliges el servidor desde el que se descargarán los paquetes y qué componentes adicionales se instalarán. Los repositorios no libres permiten acceder a software y firmware con licencias distintas a la base libre del sistema.</source>
+        <translation>패키지를 다운로드할 서버와 추가로 설치할 구성 요소를 선택합니다. 비자유 저장소에서는 시스템의 자유 기반과 다른 라이선스의 소프트웨어와 펌웨어를 사용할 수 있습니다.</translation>
+    </message>
 </context>
 <context>
     <name>UsersPage</name>
@@ -783,6 +872,31 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <source>Confirmar:</source>
         <translation>확인:</translation>
     </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Iniciar sesión automáticamente</source>
+        <translation>자동 로그인</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Disponible con SDDM, LightDM o GDM. Con greetd no es posible configurarlo desde este instalador.</source>
+        <translation>SDDM, LightDM 또는 GDM에서 사용할 수 있습니다. greetd에서는 이 설치 프로그램으로 설정할 수 없습니다.</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Autologin disponible mediante {manager}.</source>
+        <translation>{manager}을(를) 통한 자동 로그인을 사용할 수 있습니다.</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Con greetd no es posible configurar autologin con este instalador.</source>
+        <translation>greetd에서는 이 설치 프로그램으로 자동 로그인을 설정할 수 없습니다.</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Información personal</source>
+        <translation>개인 정보</translation>
+    </message>
 </context>
 <context>
     <name>WelcomePage</name>
@@ -813,4 +927,67 @@ Instalador en modo offline.</source>
 </context>
 <context><name>CompletionPage</name><message><source>Instalación completada</source><translation>설치가 완료되었습니다</translation></message><message><source>¡Bienvenido a CuerdOS!</source><translation>CuerdOS에 오신 것을 환영합니다!</translation></message><message><source>Tu sistema ha sido instalado correctamente.
 Haz clic en 'Reiniciar' para completar el proceso.</source><translation>시스템이 성공적으로 설치되었습니다.
-프로세스를 완료하려면 '재시작'을 클릭하십시오.</translation></message><message><source>Imagen de finalización</source><translation>완료 이미지</translation></message></context></TS>
+프로세스를 완료하려면 '재시작'을 클릭하십시오.</translation></message><message><source>Imagen de finalización</source><translation>완료 이미지</translation></message></context>    <context>
+        <name>InstallationErrorPage</name>
+        <message>
+            <source>Instalación fallida</source>
+            <translation>설치 실패</translation>
+        </message>
+        <message>
+            <source>La instalación no se pudo completar.</source>
+            <translation>설치를 완료할 수 없습니다.</translation>
+        </message>
+        <message>
+            <source>Se produjo el siguiente error:</source>
+            <translation>다음 오류가 발생했습니다:</translation>
+        </message>
+        <message>
+            <source>El registro puede ayudar a diagnosticar el problema.</source>
+            <translation>로그는 문제를 진단하는 데 도움이 됩니다.</translation>
+        </message>
+        <message>
+            <source>Abrir log</source>
+            <translation>로그 열기</translation>
+        </message>
+        <message>
+            <source>Exportar log</source>
+            <translation>로그 내보내기</translation>
+        </message>
+        <message>
+            <source>El archivo de registro no está disponible.</source>
+            <translation>로그 파일을 사용할 수 없습니다.</translation>
+        </message>
+        <message>
+            <source>No se pudo abrir el registro de instalación.</source>
+            <translation>설치 로그를 열 수 없습니다.</translation>
+        </message>
+        <message>
+            <source>Exportar registro de instalación</source>
+            <translation>설치 로그 내보내기</translation>
+        </message>
+        <message>
+            <source>No se pudo exportar el registro de instalación.</source>
+            <translation>설치 로그를 내보낼 수 없습니다.</translation>
+        </message>
+        <message>
+            <source>Registro exportado</source>
+            <translation>로그 내보내기 완료</translation>
+        </message>
+        <message>
+            <source>El registro se exportó correctamente.</source>
+            <translation>로그를 성공적으로 내보냈습니다.</translation>
+        </message>
+        <message>
+            <source>Error desconocido</source>
+            <translation>알 수 없는 오류</translation>
+        </message>
+        <message>
+            <source>Registro no disponible</source>
+            <translation>로그를 사용할 수 없음</translation>
+        </message>
+        <message>
+            <source>Error</source>
+            <translation>오류</translation>
+        </message>
+    </context>
+</TS>

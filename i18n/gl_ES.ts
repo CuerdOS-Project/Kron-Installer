@@ -170,6 +170,65 @@ Desexas continuar?</translation>
         <translation>Fallo ao particionar {disk}:
 {e}</translation>
     </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Dónde instalar CuerdOS</source>
+        <translation>Onde instalar CuerdOS</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>En esta pantalla eliges el disco y las particiones donde se instalará CuerdOS. Puedes usar el particionado automático o asignar manualmente cada punto de montaje.</source>
+        <translation>Nesta pantalla escolles o disco e as particións onde se instalará CuerdOS. Podes usar o particionado automático ou asignar manualmente cada punto de montaxe.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>BTRFS y EXT4 son las opciones recomendadas. BTRFS ofrece funciones avanzadas; EXT4 prioriza sencillez y compatibilidad.</source>
+        <translation>BTRFS e EXT4 son as opcións recomendadas. BTRFS ofrece funcións avanzadas; EXT4 prioriza sinxeleza e compatibilidade.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Raíz (/): contiene el sistema instalado.
+</source>
+        <translation>Raíz (/): contén o sistema instalado.
+</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Home (/home): guarda tus archivos personales y configuraciones.
+</source>
+        <translation>Home (/home): garda os teus ficheiros persoais e configuracións.
+</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>EFI (/boot/efi): contiene los archivos de arranque en equipos UEFI.</source>
+        <translation>EFI (/boot/efi): contén os ficheiros de arranque dos equipos UEFI.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Swap: espacio de intercambio usado cuando falta memoria RAM.</source>
+        <translation>Swap: espazo de intercambio usado cando falta memoria RAM.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Contiene el sistema instalado y sus programas.</source>
+        <translation>Contén o sistema instalado e os seus programas.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Contiene los archivos de arranque de equipos UEFI.</source>
+        <translation>Contén os ficheiros de arranque dos equipos UEFI.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Guarda los archivos personales y las configuraciones de los usuarios.</source>
+        <translation>Garda os ficheiros persoais e as configuracións dos usuarios.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Espacio de intercambio usado cuando falta memoria RAM.</source>
+        <translation>Espazo de intercambio usado cando falta memoria RAM.</translation>
+    </message>
 </context>
 <context>
     <name>InstallWin</name>
@@ -270,7 +329,27 @@ Desexas continuar?</translation>
         <source>Reiniciar</source>
         <translation>Reiniciar</translation>
     </message>
-<message><location filename="../ui/install_win.py" line="285" /><source>Finalización</source><translation>Finalización</translation></message></context>
+<message><location filename="../ui/install_win.py" line="285" /><source>Finalización</source><translation>Finalización</translation></message>    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Configuración regional</source>
+        <translation>Configuración rexional</translation>
+    </message>
+    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Canal de software</source>
+        <translation>Canle de software</translation>
+    </message>
+    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Usuario</source>
+        <translation>Usuario</translation>
+    </message>
+    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Dónde instalar CuerdOS</source>
+        <translation>Onde instalar CuerdOS</translation>
+    </message>
+</context>
 <context>
     <name>InstallWorker</name>
     <message>
@@ -690,6 +769,16 @@ números, guións e guións baixos, e non pode conter espazos.</translation>
         <source>Instalar drivers NVIDIA</source>
         <translation>Instalar controladores NVIDIA</translation>
     </message>
+    <message>
+        <location filename="../ui/mirrors.py" />
+        <source>Canal de software</source>
+        <translation>Canle de software</translation>
+    </message>
+    <message>
+        <location filename="../ui/mirrors.py" />
+        <source>Aquí eliges el servidor desde el que se descargarán los paquetes y qué componentes adicionales se instalarán. Los repositorios no libres permiten acceder a software y firmware con licencias distintas a la base libre del sistema.</source>
+        <translation>Aquí escolles o servidor desde o que se descargarán os paquetes e os compoñentes adicionais. Os repositorios non libres permiten acceder a software e firmware con licenzas distintas da base libre do sistema.</translation>
+    </message>
 </context>
 <context>
     <name>UsersPage</name>
@@ -783,6 +872,31 @@ números, guións e guións baixos, e non pode conter espazos.</translation>
         <source>Confirmar:</source>
         <translation>Confirmar:</translation>
     </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Iniciar sesión automáticamente</source>
+        <translation>Iniciar sesión automaticamente</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Disponible con SDDM, LightDM o GDM. Con greetd no es posible configurarlo desde este instalador.</source>
+        <translation>Dispoñible con SDDM, LightDM ou GDM. Con greetd non se pode configurar desde este instalador.</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Autologin disponible mediante {manager}.</source>
+        <translation>Inicio automático dispoñible mediante {manager}.</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Con greetd no es posible configurar autologin con este instalador.</source>
+        <translation>Con greetd non se pode configurar o inicio automático con este instalador.</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Información personal</source>
+        <translation>Información persoal</translation>
+    </message>
 </context>
 <context>
     <name>WelcomePage</name>
@@ -813,4 +927,67 @@ Instalador en modo sen conexión.</translation>
 </context>
 <context><name>CompletionPage</name><message><source>Instalación completada</source><translation>Instalación completada</translation></message><message><source>¡Bienvenido a CuerdOS!</source><translation>Benvido a CuerdOS!</translation></message><message><source>Tu sistema ha sido instalado correctamente.
 Haz clic en 'Reiniciar' para completar el proceso.</source><translation>O teu sistema instalouse correctamente.
-Fai clic en 'Reiniciar' para completar o proceso.</translation></message><message><source>Imagen de finalización</source><translation>Imaxe de finalización</translation></message></context></TS>
+Fai clic en 'Reiniciar' para completar o proceso.</translation></message><message><source>Imagen de finalización</source><translation>Imaxe de finalización</translation></message></context>    <context>
+        <name>InstallationErrorPage</name>
+        <message>
+            <source>Instalación fallida</source>
+            <translation>Instalación fallida</translation>
+        </message>
+        <message>
+            <source>La instalación no se pudo completar.</source>
+            <translation>Non se puido completar a instalación.</translation>
+        </message>
+        <message>
+            <source>Se produjo el siguiente error:</source>
+            <translation>Produciuse o seguinte erro:</translation>
+        </message>
+        <message>
+            <source>El registro puede ayudar a diagnosticar el problema.</source>
+            <translation>O rexistro pode axudar a diagnosticar o problema.</translation>
+        </message>
+        <message>
+            <source>Abrir log</source>
+            <translation>Abrir o rexistro</translation>
+        </message>
+        <message>
+            <source>Exportar log</source>
+            <translation>Exportar o rexistro</translation>
+        </message>
+        <message>
+            <source>El archivo de registro no está disponible.</source>
+            <translation>O ficheiro de rexistro non está dispoñible.</translation>
+        </message>
+        <message>
+            <source>No se pudo abrir el registro de instalación.</source>
+            <translation>Non se puido abrir o rexistro da instalación.</translation>
+        </message>
+        <message>
+            <source>Exportar registro de instalación</source>
+            <translation>Exportar o rexistro da instalación</translation>
+        </message>
+        <message>
+            <source>No se pudo exportar el registro de instalación.</source>
+            <translation>Non se puido exportar o rexistro da instalación.</translation>
+        </message>
+        <message>
+            <source>Registro exportado</source>
+            <translation>Rexistro exportado</translation>
+        </message>
+        <message>
+            <source>El registro se exportó correctamente.</source>
+            <translation>O rexistro exportouse correctamente.</translation>
+        </message>
+        <message>
+            <source>Error desconocido</source>
+            <translation>Erro descoñecido</translation>
+        </message>
+        <message>
+            <source>Registro no disponible</source>
+            <translation>Rexistro non dispoñible</translation>
+        </message>
+        <message>
+            <source>Error</source>
+            <translation>Erro</translation>
+        </message>
+    </context>
+</TS>

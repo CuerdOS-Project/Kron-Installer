@@ -25,7 +25,7 @@ class InstallWorker(QThread):
             "install",
             "backend_install.sh"
         )
-        self.backend_script = os.path.abspath(self.backend_script) 
+        self.backend_script = os.path.abspath(self.backend_script)
 
         # Variables para controlar la animación del progreso
         self._progress_thread = None
@@ -38,10 +38,6 @@ class InstallWorker(QThread):
         current = start_val
         while not self._stop_progress_event.is_set() and current < end_val:
             current += 1
-            
-            if current > end_val:
-                current = end_val
-            
             self.progress_update.emit(int(current))
             
             time.sleep(10)
@@ -67,17 +63,13 @@ class InstallWorker(QThread):
         self._progress_thread.start()
 
     def _run_demo(self):
-        """
-        Simulacion para desarrolladores (--demo): reproduce la secuencia
-        de estados y el avance de la barra de progreso sin ejecutar el
-        backend real, sin pkexec y sin tocar discos ni archivos del sistema.
-        """
         steps = [
             ("INIT", 5, 0.4),
             ("CREATE_FS", 15, 0.4),
             ("COPY", 45, 1.2),
             ("REGIONAL_CONFIG", 55, 0.4),
-            ("UPDATE", 65, 1.0),
+            ("UPDATE_DOWNLOAD", 60, 1.0),
+            ("UPDATE_INSTALL", 70, 1.0),
             ("USER_CONFIG", 85, 0.4),
             ("GRUB_INSTALL", 95, 0.4),
             ("DONE", 100, 0.2),
@@ -158,9 +150,12 @@ class InstallWorker(QThread):
                         # Casos donde queremos animación progresiva
                         if "COPY" in msg:
                             self._start_scaling(30, 49) # Anima entre 30% y 49%
-                        
-                        elif "UPDATE" in msg:
-                            self._start_scaling(50, 69) # Anima entre 50% y 69%
+
+                        elif "UPDATE_DOWNLOAD" in msg:
+                            self._start_scaling(50, 69) # Progreso porcentual al instalar
+
+                        elif "UPDATE_INSTALL" in msg:
+                            self._start_scaling(60, 69) # Progreso porcentual al instalar
                         
                         # Casos donde paramos animación y fijamos valor exacto
                         elif "INIT" in msg:

@@ -170,6 +170,65 @@ Vols continuar?</translation>
         <translation>Error en particionar {disk}:
 {e}</translation>
     </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Dónde instalar CuerdOS</source>
+        <translation>On instal·lar CuerdOS</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>En esta pantalla eliges el disco y las particiones donde se instalará CuerdOS. Puedes usar el particionado automático o asignar manualmente cada punto de montaje.</source>
+        <translation>En aquesta pantalla tries el disc i les particions on s'instal·larà CuerdOS. Pots utilitzar el particionament automàtic o assignar manualment cada punt de muntatge.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>BTRFS y EXT4 son las opciones recomendadas. BTRFS ofrece funciones avanzadas; EXT4 prioriza sencillez y compatibilidad.</source>
+        <translation>BTRFS i EXT4 són les opcions recomanades. BTRFS ofereix funcions avançades; EXT4 prioritza la simplicitat i la compatibilitat.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Raíz (/): contiene el sistema instalado.
+</source>
+        <translation>Arrel (/): conté el sistema instal·lat.
+</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Home (/home): guarda tus archivos personales y configuraciones.
+</source>
+        <translation>Home (/home): desa els teus fitxers personals i configuracions.
+</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>EFI (/boot/efi): contiene los archivos de arranque en equipos UEFI.</source>
+        <translation>EFI (/boot/efi): conté els fitxers d'arrencada dels equips UEFI.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Swap: espacio de intercambio usado cuando falta memoria RAM.</source>
+        <translation>Swap: espai d'intercanvi utilitzat quan falta memòria RAM.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Contiene el sistema instalado y sus programas.</source>
+        <translation>Conté el sistema instal·lat i els seus programes.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Contiene los archivos de arranque de equipos UEFI.</source>
+        <translation>Conté els fitxers d'arrencada dels equips UEFI.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Guarda los archivos personales y las configuraciones de los usuarios.</source>
+        <translation>Desa els fitxers personals i les configuracions dels usuaris.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Espacio de intercambio usado cuando falta memoria RAM.</source>
+        <translation>Espai d'intercanvi utilitzat quan falta memòria RAM.</translation>
+    </message>
 </context>
 <context>
     <name>InstallWin</name>
@@ -270,7 +329,27 @@ Vols continuar?</translation>
         <source>Reiniciar</source>
         <translation>Reiniciar</translation>
     </message>
-<message><location filename="../ui/install_win.py" line="285" /><source>Finalización</source><translation>Finalització</translation></message></context>
+<message><location filename="../ui/install_win.py" line="285" /><source>Finalización</source><translation>Finalització</translation></message>    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Configuración regional</source>
+        <translation>Configuració regional</translation>
+    </message>
+    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Canal de software</source>
+        <translation>Canal de programari</translation>
+    </message>
+    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Usuario</source>
+        <translation>Usuari</translation>
+    </message>
+    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Dónde instalar CuerdOS</source>
+        <translation>On instal·lar CuerdOS</translation>
+    </message>
+</context>
 <context>
     <name>InstallWorker</name>
     <message>
@@ -690,6 +769,16 @@ nombres, guions i guions baixos, i no pot contenir espais.</translation>
         <source>Instalar drivers NVIDIA</source>
         <translation>Instal·lar controladors NVIDIA</translation>
     </message>
+    <message>
+        <location filename="../ui/mirrors.py" />
+        <source>Canal de software</source>
+        <translation>Canal de programari</translation>
+    </message>
+    <message>
+        <location filename="../ui/mirrors.py" />
+        <source>Aquí eliges el servidor desde el que se descargarán los paquetes y qué componentes adicionales se instalarán. Los repositorios no libres permiten acceder a software y firmware con licencias distintas a la base libre del sistema.</source>
+        <translation>Aquí tries el servidor des d'on es descarregaran els paquets i quins components addicionals s'instal·laran. Els repositoris no lliures permeten accedir a programari i microprogramari amb llicències diferents de la base lliure del sistema.</translation>
+    </message>
 </context>
 <context>
     <name>UsersPage</name>
@@ -783,6 +872,31 @@ nombres, guions i guions baixos, i no pot contenir espais.</translation>
         <source>Confirmar:</source>
         <translation>Confirmar:</translation>
     </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Iniciar sesión automáticamente</source>
+        <translation>Iniciar sessió automàticament</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Disponible con SDDM, LightDM o GDM. Con greetd no es posible configurarlo desde este instalador.</source>
+        <translation>Disponible amb SDDM, LightDM o GDM. Amb greetd no es pot configurar des d'aquest instal·lador.</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Autologin disponible mediante {manager}.</source>
+        <translation>Inici automàtic disponible mitjançant {manager}.</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Con greetd no es posible configurar autologin con este instalador.</source>
+        <translation>Amb greetd no es pot configurar l'inici automàtic amb aquest instal·lador.</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Información personal</source>
+        <translation>Informació personal</translation>
+    </message>
 </context>
 <context>
     <name>WelcomePage</name>
@@ -813,4 +927,67 @@ Instal·lador en mode fora de línia.</translation>
 </context>
 <context><name>CompletionPage</name><message><source>Instalación completada</source><translation>Instal·lació completada</translation></message><message><source>¡Bienvenido a CuerdOS!</source><translation>Benvingut a CuerdOS!</translation></message><message><source>Tu sistema ha sido instalado correctamente.
 Haz clic en 'Reiniciar' para completar el proceso.</source><translation>El vostre sistema s'ha instal·lat correctament.
-Feu clic a 'Reinicia' per completar el procés.</translation></message><message><source>Imagen de finalización</source><translation>Imatge de finalització</translation></message></context></TS>
+Feu clic a 'Reinicia' per completar el procés.</translation></message><message><source>Imagen de finalización</source><translation>Imatge de finalització</translation></message></context>    <context>
+        <name>InstallationErrorPage</name>
+        <message>
+            <source>Instalación fallida</source>
+            <translation>Instal·lació fallida</translation>
+        </message>
+        <message>
+            <source>La instalación no se pudo completar.</source>
+            <translation>La instal·lació no s’ha pogut completar.</translation>
+        </message>
+        <message>
+            <source>Se produjo el siguiente error:</source>
+            <translation>S’ha produït el següent error:</translation>
+        </message>
+        <message>
+            <source>El registro puede ayudar a diagnosticar el problema.</source>
+            <translation>El registre pot ajudar a diagnosticar el problema.</translation>
+        </message>
+        <message>
+            <source>Abrir log</source>
+            <translation>Obrir el registre</translation>
+        </message>
+        <message>
+            <source>Exportar log</source>
+            <translation>Exportar el registre</translation>
+        </message>
+        <message>
+            <source>El archivo de registro no está disponible.</source>
+            <translation>El fitxer de registre no està disponible.</translation>
+        </message>
+        <message>
+            <source>No se pudo abrir el registro de instalación.</source>
+            <translation>No s’ha pogut obrir el registre d’instal·lació.</translation>
+        </message>
+        <message>
+            <source>Exportar registro de instalación</source>
+            <translation>Exportar el registre d’instal·lació</translation>
+        </message>
+        <message>
+            <source>No se pudo exportar el registro de instalación.</source>
+            <translation>No s’ha pogut exportar el registre d’instal·lació.</translation>
+        </message>
+        <message>
+            <source>Registro exportado</source>
+            <translation>Registre exportat</translation>
+        </message>
+        <message>
+            <source>El registro se exportó correctamente.</source>
+            <translation>El registre s’ha exportat correctament.</translation>
+        </message>
+        <message>
+            <source>Error desconocido</source>
+            <translation>Error desconegut</translation>
+        </message>
+        <message>
+            <source>Registro no disponible</source>
+            <translation>Registre no disponible</translation>
+        </message>
+        <message>
+            <source>Error</source>
+            <translation>Error</translation>
+        </message>
+    </context>
+</TS>

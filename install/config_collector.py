@@ -18,7 +18,7 @@ class InstallerConfigCollector(QObject):
             pag_idiomas = self.paginas["idiomas"]
 
             data["LOCALE"] = pag_idiomas.idioma_combo.currentData()
-            tz_region = pag_idiomas.region_combo.currentText()
+            tz_region = pag_idiomas.region_combo.currentData() or pag_idiomas.region_combo.currentText()
             tz_city = pag_idiomas.ciudad_combo.currentText()
             data["TIMEZONE"] = f"{tz_region}/{tz_city}"
             data["KEYMAP"] = pag_idiomas.teclado_combo.currentData()
@@ -41,6 +41,8 @@ class InstallerConfigCollector(QObject):
             data["USERPASSWORD"] = pag_usuarios.user_pass.text()
             data["ROOTPASSWORD"] = pag_usuarios.root_pass.text()
             data["USERGROUPS"] = "wheel,audio,video,users,network,optical,cdrom"
+            data["DISPLAYMANAGER"] = self.system_data.get("display_manager", "")
+            data["AUTOLOGIN"] = "1" if pag_usuarios.autologin_check.isChecked() else "0"
 
             # Validación campos obligatorios
             required_fields = {
@@ -114,8 +116,11 @@ class InstallerConfigCollector(QObject):
             # --- 3. Repo y software ---
             pag_mirrors = self.paginas["mirrors"]
 
-            data["UPDATE"] = "1" if self.system_data.get("net", True) else "0"
-            data["MIRROR"] = pag_mirrors.mirror_combo.currentData()
+            mirror_key = pag_mirrors.mirror_combo.currentData() or "Local"
+            data["MIRROR"] = mirror_key
+            # ISO local es deliberadamente la opción predeterminada: no se descarga
+            # ni se instala nada desde repositorios durante esta instalación.
+            data["UPDATE"] = "0" if mirror_key == "Local" else ("1" if self.system_data.get("net", True) else "0")
             data["NONFREE"] = "1" if pag_mirrors.chk_nonfree.isChecked() else "0"
             data["NVIDIA"] = "1" if pag_mirrors.chk_nvidia.isChecked() else "0"
             data["INTEL"] = "1" if pag_mirrors.chk_intel.isChecked() else "0"

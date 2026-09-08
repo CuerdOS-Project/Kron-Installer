@@ -170,6 +170,65 @@ Deseas continuar?</source>
         <translation>{disk} のパーティション分割に失敗しました:
 {e}</translation>
     </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Dónde instalar CuerdOS</source>
+        <translation>CuerdOSのインストール先</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>En esta pantalla eliges el disco y las particiones donde se instalará CuerdOS. Puedes usar el particionado automático o asignar manualmente cada punto de montaje.</source>
+        <translation>CuerdOSをインストールするディスクとパーティションを選択します。自動パーティションまたは各マウントポイントの手動割り当てを利用できます。</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>BTRFS y EXT4 son las opciones recomendadas. BTRFS ofrece funciones avanzadas; EXT4 prioriza sencillez y compatibilidad.</source>
+        <translation>BTRFSとEXT4を推奨します。BTRFSは高度な機能を提供し、EXT4はシンプルさと互換性を重視します。</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Raíz (/): contiene el sistema instalado.
+</source>
+        <translation>ルート（/）：インストールされたシステムを格納します。
+</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Home (/home): guarda tus archivos personales y configuraciones.
+</source>
+        <translation>Home（/home）：個人ファイルと設定を格納します。
+</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>EFI (/boot/efi): contiene los archivos de arranque en equipos UEFI.</source>
+        <translation>EFI（/boot/efi）：UEFIシステムの起動ファイルを格納します。</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Swap: espacio de intercambio usado cuando falta memoria RAM.</source>
+        <translation>Swap：RAMが不足したときに使用する交換領域です。</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Contiene el sistema instalado y sus programas.</source>
+        <translation>インストールされたシステムとプログラムを格納します。</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Contiene los archivos de arranque de equipos UEFI.</source>
+        <translation>UEFIシステムの起動ファイルを格納します。</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Guarda los archivos personales y las configuraciones de los usuarios.</source>
+        <translation>ユーザーの個人ファイルと設定を格納します。</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Espacio de intercambio usado cuando falta memoria RAM.</source>
+        <translation>RAM不足時に使用する交換領域です。</translation>
+    </message>
 </context>
 <context>
     <name>InstallWin</name>
@@ -270,7 +329,27 @@ Deseas continuar?</source>
         <source>Reiniciar</source>
         <translation>再起動</translation>
     </message>
-<message><location filename="../ui/install_win.py" line="285" /><source>Finalización</source><translation>完了</translation></message></context>
+<message><location filename="../ui/install_win.py" line="285" /><source>Finalización</source><translation>完了</translation></message>    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Configuración regional</source>
+        <translation>地域設定</translation>
+    </message>
+    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Canal de software</source>
+        <translation>ソフトウェアチャンネル</translation>
+    </message>
+    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Usuario</source>
+        <translation>ユーザー</translation>
+    </message>
+    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Dónde instalar CuerdOS</source>
+        <translation>CuerdOSのインストール先</translation>
+    </message>
+</context>
 <context>
     <name>InstallWorker</name>
     <message>
@@ -690,6 +769,16 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <source>Instalar drivers NVIDIA</source>
         <translation>NVIDIA ドライバーをインストール</translation>
     </message>
+    <message>
+        <location filename="../ui/mirrors.py" />
+        <source>Canal de software</source>
+        <translation>ソフトウェアチャンネル</translation>
+    </message>
+    <message>
+        <location filename="../ui/mirrors.py" />
+        <source>Aquí eliges el servidor desde el que se descargarán los paquetes y qué componentes adicionales se instalarán. Los repositorios no libres permiten acceder a software y firmware con licencias distintas a la base libre del sistema.</source>
+        <translation>パッケージをダウンロードするサーバーと追加コンポーネントを選択します。非フリーリポジトリでは、システムのフリー基盤とは異なるライセンスのソフトウェアやファームウェアを利用できます。</translation>
+    </message>
 </context>
 <context>
     <name>UsersPage</name>
@@ -783,6 +872,31 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <source>Confirmar:</source>
         <translation>確認:</translation>
     </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Iniciar sesión automáticamente</source>
+        <translation>自動ログイン</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Disponible con SDDM, LightDM o GDM. Con greetd no es posible configurarlo desde este instalador.</source>
+        <translation>SDDM、LightDM、またはGDMで利用できます。greetdではこのインストーラーから設定できません。</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Autologin disponible mediante {manager}.</source>
+        <translation>{manager}による自動ログインを利用できます。</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Con greetd no es posible configurar autologin con este instalador.</source>
+        <translation>greetdではこのインストーラーから自動ログインを設定できません。</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Información personal</source>
+        <translation>個人情報</translation>
+    </message>
 </context>
 <context>
     <name>WelcomePage</name>
@@ -813,4 +927,67 @@ Instalador en modo offline.</source>
 </context>
 <context><name>CompletionPage</name><message><source>Instalación completada</source><translation>インストールが完了しました</translation></message><message><source>¡Bienvenido a CuerdOS!</source><translation>CuerdOSへようこそ！</translation></message><message><source>Tu sistema ha sido instalado correctamente.
 Haz clic en 'Reiniciar' para completar el proceso.</source><translation>システムが正常にインストールされました。
-「再起動」をクリックしてプロセスを完了してください。</translation></message><message><source>Imagen de finalización</source><translation>完了画像</translation></message></context></TS>
+「再起動」をクリックしてプロセスを完了してください。</translation></message><message><source>Imagen de finalización</source><translation>完了画像</translation></message></context>    <context>
+        <name>InstallationErrorPage</name>
+        <message>
+            <source>Instalación fallida</source>
+            <translation>インストールに失敗しました</translation>
+        </message>
+        <message>
+            <source>La instalación no se pudo completar.</source>
+            <translation>インストールを完了できませんでした。</translation>
+        </message>
+        <message>
+            <source>Se produjo el siguiente error:</source>
+            <translation>次のエラーが発生しました：</translation>
+        </message>
+        <message>
+            <source>El registro puede ayudar a diagnosticar el problema.</source>
+            <translation>ログは問題の診断に役立ちます。</translation>
+        </message>
+        <message>
+            <source>Abrir log</source>
+            <translation>ログを開く</translation>
+        </message>
+        <message>
+            <source>Exportar log</source>
+            <translation>ログをエクスポート</translation>
+        </message>
+        <message>
+            <source>El archivo de registro no está disponible.</source>
+            <translation>ログファイルを利用できません。</translation>
+        </message>
+        <message>
+            <source>No se pudo abrir el registro de instalación.</source>
+            <translation>インストールログを開けませんでした。</translation>
+        </message>
+        <message>
+            <source>Exportar registro de instalación</source>
+            <translation>インストールログをエクスポート</translation>
+        </message>
+        <message>
+            <source>No se pudo exportar el registro de instalación.</source>
+            <translation>インストールログをエクスポートできませんでした。</translation>
+        </message>
+        <message>
+            <source>Registro exportado</source>
+            <translation>ログをエクスポートしました</translation>
+        </message>
+        <message>
+            <source>El registro se exportó correctamente.</source>
+            <translation>ログを正常にエクスポートしました。</translation>
+        </message>
+        <message>
+            <source>Error desconocido</source>
+            <translation>不明なエラー</translation>
+        </message>
+        <message>
+            <source>Registro no disponible</source>
+            <translation>ログを利用できません</translation>
+        </message>
+        <message>
+            <source>Error</source>
+            <translation>エラー</translation>
+        </message>
+    </context>
+</TS>

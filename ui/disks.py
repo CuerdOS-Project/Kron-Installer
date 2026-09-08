@@ -28,7 +28,13 @@ class DisksPage(QWidget):
         self.titl = QLabel()
         self.titl.setObjectName("title")
         main_layout.addWidget(make_page_title(self.titl, "drive-harddisk"))
-        main_layout.addSpacing(14)
+        main_layout.addSpacing(8)
+
+        self.page_help = QLabel()
+        self.page_help.setObjectName("hintLabel")
+        self.page_help.setWordWrap(True)
+        main_layout.addWidget(self.page_help)
+        main_layout.addSpacing(12)
 
         # Layout horizontal: dos columnas
         cols = QHBoxLayout()
@@ -136,18 +142,27 @@ class DisksPage(QWidget):
         self.assign_label.setObjectName("subtitle")
         ac_layout.addWidget(self.assign_label)
 
+        self.assign_help = QLabel()
+        self.assign_help.setObjectName("hintLabel")
+        self.assign_help.setWordWrap(True)
+        ac_layout.addWidget(self.assign_help)
+
         # Sistema de archivos
         fs_row = QHBoxLayout()
         fs_row.setSpacing(10)
 
         self.fs_label = QLabel()
+        self.fs_help = QLabel()
+        self.fs_help.setObjectName("hintLabel")
+        self.fs_help.setWordWrap(True)
         self.filesys_combo = QComboBox()
-        self.filesys_combo.addItems(["BTRFS", "Ext4", "Ext3", "Ext2", "XFS"])
+        self.filesys_combo.addItems(["BTRFS", "EXT4", "Ext3", "Ext2", "XFS"])
         self.filesys_combo.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
         fs_row.addWidget(self.fs_label)
         fs_row.addWidget(self.filesys_combo)
         ac_layout.addLayout(fs_row)
+        ac_layout.addWidget(self.fs_help)
 
         ac_layout.addSpacing(6)
 
@@ -198,7 +213,7 @@ class DisksPage(QWidget):
             combo.currentIndexChanged.connect(self._update_table)
 
     def _update_table(self):
-        """Actualiza la tabla resumen con las particiones seleccionadas."""
+        # Actualiza la tabla resumen con las particiones seleccionadas.
         rows_data = []
         filesys = self.filesys_combo.currentText().upper()
 
@@ -221,19 +236,38 @@ class DisksPage(QWidget):
             self.part_table.setItem(i, 2, QTableWidgetItem(fs))
 
     def translate_ui(self):
-        self.titl.setText(self.tr("Discos y particiones"))
+        self.titl.setText(self.tr("Dónde instalar CuerdOS"))
+        self.page_help.setText(self.tr(
+            "En esta pantalla eliges el disco y las particiones donde se instalará CuerdOS. "
+            "Puedes usar el particionado automático o asignar manualmente cada punto de montaje."
+        ))
         self.auto_label.setText(self.tr("Disco a particionar (automático):"))
         self.btn_autopart.setText(self.tr("Particionar"))
         self.part_label.setText(self.tr("O particionar manualmente:"))
         self.btn_partman.setText(self.tr("Abrir KDE Partition Manager"))
         self.fs_label.setText(self.tr("Sistema de archivos:"))
+        self.fs_help.setText(self.tr(
+            "BTRFS y EXT4 son las opciones recomendadas. BTRFS ofrece funciones avanzadas; EXT4 prioriza sencillez y compatibilidad."
+        ))
         self.assign_label.setText(self.tr("Asignar particiones"))
+        efi_help = self.tr("EFI (/boot/efi): contiene los archivos de arranque en equipos UEFI.") if self._is_efi_system else ""
+        self.assign_help.setText(
+            self.tr("Raíz (/): contiene el sistema instalado.\n")
+            + self.tr("Home (/home): guarda tus archivos personales y configuraciones.\n")
+            + efi_help
+            + ("\n" if efi_help else "")
+            + self.tr("Swap: espacio de intercambio usado cuando falta memoria RAM.")
+        )
         self.table_title.setText(self.tr("Resumen"))
 
         self.lbl_root.setText(self.tr("Raíz (/):"))
+        self.lbl_root.setToolTip(self.tr("Contiene el sistema instalado y sus programas."))
         self.lbl_efi.setText(self.tr("EFI (/boot/efi):"))
+        self.lbl_efi.setToolTip(self.tr("Contiene los archivos de arranque de equipos UEFI."))
         self.lbl_home.setText(self.tr("Home (/home):"))
+        self.lbl_home.setToolTip(self.tr("Guarda los archivos personales y las configuraciones de los usuarios."))
         self.lbl_swap.setText(self.tr("Swap:"))
+        self.lbl_swap.setToolTip(self.tr("Espacio de intercambio usado cuando falta memoria RAM."))
 
         self.part_table.setHorizontalHeaderLabels(
             [self.tr("Pto. de montaje"), self.tr("Partición"), self.tr("Sistema")]
@@ -321,7 +355,7 @@ class DisksPage(QWidget):
             _set(self.home_combo, other_sorted[1])
 
     def obtener_seleccion(self):
-        """Devuelve {root, efi, home, swap} con el nombre de dispositivo (/dev/sdaN)."""
+        # Devuelve {root, efi, home, swap} con el nombre de dispositivo (/dev/sdaN).
         return {
             "root": self.raiz_combo.currentData(),
             "efi": self.efi_combo.currentData(),

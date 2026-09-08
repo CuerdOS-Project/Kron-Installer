@@ -170,6 +170,65 @@ Devam etmek istiyor musunuz?</translation>
         <translation>{disk} bölümlenemedi:
 {e}</translation>
     </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Dónde instalar CuerdOS</source>
+        <translation>CuerdOS nereye kurulmalı</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>En esta pantalla eliges el disco y las particiones donde se instalará CuerdOS. Puedes usar el particionado automático o asignar manualmente cada punto de montaje.</source>
+        <translation>CuerdOS'un kurulacağı diski ve bölümleri seçin. Otomatik bölümlemeyi kullanabilir veya bağlama noktalarını elle atayabilirsiniz.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>BTRFS y EXT4 son las opciones recomendadas. BTRFS ofrece funciones avanzadas; EXT4 prioriza sencillez y compatibilidad.</source>
+        <translation>BTRFS ve EXT4 önerilir. BTRFS gelişmiş özellikler sunar; EXT4 basitlik ve uyumluluğa öncelik verir.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Raíz (/): contiene el sistema instalado.
+</source>
+        <translation>Kök (/): kurulu sistemi içerir.
+</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Home (/home): guarda tus archivos personales y configuraciones.
+</source>
+        <translation>Home (/home): kişisel dosyaları ve ayarları saklar.
+</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>EFI (/boot/efi): contiene los archivos de arranque en equipos UEFI.</source>
+        <translation>EFI (/boot/efi): UEFI sistemlerinin önyükleme dosyalarını içerir.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Swap: espacio de intercambio usado cuando falta memoria RAM.</source>
+        <translation>Swap: RAM yetersiz olduğunda kullanılan takas alanıdır.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Contiene el sistema instalado y sus programas.</source>
+        <translation>Kurulu sistemi ve programlarını içerir.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Contiene los archivos de arranque de equipos UEFI.</source>
+        <translation>UEFI sistemlerinin önyükleme dosyalarını içerir.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Guarda los archivos personales y las configuraciones de los usuarios.</source>
+        <translation>Kullanıcıların kişisel dosyalarını ve ayarlarını saklar.</translation>
+    </message>
+    <message>
+        <location filename="../ui/disks.py" />
+        <source>Espacio de intercambio usado cuando falta memoria RAM.</source>
+        <translation>RAM yetersiz olduğunda kullanılan takas alanıdır.</translation>
+    </message>
 </context>
 <context>
     <name>InstallWin</name>
@@ -270,7 +329,27 @@ Devam etmek istiyor musunuz?</translation>
         <source>Reiniciar</source>
         <translation>Yeniden başlat</translation>
     </message>
-<message><location filename="../ui/install_win.py" line="285" /><source>Finalización</source><translation>Tamamlama</translation></message></context>
+<message><location filename="../ui/install_win.py" line="285" /><source>Finalización</source><translation>Tamamlama</translation></message>    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Configuración regional</source>
+        <translation>Bölge ayarları</translation>
+    </message>
+    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Canal de software</source>
+        <translation>Yazılım kanalı</translation>
+    </message>
+    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Usuario</source>
+        <translation>Kullanıcı</translation>
+    </message>
+    <message>
+        <location filename="../ui/installwin.py" />
+        <source>Dónde instalar CuerdOS</source>
+        <translation>CuerdOS nereye kurulmalı</translation>
+    </message>
+</context>
 <context>
     <name>InstallWorker</name>
     <message>
@@ -690,6 +769,16 @@ sayılar, tireler ve alt çizgiler içerebilir; boşluk içeremez.</translation>
         <source>Instalar drivers NVIDIA</source>
         <translation>NVIDIA sürücülerini kur</translation>
     </message>
+    <message>
+        <location filename="../ui/mirrors.py" />
+        <source>Canal de software</source>
+        <translation>Yazılım kanalı</translation>
+    </message>
+    <message>
+        <location filename="../ui/mirrors.py" />
+        <source>Aquí eliges el servidor desde el que se descargarán los paquetes y qué componentes adicionales se instalarán. Los repositorios no libres permiten acceder a software y firmware con licencias distintas a la base libre del sistema.</source>
+        <translation>Paketlerin indirileceği sunucuyu ve kurulacak ek bileşenleri seçin. Özgür olmayan depolar, sistemin özgür temelinden farklı lisanslara sahip yazılım ve ürün yazılımlarına erişim sağlar.</translation>
+    </message>
 </context>
 <context>
     <name>UsersPage</name>
@@ -783,6 +872,31 @@ sayılar, tireler ve alt çizgiler içerebilir; boşluk içeremez.</translation>
         <source>Confirmar:</source>
         <translation>Onayla:</translation>
     </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Iniciar sesión automáticamente</source>
+        <translation>Otomatik giriş yap</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Disponible con SDDM, LightDM o GDM. Con greetd no es posible configurarlo desde este instalador.</source>
+        <translation>SDDM, LightDM veya GDM ile kullanılabilir. greetd ile bu yükleyici tarafından yapılandırılamaz.</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Autologin disponible mediante {manager}.</source>
+        <translation>{manager} üzerinden otomatik giriş kullanılabilir.</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Con greetd no es posible configurar autologin con este instalador.</source>
+        <translation>greetd ile otomatik giriş bu yükleyici tarafından yapılandırılamaz.</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" />
+        <source>Información personal</source>
+        <translation>Kişisel bilgiler</translation>
+    </message>
 </context>
 <context>
     <name>WelcomePage</name>
@@ -813,4 +927,67 @@ Kurulum çevrimdışı modda.</translation>
 </context>
 <context><name>CompletionPage</name><message><source>Instalación completada</source><translation>Kurulum tamamlandı</translation></message><message><source>¡Bienvenido a CuerdOS!</source><translation>CuerdOS'a Hoş Geldiniz!</translation></message><message><source>Tu sistema ha sido instalado correctamente.
 Haz clic en 'Reiniciar' para completar el proceso.</source><translation>Sisteminiz başarıyla kuruldu.
-İşlemi tamamlamak için 'Yeniden Başlat'a tıklayın.</translation></message><message><source>Imagen de finalización</source><translation>Tamamlama resmi</translation></message></context></TS>
+İşlemi tamamlamak için 'Yeniden Başlat'a tıklayın.</translation></message><message><source>Imagen de finalización</source><translation>Tamamlama resmi</translation></message></context>    <context>
+        <name>InstallationErrorPage</name>
+        <message>
+            <source>Instalación fallida</source>
+            <translation>Kurulum başarısız oldu</translation>
+        </message>
+        <message>
+            <source>La instalación no se pudo completar.</source>
+            <translation>Kurulum tamamlanamadı.</translation>
+        </message>
+        <message>
+            <source>Se produjo el siguiente error:</source>
+            <translation>Aşağıdaki hata oluştu:</translation>
+        </message>
+        <message>
+            <source>El registro puede ayudar a diagnosticar el problema.</source>
+            <translation>Günlük, sorunu teşhis etmeye yardımcı olabilir.</translation>
+        </message>
+        <message>
+            <source>Abrir log</source>
+            <translation>Günlüğü aç</translation>
+        </message>
+        <message>
+            <source>Exportar log</source>
+            <translation>Günlüğü dışa aktar</translation>
+        </message>
+        <message>
+            <source>El archivo de registro no está disponible.</source>
+            <translation>Günlük dosyası kullanılamıyor.</translation>
+        </message>
+        <message>
+            <source>No se pudo abrir el registro de instalación.</source>
+            <translation>Kurulum günlüğü açılamadı.</translation>
+        </message>
+        <message>
+            <source>Exportar registro de instalación</source>
+            <translation>Kurulum günlüğünü dışa aktar</translation>
+        </message>
+        <message>
+            <source>No se pudo exportar el registro de instalación.</source>
+            <translation>Kurulum günlüğü dışa aktarılamadı.</translation>
+        </message>
+        <message>
+            <source>Registro exportado</source>
+            <translation>Günlük dışa aktarıldı</translation>
+        </message>
+        <message>
+            <source>El registro se exportó correctamente.</source>
+            <translation>Günlük başarıyla dışa aktarıldı.</translation>
+        </message>
+        <message>
+            <source>Error desconocido</source>
+            <translation>Bilinmeyen hata</translation>
+        </message>
+        <message>
+            <source>Registro no disponible</source>
+            <translation>Günlük kullanılamıyor</translation>
+        </message>
+        <message>
+            <source>Error</source>
+            <translation>Hata</translation>
+        </message>
+    </context>
+</TS>

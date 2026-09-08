@@ -180,7 +180,23 @@ class UsersPage(QWidget):
         self.root_pass_error.hide()
         root_form.addRow("", self.root_pass_error)
 
-        card_layout.addLayout(root_form)
+        self.root_form_container = QWidget()
+        self.root_form_container.setLayout(root_form)
+        card_layout.addWidget(self.root_form_container)
+
+        # --- Inicio de sesión automático ---
+        self.autologin_check = QCheckBox()
+        self.autologin_check.setObjectName("autologinCheck")
+        self.autologin_check.setEnabled(False)
+        self.autologin_check.hide()
+        card_layout.addSpacing(12)
+        card_layout.addWidget(self.autologin_check)
+
+        self.autologin_info = QLabel()
+        self.autologin_info.setObjectName("hintLabel")
+        self.autologin_info.setWordWrap(True)
+        self.autologin_info.hide()
+        card_layout.addWidget(self.autologin_info)
 
         main_layout.addWidget(card)
         main_layout.addStretch()
@@ -198,12 +214,17 @@ class UsersPage(QWidget):
         self.user_pass_confirm.textChanged.connect(self._sync_root_pass_if_needed)
 
     def translate_ui(self):
-        self.titl.setText(self.tr("Nombre de equipo y usuarios"))
+        self.titl.setText(self.tr("Información personal"))
         self.nombre_label.setText(self.tr("Nombre del equipo:"))
         self.username_label.setText(self.tr("Nombre completo:"))
         self.user_label.setText(self.tr("Usuario (login):"))
         self.pass_label.setText(self.tr("Contraseña del usuario"))
         self.root_label.setText(self.tr("Contraseña de root"))
+
+        self.autologin_check.setText(self.tr("Iniciar sesión automáticamente"))
+        self.autologin_info.setText(
+            self.tr("Disponible con SDDM, LightDM o GDM. Con greetd no es posible configurarlo desde este instalador.")
+        )
 
         self.user_pass_label.setText(self.tr("Contraseña:"))
         self.user_pass_confirm_label.setText(self.tr("Confirmar:"))
@@ -254,6 +275,8 @@ class UsersPage(QWidget):
         self.root_pass.setReadOnly(checked)
         self.root_pass_confirm.setReadOnly(checked)
         self.btn_show_root_pass.setEnabled(not checked)
+        self.root_label.setVisible(not checked)
+        self.root_form_container.setVisible(not checked)
 
         if checked:
             self.root_pass.setText(self.user_pass.text())
@@ -305,6 +328,30 @@ class UsersPage(QWidget):
             "root",
         )
 
+    def set_autologin_support(self, display_manager):
+        # Configura la disponibilidad de autologin para el gestor detectado.
+        manager = (display_manager or "").lower()
+        if manager in {"sddm", "lightdm", "gdm"}:
+            self.autologin_check.setEnabled(True)
+            self.autologin_check.show()
+            self.autologin_info.setText(
+                self.tr("Autologin disponible mediante {manager}.").format(manager=display_manager)
+            )
+            self.autologin_info.show()
+        elif manager == "greetd":
+            self.autologin_check.setChecked(False)
+            self.autologin_check.setEnabled(False)
+            self.autologin_check.hide()
+            self.autologin_info.setText(
+                self.tr("Con greetd no es posible configurar autologin con este instalador.")
+            )
+            self.autologin_info.show()
+        else:
+            self.autologin_check.setChecked(False)
+            self.autologin_check.setEnabled(False)
+            self.autologin_check.hide()
+            self.autologin_info.hide()
+
     def validate_passwords(self):
         user_valid = self._validate_user_password()
 
@@ -339,4 +386,3 @@ class UsersPage(QWidget):
             root_valid = False
 
         return user_valid and root_valid
-

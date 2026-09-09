@@ -12,7 +12,6 @@ from ui.styles import global_stylesheet
 _BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 _IMAGES_DIR = os.path.join(_BASE_DIR, "images")
 _ASSETS_DIR = os.path.join(_BASE_DIR, "ui", "assets")
-_RESOURCES_DIR = os.path.join(_BASE_DIR, "resources")
 
 os.chdir(_BASE_DIR)
 
@@ -57,7 +56,7 @@ def main():
     app.setApplicationName("kron-installer")
     app.setDesktopFileName("kron-installer")
 
-    icon_path = os.path.join(_RESOURCES_DIR, "kron.svg")
+    icon_path = os.path.join(_IMAGES_DIR, "kron.svg")
     if os.path.isfile(icon_path):
         app.setWindowIcon(QIcon(icon_path))
 

@@ -11,7 +11,7 @@ _BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 APP_NAME     = "Kron Installer"
 APP_SUBTITLE = "\u00a9 2026 CuerdOS Project"
 APP_WEBSITE  = "https://cuerdos.github.io"
-ICON_PATH    = os.path.join(_BASE_DIR, "resources", "kron.svg")
+ICON_PATH    = os.path.join(_BASE_DIR, "images", "kron.svg")
 
 _C = {
     "header_bg":   "#181d1a",

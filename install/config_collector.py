@@ -121,7 +121,6 @@ class InstallerConfigCollector(QObject):
             # ISO local es deliberadamente la opción predeterminada: no se descarga
             # ni se instala nada desde repositorios durante esta instalación.
             data["UPDATE"] = "0" if mirror_key == "Local" else ("1" if self.system_data.get("net", True) else "0")
-            data["NONFREE"] = "1" if pag_mirrors.chk_nonfree.isChecked() else "0"
             data["NVIDIA"] = "1" if pag_mirrors.chk_nvidia.isChecked() else "0"
             data["INTEL"] = "1" if pag_mirrors.chk_intel.isChecked() else "0"
 

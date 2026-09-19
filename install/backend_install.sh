@@ -505,14 +505,6 @@ update_system() {
     echo "System updated"
 }
 
-enable_nonfree_repos() {
-    echo "Enabling non-free repositories..."
-    log_ui "NON-FREE"
-
-    chroot "$TARGETDIR" xbps-install -Sy void-repo-nonfree || die "Error installing void-repo-nonfree"
-    echo "Non-free repositories enabled"
-}
-
 get_nvidia_driver() {
     # Detectar tarjeta NVIDIA
     local info
@@ -559,24 +551,19 @@ install_intel_microcodes() {
 }
 
 install_extra_software() {
-    local update=$(get_option UPDATE)   # checkbox de la GUI
-    local nonfree=$(get_option NONFREE)
+    local update=$(get_option UPDATE)
     local nvidia=$(get_option NVIDIA)
     local intel=$(get_option INTEL)
 
     if [ "$update" = "1" ]; then
         update_system
-        if [ "$nonfree" = "1" ]; then
-            enable_nonfree_repos
-            if [ "$nvidia" = "1" ]; then
-                install_nvidia_driver
-            fi
 
-            if [ "$intel" = "1" ]; then
-                install_intel_microcodes
-            fi
-        else
-            echo "Non-free repositories and proprietary drivers were not activated"
+        if [ "$nvidia" = "1" ]; then
+            install_nvidia_driver
+        fi
+
+        if [ "$intel" = "1" ]; then
+            install_intel_microcodes
         fi
     else
         echo "Offline installer: the system will not be updated"

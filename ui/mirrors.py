@@ -59,18 +59,14 @@ class MirrorsPage(QWidget):
         self.software_title.setObjectName("subtitle")
         software_card_layout.addWidget(self.software_title)
 
-        self.chk_nonfree = QCheckBox()
         self.chk_nvidia = QCheckBox()
         self.chk_intel = QCheckBox()
 
         self.chk_nvidia.setEnabled(False)
         self.chk_intel.setEnabled(False)
 
-        self.chk_nonfree.toggled.connect(self.actualizar_nonfree)
         self.mirror_combo.currentIndexChanged.connect(self._actualizar_fuente)
 
-        software_card_layout.addWidget(self.chk_nonfree)
-        software_card_layout.addSpacing(4)
         software_card_layout.addWidget(self.chk_nvidia)
         software_card_layout.addSpacing(4)
         software_card_layout.addWidget(self.chk_intel)
@@ -97,7 +93,6 @@ class MirrorsPage(QWidget):
         self.mirror_combo.addItem(self.tr("Norteamérica, EE. UU."), "USA")
         self.mirror_combo.setCurrentIndex(0)
 
-        self.chk_nonfree.setText(self.tr("Activar repositorios no libres"))
         self.chk_nvidia.setText(self.tr("Instalar drivers NVIDIA"))
         self.chk_nvidia.setToolTip(self.tr(
             "Instala los drivers propietarios de NVIDIA, optimizando el rendimiento "
@@ -112,18 +107,12 @@ class MirrorsPage(QWidget):
         self._actualizar_fuente(self.mirror_combo.currentIndex())
 
     def _actualizar_fuente(self, _index):
-        # Las opciones de repositorio solo aplican a una fuente en red.
+        # Los drivers y microcódigos solo se pueden instalar desde una fuente en red.
         es_local = self.mirror_combo.currentData() == "Local"
-        self.chk_nonfree.setEnabled(not es_local)
+
+        self.chk_nvidia.setEnabled(not es_local)
+        self.chk_intel.setEnabled(not es_local)
+
         if es_local:
-            self.chk_nonfree.setChecked(False)
-        self.actualizar_nonfree(self.chk_nonfree.isChecked())
-
-    def actualizar_nonfree(self, activo):
-        activo = bool(activo) and self.mirror_combo.currentData() != "Local"
-        self.chk_nvidia.setEnabled(activo)
-        self.chk_intel.setEnabled(activo)
-
-        if not activo:
             self.chk_nvidia.setChecked(False)
             self.chk_intel.setChecked(False)

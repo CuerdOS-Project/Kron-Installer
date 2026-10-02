@@ -510,22 +510,24 @@ get_nvidia_driver() {
     local info
     info=$(lspci | grep -i nvidia)
 
-    # Extraer números de serie de la GPU (solo la primera coincidencia)
+    # Extraer serie de la GPU (solo la primera coincidencia)
     local series
     series=$(echo "$info" | grep -oP '\b[0-9]{3,}\b' | head -n1)
 
     local driver=""
 
     if [ -n "$series" ]; then
-        if [ "$series" -ge 800 ]; then
+        if [ "$series" -ge 1600 ]; then
             driver="nvidia"
+        elif [ "$series" -ge 700 ]; then
+            driver="nvidia580"
         elif [ "$series" -ge 600 ]; then
             driver="nvidia470"
         elif [ "$series" -ge 400 ]; then
             driver="nvidia390"
         fi
     fi
-    # Si no se detecta serie o no entra en rangos soportados, driver=""
+
     echo "$driver"
 }
 

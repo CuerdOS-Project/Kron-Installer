@@ -169,48 +169,105 @@ create_filesystems() {
     done
 }
 
+# Estimar el tamaño (bytes) del rootfs del live que va a copiar tar.
+#
+# 1) `du -sx --apparent-size`: teóricamente lo que copiará tar (--one-file-
+#    system + tamaño aparente en vez de bloques). PERO se ha verificado que
+#    puede dar resultados absurdos en overlayfs (st_dev distintos para dirs
+#    y ficheros hacen que -x descarte ficheros) y con sparse files.
+# 2) `df --output=used /`: uso real del filesystem montado en /, que es
+#    exactamente lo que tar copiará. Resistente a los caprichos de du.
+# 3) Validación de sanidad: un rootfs live de CuerdOS pesa como mínimo unos
+#    cientos de MB. Si la medida queda por debajo del umbral, la medición
+#    está rota y devolvemos 0 (sin progreso, nunca un porcentaje mentiroso).
+#    El umbral es sobre-escribible para poder simularlo en tests:
+#    KRON_MIN_ROOTFS_BYTES (bytes, por defecto 300000000).
+estimate_rootfs_bytes() {
+    local MIN_ROOTFS_BYTES="${KRON_MIN_ROOTFS_BYTES:-300000000}"
+    local b
+
+    b=$(du -sx --apparent-size --block-size=1 / 2>/dev/null | awk '{print $1}')
+    case "$b" in ''|*[!0-9]*) b=0 ;; esac
+
+    if [ "$b" -lt "$MIN_ROOTFS_BYTES" ]; then
+        b=$(df -B1 --output=used / 2>/dev/null | tail -n 1 | tr -dc '0-9')
+        case "$b" in ''|*[!0-9]*) b=0 ;; esac
+    fi
+
+    if [ "$b" -lt "$MIN_ROOTFS_BYTES" ]; then
+        echo 0
+    else
+        echo "$b"
+    fi
+}
+
 # Copiar sistema base desde el Live ISO (Local Source)
 copy_rootfs() {
     echo "Copying system files..."
 
     # --- Progreso real de la copia (fase COPY) ---
-    # Se mide el tamaño real del rootfs del live y se lanza el tar de
-    # lectura con checkpoints. Cada checkpoint (cada CKPT_EVERY records,
-    # ~40 MiB con record de 10240 bytes) ejecuta un sh que emite
-    # ">>> COPY <pct>" por fd3 para que el frontend pinte un porcentaje
-    # verídico en la fase que más dura. Sin TOTAL_BYTES no hay trampa:
-    # simplemente no se emiten porcentajes y la barra espera al siguiente
-    # token en el inicio del tramo (8%).
-    local TOTAL_BYTES CKPT_EVERY ckpt_bytes
-    TOTAL_BYTES=$(du -sx --block-size=1 / 2>/dev/null | awk '{print $1}')
-    case "$TOTAL_BYTES" in
-        ''|*[!0-9]*) TOTAL_BYTES=0 ;;
-    esac
+    # Se estima el tamaño del rootfs del live y se lanza el tar de lectura
+    # con checkpoints. Cada checkpoint (cada CKPT_EVERY records, ~40 MiB con
+    # record de 10240 bytes) ejecuta un sh que emite ">>> COPY <pct>" por fd3
+    # para que el frontend pinte un porcentaje verídico en la fase que más
+    # dura. Sin estimación fiable no hay trampa: no se emiten porcentajes y
+    # la barra espera al siguiente token en el inicio del tramo (8%).
+    local TOTAL_BYTES CKPT_EVERY
+    TOTAL_BYTES=$(estimate_rootfs_bytes)
 
     local -a CKPT_ARGS=()
     if [ "$TOTAL_BYTES" -gt 0 ]; then
         CKPT_EVERY=4000
         # OJO: TAR_CHECKPOINT es el número de RECORDS escritos (1 record =
-        # 10240 bytes), no el contador de checkpoints. Cada checkpoint
-        # salta cada CKPT_EVERY records y informa del total acumulado.
+        # 10240 bytes), no el contador de checkpoints (verificado con GNU
+        # tar 1.35: con --checkpoint=2 emite TAR_CHECKPOINT=2,4,6...).
+        # El porcentaje se clampea a 99 porque el stream de tar (headers,
+        # padding) puede superar levemente la estimación. La acción va
+        # blindada con '|| :' para que un fallo suyo (p.ej. fd3 cerrado)
+        # jamás provoque que tar termine con error.
         CKPT_ARGS=(
             --checkpoint="$CKPT_EVERY"
-            --checkpoint-action="exec=echo \">>> COPY \$(( TAR_CHECKPOINT * 10240 * 100 / $TOTAL_BYTES ))\" >&3"
+            --checkpoint-action="exec=P=\$(( TAR_CHECKPOINT * 10240 * 100 / $TOTAL_BYTES )); [ \"\$P\" -gt 99 ] && P=99; (echo \">>> COPY \$P\" >&3) 2>/dev/null || :"
         )
     else
-        echo "WARNING: could not measure rootfs size; COPY progress disabled" >&2
+        echo "WARNING: could not estimate rootfs size; COPY progress disabled" >&2
     fi
 
+    # Guardamos el stderr de cada tar para poder diagnosticar fallos reales
+    # (antes iban a /dev/null y una instalación fallida era indescifrable).
+    local TAR_CREATE_ERR TAR_EXTRACT_ERR
+    TAR_CREATE_ERR=$(mktemp -t kron-tar-create-XXXXXXXX)
+    TAR_EXTRACT_ERR=$(mktemp -t kron-tar-extract-XXXXXXXX)
+
     # Usamos tar tal cual el original para preservar atributos extendidos
-    tar --create --one-file-system --xattrs -f - "${CKPT_ARGS[@]}" / 2>/dev/null | \
-        tar --extract --xattrs --xattrs-include='*' --preserve-permissions -f - -C "$TARGETDIR"
+    tar --create --one-file-system --xattrs -f - "${CKPT_ARGS[@]}" / 2>"$TAR_CREATE_ERR" | \
+        tar --extract --xattrs --xattrs-include='*' --preserve-permissions -f - -C "$TARGETDIR" 2>"$TAR_EXTRACT_ERR"
 
     # Comprobar los dos tars del pipeline (lectura y extracción);
     # $? solo reflejaría el segundo.
+    #
+    # Política de fallos (compatibilidad con el instalador original):
+    #  - Lectura: rc=1 son avisos benignos e inevitables en un sistema vivo
+    #    ("file changed as we read it" sobre /tmp, /run, wtmp, ...): tar copió
+    #    igualmente esos ficheros y el código original los ignoraba porque su
+    #    `if [ $? -ne 0 ]` solo veía el segundo tar. NO son fatales.
+    #    rc>=2 sí es un error real de lectura.
+    #  - Extracción: cualquier rc!=0 es fatal (igual que el original).
     local -a rv=("${PIPESTATUS[@]}")
-    if [ "${rv[0]}" -ne 0 ] || [ "${rv[1]}" -ne 0 ]; then
-        die "Error copying rootfs file system"
+    if [ "${rv[1]}" -ne 0 ]; then
+        echo "tar (extract) failed with rc=${rv[1]}; last errors:" >&2
+        tail -n 8 "$TAR_EXTRACT_ERR" >&2
+        die "Error copying rootfs file system (extract rc=${rv[1]})"
     fi
+    if [ "${rv[0]}" -ge 2 ]; then
+        echo "tar (create) failed with rc=${rv[0]}; last errors:" >&2
+        tail -n 8 "$TAR_CREATE_ERR" >&2
+        die "Error copying rootfs file system (create rc=${rv[0]})"
+    fi
+    if [ "${rv[0]}" -ne 0 ]; then
+        echo "NOTE: tar (create) rc=1: some files changed while reading (live system); continuing" >&2
+    fi
+    rm -f "$TAR_CREATE_ERR" "$TAR_EXTRACT_ERR"
 
     # Limpieza post-copia live
     rm -f "$TARGETDIR/etc/motd" "$TARGETDIR/etc/issue" "$TARGETDIR/usr/sbin/void-installer"

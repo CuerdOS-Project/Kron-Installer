@@ -169,19 +169,9 @@ create_filesystems() {
     done
 }
 
-# Estimar el tamaño (bytes) del rootfs del live que va a copiar tar.
-#
-# 1) `du -sx --apparent-size`: teóricamente lo que copiará tar (--one-file-
-#    system + tamaño aparente en vez de bloques). PERO se ha verificado que
-#    puede dar resultados absurdos en overlayfs (st_dev distintos para dirs
-#    y ficheros hacen que -x descarte ficheros) y con sparse files.
-# 2) `df --output=used /`: uso real del filesystem montado en /, que es
-#    exactamente lo que tar copiará. Resistente a los caprichos de du.
-# 3) Validación de sanidad: un rootfs live de CuerdOS pesa como mínimo unos
-#    cientos de MB. Si la medida queda por debajo del umbral, la medición
-#    está rota y devolvemos 0 (sin progreso, nunca un porcentaje mentiroso).
-#    El umbral es sobre-escribible para poder simularlo en tests:
-#    KRON_MIN_ROOTFS_BYTES (bytes, por defecto 300000000).
+# Estima el tamaño del rootfs live para calcular el progreso de copia.
+# Usa df como alternativa si du devuelve una medida insuficiente.
+# Si ambas fallan, devuelve 0 y desactiva el progreso porcentual.
 estimate_rootfs_bytes() {
     local MIN_ROOTFS_BYTES="${KRON_MIN_ROOTFS_BYTES:-300000000}"
     local b
@@ -205,26 +195,14 @@ estimate_rootfs_bytes() {
 copy_rootfs() {
     echo "Copying system files..."
 
-    # --- Progreso real de la copia (fase COPY) ---
-    # Se estima el tamaño del rootfs del live y se lanza el tar de lectura
-    # con checkpoints. Cada checkpoint (cada CKPT_EVERY records, ~40 MiB con
-    # record de 10240 bytes) ejecuta un sh que emite ">>> COPY <pct>" por fd3
-    # para que el frontend pinte un porcentaje verídico en la fase que más
-    # dura. Sin estimación fiable no hay trampa: no se emiten porcentajes y
-    # la barra espera al siguiente token en el inicio del tramo (8%).
-    local TOTAL_BYTES CKPT_EVERY
+    # Progreso de copia mediante checkpoints de tar.
     TOTAL_BYTES=$(estimate_rootfs_bytes)
 
     local -a CKPT_ARGS=()
     if [ "$TOTAL_BYTES" -gt 0 ]; then
         CKPT_EVERY=4000
-        # OJO: TAR_CHECKPOINT es el número de RECORDS escritos (1 record =
-        # 10240 bytes), no el contador de checkpoints (verificado con GNU
-        # tar 1.35: con --checkpoint=2 emite TAR_CHECKPOINT=2,4,6...).
-        # El porcentaje se clampea a 99 porque el stream de tar (headers,
-        # padding) puede superar levemente la estimación. La acción va
-        # blindada con '|| :' para que un fallo suyo (p.ej. fd3 cerrado)
-        # jamás provoque que tar termine con error.
+        # Cada record son 10240 bytes; limitar el progreso al 99 %
+        # evita completar la barra antes de terminar la extracción.
         CKPT_ARGS=(
             --checkpoint="$CKPT_EVERY"
             --checkpoint-action="exec=P=\$(( TAR_CHECKPOINT * 10240 * 100 / $TOTAL_BYTES )); [ \"\$P\" -gt 99 ] && P=99; (echo \">>> COPY \$P\" >&3) 2>/dev/null || :"
@@ -233,8 +211,7 @@ copy_rootfs() {
         echo "WARNING: could not estimate rootfs size; COPY progress disabled" >&2
     fi
 
-    # Guardamos el stderr de cada tar para poder diagnosticar fallos reales
-    # (antes iban a /dev/null y una instalación fallida era indescifrable).
+    # Conservar los errores de ambos procesos para diagnosticar fallos.
     local TAR_CREATE_ERR TAR_EXTRACT_ERR
     TAR_CREATE_ERR=$(mktemp -t kron-tar-create-XXXXXXXX)
     TAR_EXTRACT_ERR=$(mktemp -t kron-tar-extract-XXXXXXXX)
@@ -243,16 +220,7 @@ copy_rootfs() {
     tar --create --one-file-system --xattrs -f - "${CKPT_ARGS[@]}" / 2>"$TAR_CREATE_ERR" | \
         tar --extract --xattrs --xattrs-include='*' --preserve-permissions -f - -C "$TARGETDIR" 2>"$TAR_EXTRACT_ERR"
 
-    # Comprobar los dos tars del pipeline (lectura y extracción);
-    # $? solo reflejaría el segundo.
-    #
-    # Política de fallos (compatibilidad con el instalador original):
-    #  - Lectura: rc=1 son avisos benignos e inevitables en un sistema vivo
-    #    ("file changed as we read it" sobre /tmp, /run, wtmp, ...): tar copió
-    #    igualmente esos ficheros y el código original los ignoraba porque su
-    #    `if [ $? -ne 0 ]` solo veía el segundo tar. NO son fatales.
-    #    rc>=2 sí es un error real de lectura.
-    #  - Extracción: cualquier rc!=0 es fatal (igual que el original).
+    # Comprobar ambos procesos: PIPESTATUS debe capturarse inmediatamente.
     local -a rv=("${PIPESTATUS[@]}")
     if [ "${rv[1]}" -ne 0 ]; then
         echo "tar (extract) failed with rc=${rv[1]}; last errors:" >&2
@@ -281,7 +249,7 @@ copy_rootfs() {
         if [ -f "$file" ]; then
             sed -i 's/^auth\s\+sufficient\s\+pam_rootok\.so/#auth sufficient pam_rootok.so/' "$file"
         fi
-    done 
+    done
 }
 
 # Montar sistemas virtuales para chroot

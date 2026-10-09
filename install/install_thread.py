@@ -14,18 +14,10 @@ class InstallWorker(QThread):
     finished_success = Signal()         # Fin exitoso
     finished_error = Signal(str)        # Fin con error
 
-    # --- Tabla de fases (fuente única de verdad del progreso) ---
-    # token -> (inicio, fin, tipo) sobre el rango global 0-100.
-    #
-    # El backend emite cada token ANTES de ejecutar el trabajo de su fase,
-    # por lo que el valor honesto al llegar un token es el INICIO del tramo:
-    # el trabajo real ocurre entre ese token y el siguiente.
-    #
-    #  "instant":       fase corta; la barra se fija en el inicio del tramo.
-    #  "copy":          progreso REAL, vía líneas ">>> COPY <pct>" del backend
-    #                   (checkpoints de tar sobre bytes escritos).
-    #  "indeterminate": xbps no reporta porcentaje; barra pulsante honesta
-    #                   dentro de su tramo (opción A).
+    # Fases del progreso global: token -> (inicio, fin, tipo).
+    # El backend emite el token al comenzar cada fase; el trabajo se
+    # refleja entre ese token y el siguiente.
+    # instant: progreso fijo; copy: porcentaje real; indeterminate: sin porcentaje disponible.
     _PHASES = {
         "INIT":            (0, 2, "instant"),
         "CREATE_FS":       (2, 8, "instant"),

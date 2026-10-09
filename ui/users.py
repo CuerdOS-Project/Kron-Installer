@@ -305,7 +305,7 @@ class UsersPage(QWidget):
                 return False
             elif pass1 != pass2:
                 error_label.setText(
-                    self.tr(f"Las contraseñas de {ctx_user} no coinciden")
+                    self.tr("Las contraseñas de {ctx_user} no coinciden").format(ctx_user=ctx_user)
                 )
                 error_label.show()
                 return False

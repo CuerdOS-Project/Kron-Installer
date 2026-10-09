@@ -172,11 +172,43 @@ create_filesystems() {
 # Copiar sistema base desde el Live ISO (Local Source)
 copy_rootfs() {
     echo "Copying system files..."
+
+    # --- Progreso real de la copia (fase COPY) ---
+    # Se mide el tamaño real del rootfs del live y se lanza el tar de
+    # lectura con checkpoints. Cada checkpoint (cada CKPT_EVERY records,
+    # ~40 MiB con record de 10240 bytes) ejecuta un sh que emite
+    # ">>> COPY <pct>" por fd3 para que el frontend pinte un porcentaje
+    # verídico en la fase que más dura. Sin TOTAL_BYTES no hay trampa:
+    # simplemente no se emiten porcentajes y la barra espera al siguiente
+    # token en el inicio del tramo (8%).
+    local TOTAL_BYTES CKPT_EVERY ckpt_bytes
+    TOTAL_BYTES=$(du -sx --block-size=1 / 2>/dev/null | awk '{print $1}')
+    case "$TOTAL_BYTES" in
+        ''|*[!0-9]*) TOTAL_BYTES=0 ;;
+    esac
+
+    local -a CKPT_ARGS=()
+    if [ "$TOTAL_BYTES" -gt 0 ]; then
+        CKPT_EVERY=4000
+        # OJO: TAR_CHECKPOINT es el número de RECORDS escritos (1 record =
+        # 10240 bytes), no el contador de checkpoints. Cada checkpoint
+        # salta cada CKPT_EVERY records y informa del total acumulado.
+        CKPT_ARGS=(
+            --checkpoint="$CKPT_EVERY"
+            --checkpoint-action="exec=echo \">>> COPY \$(( TAR_CHECKPOINT * 10240 * 100 / $TOTAL_BYTES ))\" >&3"
+        )
+    else
+        echo "WARNING: could not measure rootfs size; COPY progress disabled" >&2
+    fi
+
     # Usamos tar tal cual el original para preservar atributos extendidos
-    tar --create --one-file-system --xattrs -f - / 2>/dev/null | \
+    tar --create --one-file-system --xattrs -f - "${CKPT_ARGS[@]}" / 2>/dev/null | \
         tar --extract --xattrs --xattrs-include='*' --preserve-permissions -f - -C "$TARGETDIR"
-    
-    if [ $? -ne 0 ]; then
+
+    # Comprobar los dos tars del pipeline (lectura y extracción);
+    # $? solo reflejaría el segundo.
+    local -a rv=("${PIPESTATUS[@]}")
+    if [ "${rv[0]}" -ne 0 ] || [ "${rv[1]}" -ne 0 ]; then
         die "Error copying rootfs file system"
     fi
 
@@ -746,7 +778,7 @@ set_useraccount
 set_autologin
 
 # Paso 4: Bootloader (Limine)
-log_ui "GRUB_INSTALL"
+log_ui "BOOTLOADER"
 set_bootloader
 
 # Paso 5: Finalizar

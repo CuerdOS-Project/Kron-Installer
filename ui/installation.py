@@ -3,7 +3,7 @@ from PySide6.QtWidgets import (
     QProgressBar, QPushButton, QFrame, QSizePolicy,
     QStackedWidget
 )
-from PySide6.QtCore import Qt, Signal, QTimer
+from PySide6.QtCore import Qt, Signal, QTimer, QVariantAnimation, QEasingCurve
 from PySide6.QtGui import QPixmap
 import os
 from install.install_thread import InstallWorker
@@ -194,6 +194,9 @@ class InstallationPage(QWidget):
         self._slide_count = len(self.SLIDE_IMAGES)
         self._demo_success_pending = False
         self._showing_log = False
+        self._indeterminate = False
+        self._phase_idx = None
+        self._phase_total = None
         self.setup_ui()
         self.translate_ui()
 
@@ -228,6 +231,13 @@ class InstallationPage(QWidget):
         self.progress.setTextVisible(True)
         self.progress.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         top_layout.addWidget(self.progress)
+
+        # Suavizado visual: la barra interpola hacia el último valor
+        # recibido del worker. Solo pinta, nunca inventa datos.
+        self._anim = QVariantAnimation(self)
+        self._anim.setDuration(300)
+        self._anim.setEasingCurve(QEasingCurve.Type.OutCubic)
+        self._anim.valueChanged.connect(self.progress.setValue)
 
         main_layout.addWidget(top_card)
         main_layout.addSpacing(10)
@@ -365,13 +375,36 @@ class InstallationPage(QWidget):
 
     #  Instalacion
     def _set_progress_mode(self, indeterminate):
-        # Cambia entre descarga sin porcentaje y progreso determinado.
+        # Cambia entre fases sin porcentaje (barra pulsante) y progreso
+        # determinado. Lo decide el worker vía la señal mode_changed.
+        self._indeterminate = indeterminate
         if indeterminate:
+            self._anim.stop()
             self.progress.setRange(0, 0)
             self.progress.setTextVisible(False)
         else:
             self.progress.setRange(0, 100)
             self.progress.setTextVisible(True)
+
+    def _on_progress_value(self, value):
+        if self._indeterminate:
+            return
+        self._animate_to(value)
+
+    def _animate_to(self, target):
+        target = max(0, min(100, int(target)))
+        self._anim.stop()
+        if target <= self.progress.value():
+            # El worker garantiza monotonicidad; la UI además nunca
+            # retrocede por su cuenta (defensa en profundidad).
+            return
+        self._anim.setStartValue(self.progress.value())
+        self._anim.setEndValue(target)
+        self._anim.start()
+
+    def _on_phase_changed(self, idx, total):
+        self._phase_idx = idx
+        self._phase_total = total
 
     def iniciar_instalacion(self, config_data):
         if self.demo:
@@ -384,23 +417,29 @@ class InstallationPage(QWidget):
         self.worker = InstallWorker(config_data, demo=self.demo)
 
         self.worker.status_update.connect(self.on_status_update)
-        self.worker.progress_update.connect(self.progress.setValue)
+        self.worker.progress_update.connect(self._on_progress_value)
+        self.worker.mode_changed.connect(self._set_progress_mode)
+        self.worker.phase_changed.connect(self._on_phase_changed)
         self.worker.log_update.connect(self.terminal.appendPlainText)
         self.worker.finished_success.connect(self.on_success)
         self.worker.finished_error.connect(self.on_error)
 
+        self._anim.stop()
+        self._phase_idx = None
+        self._phase_total = None
         self.worker.start()
 
     def on_status_update(self, token: str):
-        if token == "UPDATE_DOWNLOAD":
-            self._set_progress_mode(True)
-        elif token == "UPDATE_INSTALL":
-            self._set_progress_mode(False)
         texto = self.UI_STATUS_TEXTS.get(token)
-        if texto:
-            self.texto_label.setText(texto)
-        else:
-            self.texto_label.setText(self.tr("Realizando tareas del sistema..."))
+        if texto is None:
+            texto = self.tr("Realizando tareas del sistema...")
+        # Contador global de fases (la posición global se comunica por texto
+        # durante las fases indeterminadas, como en Calamares).
+        if self._phase_idx is not None and self._phase_total is not None:
+            texto += " " + self.tr("(Fase {0} de {1})").format(
+                self._phase_idx, self._phase_total
+            )
+        self.texto_label.setText(texto)
 
     def translate_ui(self):
         self.titl.setText(self.tr("Instalación"))
@@ -418,7 +457,9 @@ class InstallationPage(QWidget):
             "INTEL": self.tr("Instalando microcódigos de Intel..."),
             "USER_CONFIG": self.tr("Creando usuarios y contraseñas..."),
             "GRUB_INSTALL": self.tr("Instalando el cargador de arranque..."),
+            "BOOTLOADER": self.tr("Instalando el cargador de arranque..."),
             "REMOVE_PACKAGES": self.tr("Eliminando paquetes seleccionados..."),
+            "FINISH": self.tr("Finalizando instalación..."),
             "DONE": self.tr("Instalación completada correctamente"),
         }
 

@@ -27,9 +27,9 @@ It allows you to configure partitions, user, system language, keyboard layout, a
   - Optional: Non-free drivers (NVIDIA, Intel microcode).
 - **Installation Process**:
   - **Non-blocking installation**: Uses a threaded backend (`InstallWorker`) to keep the UI responsive.
-  - **Dynamic Progress Bar**: Heuristic progress tracking with smooth animations during long operations (Copy/Update).
+  - **Honest Progress Bar**: Phase-weighted progress (Calamares-style). The copy phase reports **real byte progress** via `tar` checkpoints; package updates use an indeterminate (pulsing) bar plus a "Phase X of Y" counter. The bar is monotonic and never goes backwards.
   - Real-time log terminal (toggleable).
-  - Automates copying the base system, generating `fstab`, creating users, setting locales, regenerating initramfs, and installing the bootloader (GRUB).
+  - Automates copying the base system, generating `fstab`, creating users, setting locales, regenerating initramfs, and installing the bootloader (Limine).
 - **Internationalization (i18n)**: Full support for translations using Qt Linguist.
 
 ---

@@ -132,11 +132,12 @@ class InstallerConfigCollector(QObject):
             filesys = pag_discos.filesys_combo.currentText().lower()
 
             # Validaciones y creación de particiones
+            # El ESP (/boot/efi) es obligatorio también en BIOS: Limine solo
+            # puede leer FAT32, incluso arrancando por MBR.
             part_checks = [
-                ("root", "/", True, self.tr("Debe seleccionar una partición Raíz (/)."))
+                ("root", "/", True, self.tr("Debe seleccionar una partición Raíz (/).")),
+                ("efi", "/boot/efi", True, self.tr("Debe seleccionar una partición EFI (/boot/efi), ya sea un equipo UEFI o BIOS.")),
             ]
-            if self.system_data.get("efi", False):
-                part_checks.append(("efi", "/boot/efi", True, self.tr("Debe seleccionar una partición EFI (/boot/efi).")))
 
             for key, point, must_format, msg in part_checks:
                 if raw_parts[key] is None:

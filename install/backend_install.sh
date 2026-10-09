@@ -572,30 +572,133 @@ install_extra_software() {
     fi
 }
 
-# Instalar GRUB
+# Detectar el ESP montado en el sistema destino (o cadena vacía).
+find_esp() {
+    findmnt -rno TARGET "$TARGETDIR/boot/efi" 2>/dev/null || true
+}
+
+# UUID y fstype del sistema de archivos raíz, leyendo el config generado
+# por Python (líneas "MOUNTPOINT <dev> <fstype> <size> <mntpt> <mkfs>").
+get_root_info() {
+    local line
+    line="$(grep -E '^MOUNTPOINT .* / ' "$CONF_FILE" | head -n1)"
+    ROOT_DEV=$(echo "$line" | awk '{print $2}')
+    ROOT_FSTYPE=$(echo "$line" | awk '{print $3}')
+    ROOT_UUID=$(blkid -s UUID -o value "$ROOT_DEV" 2>/dev/null)
+    [ -n "$ROOT_UUID" ] || die "Could not determine UUID of root partition $ROOT_DEV"
+}
+
+# Copiar kernels e initramfs desde /boot del sistema destino al ESP.
+# Limine (>=9) solo puede leer FAT32 e ISO9660, por lo que el kernel y el
+# initramfs deben vivir en el ESP, no en /boot ext4/btrfs.
+sync_kernels_to_esp() {
+    local esp="$1" k initr
+
+    install -d "$esp/EFI/cuerdos"
+    for k in "$TARGETDIR"/boot/vmlinuz-*; do
+        [ -f "$k" ] || continue
+        # Solo copiar si cambió (ahorra tiempo en el hook de kernel)
+        if ! cmp -s "$k" "$esp/EFI/cuerdos/$(basename "$k")"; then
+            echo "Syncing $(basename "$k") to ESP..."
+            install -m 644 "$k" "$esp/EFI/cuerdos/"
+        fi
+        initr="${k/vmlinuz-/initramfs-}.img"
+        if [ -f "$initr" ]; then
+            if ! cmp -s "$initr" "$esp/EFI/cuerdos/$(basename "$initr")"; then
+                install -m 644 "$initr" "$esp/EFI/cuerdos/"
+            fi
+        fi
+    done
+}
+
+# Instalar Limine (stage 1/2 en BIOS, binario EFI en el ESP) y escribir limine.conf
 set_bootloader() {
-    local dev="$(get_option BOOTLOADER)" grub_args=""
+    local dev="$(get_option BOOTLOADER)" kernel initramfs ESP_MNT
+    local cmdline_opts="rw" stage2_part=""
 
     if [ "$dev" = "none" ] || [ -z "$dev" ]; then return; fi
 
-    # El branding de GRUB se configura exclusivamente en /etc/default/grub.
-    install -d "$TARGETDIR/etc/default"
-    if [ -f "$TARGETDIR/etc/default/grub" ]; then
-        if grep -q '^GRUB_DISTRIBUTOR=' "$TARGETDIR/etc/default/grub"; then
-            sed -i 's|^GRUB_DISTRIBUTOR=.*|GRUB_DISTRIBUTOR="CuerdOS"|' "$TARGETDIR/etc/default/grub"
+    # UUID/fstype de la partición raíz (desde el config + blkid)
+    get_root_info
+
+    # Kernel de CuerdOS (con fallback a cualquier vmlinuz si no hay match de marca)
+    kernel="$(find "$TARGETDIR/boot" -maxdepth 1 -type f \
+        -name 'vmlinuz-*cuerdos*' | sort -V | tail -n1)"
+    if [ -z "$kernel" ]; then
+        kernel="$(find "$TARGETDIR/boot" -maxdepth 1 -type f \
+            -name 'vmlinuz-*' | sort -V | tail -n1)"
+    fi
+    if [ -z "$kernel" ]; then
+        die "Could not find CuerdOS kernel"
+    fi
+
+    kernel="${kernel#$TARGETDIR}"
+
+    initramfs="${kernel/vmlinuz-/initramfs-}.img"
+
+    if [ ! -f "$TARGETDIR$initramfs" ]; then
+        die "Could not find initramfs for $(basename "$kernel")"
+    fi
+
+    # UUID del sistema de archivos raíz para la línea de comandos del kernel
+    # (calculado por get_root_info)
+
+    # rootflags solo aplica a btrfs (subvolumen @ creado por create_filesystems)
+    if [ "$ROOT_FSTYPE" = "btrfs" ]; then
+        cmdline_opts="rw rootflags=subvol=@"
+    fi
+
+    # Limine solo lee FAT32/ISO9660: el ESP es obligatorio como partición
+    # de arranque (kernels, initramfs y limine.conf viven ahí).
+    ESP_MNT="$(find_esp)"
+    if [ -z "$ESP_MNT" ]; then
+        die "Limine requiere una partición EFI (FAT32) montada en /boot/efi"
+    fi
+
+    # --- Ficheros de arranque en el ESP ---
+    sync_kernels_to_esp "$ESP_MNT"
+
+    # Binario EFI (útil en UEFI y como copia de seguridad en BIOS puros)
+    install -d "$ESP_MNT/EFI/BOOT"
+    install -m 644 "$TARGETDIR/usr/share/limine/BOOTX64.EFI" \
+        "$ESP_MNT/EFI/BOOT/BOOTX64.EFI" || die "Error installing Limine EFI binary"
+
+    # Stage 3 para arranque BIOS: sin este fichero en una partición FAT,
+    # el stage 2 de la MBR muere con "Stage 3 file not found".
+    install -m 644 "$TARGETDIR/usr/share/limine/limine-bios.sys" \
+        "$ESP_MNT/limine-bios.sys" || die "Error copying limine-bios.sys to ESP"
+
+    # --- limine.conf (en el ESP: boot() apunta a la partición que lo contiene) ---
+    cat > "$ESP_MNT/limine.conf" <<EOF
+timeout: 5
+interface_branding: CuerdOS
+
+/CuerdOS
+    protocol: linux
+    kernel_path: boot():/EFI/cuerdos/$(basename "$kernel")
+    module_path: boot():/EFI/cuerdos/$(basename "$initramfs")
+    cmdline: root=UUID=$ROOT_UUID $cmdline_opts
+EOF
+
+    # --- Stage 1/2 para arranque BIOS (híbrido: también bajo UEFI) ---
+    if [ "$(blkid -s PTTYPE -o value "$dev" 2>/dev/null)" = "gpt" ]; then
+        # GPT: Limine exige una partición BIOS boot (EF02) para stage 2
+        stage2_part="$(sgdisk -p "$dev" 2>/dev/null | \
+            awk '{for (i=2; i<=NF; i++) if (toupper($i)=="EF02") {print $1; exit}}')"
+        if [ -n "$stage2_part" ]; then
+            chroot "$TARGETDIR" limine bios-install "$dev" "$stage2_part" \
+                || die "Error installing Limine BIOS stage 2 on $dev partition $stage2_part"
+        elif [ -n "$EFI_SYSTEM" ]; then
+            echo "WARNING: GPT sin partición BIOS boot (EF02): no habrá arranque BIOS de respaldo." >&2
         else
-            printf '\nGRUB_DISTRIBUTOR="CuerdOS"\n' >> "$TARGETDIR/etc/default/grub"
+            die "GPT en modo BIOS requiere una partición BIOS boot (EF02) de al menos 32KiB"
         fi
     else
-        printf 'GRUB_DISTRIBUTOR="CuerdOS"\n' > "$TARGETDIR/etc/default/grub"
+        chroot "$TARGETDIR" limine bios-install "$dev" \
+            || die "Error installing Limine BIOS on $dev"
     fi
 
-    if [ -n "$EFI_SYSTEM" ]; then
-        grub_args="--target=$EFI_TARGET --efi-directory=/boot/efi --bootloader-id=CuerdOS --recheck"
-    fi
-
-    chroot "$TARGETDIR" grub-install $grub_args "$dev" || die "Error installing GRUB on $dev"
-    chroot "$TARGETDIR" grub-mkconfig -o /boot/grub/grub.cfg || die "Error generating grub.cfg"
+    echo "Limine installed successfully"
 }
 
 # --- 5. ORQUESTACIÓN PRINCIPAL ---
@@ -642,7 +745,7 @@ set_rootpassword
 set_useraccount
 set_autologin
 
-# Paso 4: Bootloader
+# Paso 4: Bootloader (Limine)
 log_ui "GRUB_INSTALL"
 set_bootloader
 

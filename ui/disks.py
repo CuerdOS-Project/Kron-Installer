@@ -192,11 +192,8 @@ class DisksPage(QWidget):
         form_layout.addRow(self.lbl_home, self.home_combo)
         form_layout.addRow(self.lbl_swap, self.swap_combo)
 
-        self._is_efi_system = sys_data.get("efi", False)
-
-        if not self._is_efi_system:
-            self.efi_combo.setVisible(False)
-            self.lbl_efi.setVisible(False)
+        # El selector de ESP se muestra también en equipos BIOS: Limine solo
+        # lee FAT32, así que /boot/efi es obligatorio en ambos firmwares.
 
         ac_layout.addLayout(form_layout)
         ac_layout.addStretch()
@@ -220,7 +217,7 @@ class DisksPage(QWidget):
         if self.raiz_combo.currentData():
             rows_data.append(("/", self.raiz_combo.currentText(), filesys))
 
-        if self.efi_combo.currentData() and self._is_efi_system:
+        if self.efi_combo.currentData():
             rows_data.append(("/boot/efi", self.efi_combo.currentText(), "VFAT"))
 
         if self.home_combo.currentData():
@@ -250,12 +247,14 @@ class DisksPage(QWidget):
             "BTRFS y EXT4 son las opciones recomendadas. BTRFS ofrece funciones avanzadas; EXT4 prioriza sencillez y compatibilidad."
         ))
         self.assign_label.setText(self.tr("Asignar particiones"))
-        efi_help = self.tr("EFI (/boot/efi): contiene los archivos de arranque en equipos UEFI.") if self._is_efi_system else ""
+        efi_help = self.tr(
+            "EFI (/boot/efi): partición FAT32 donde vive el arranque; "
+            "obligatoria en UEFI y en BIOS (la requiere Limine).\n"
+        )
         self.assign_help.setText(
             self.tr("Raíz (/): contiene el sistema instalado.\n")
             + self.tr("Home (/home): guarda tus archivos personales y configuraciones.\n")
             + efi_help
-            + ("\n" if efi_help else "")
             + self.tr("Swap: espacio de intercambio usado cuando falta memoria RAM.")
         )
         self.table_title.setText(self.tr("Resumen"))
@@ -324,7 +323,6 @@ class DisksPage(QWidget):
           Root → particion mas grande (no EFI, no swap)
           Home → segunda particion mas grande (si hay >=2)
         """
-        is_efi = self.sys_data.get("efi", False)
 
         efi_parts = [p for p in partitions if "vfat" in p["fstype"] or "fat" in p["fstype"]]
         swap_parts = [p for p in partitions if "swap" in p["fstype"]]
@@ -338,8 +336,8 @@ class DisksPage(QWidget):
             if idx >= 0:
                 combo.setCurrentIndex(idx)
 
-        # EFI: vfat mas pequena
-        if is_efi and efi_parts:
+        # EFI: vfat mas pequena (obligatoria tambien en BIOS para Limine)
+        if efi_parts:
             _set(self.efi_combo, min(efi_parts, key=lambda p: p["size_bytes"]))
 
         # Swap

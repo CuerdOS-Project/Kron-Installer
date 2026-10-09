@@ -28,8 +28,11 @@ if [ $EFI -eq 1 ]; then
 else
     # Crear MBR
     parted -s "$DISK" mklabel msdos
-    # Partición root: todo el disco
-    parted -s "$DISK" mkpart primary 1MiB 100%
+    # Partición ESP: 512 MiB (Limine solo lee FAT32, incluso en BIOS)
+    parted -s "$DISK" mkpart primary fat32 1MiB 513MiB
+    parted -s "$DISK" set 1 esp on
+    # Partición root: resto del disco
+    parted -s "$DISK" mkpart primary 513MiB 100%
 fi
 
 echo "Particionado automático completado en $DISK"

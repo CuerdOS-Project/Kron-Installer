@@ -238,8 +238,11 @@ copy_rootfs() {
     rm -f "$TAR_CREATE_ERR" "$TAR_EXTRACT_ERR"
 
     # Limpieza post-copia live
-    rm -f "$TARGETDIR/etc/motd" "$TARGETDIR/etc/issue" "$TARGETDIR/usr/sbin/void-installer"
-    # No eliminar sddm.conf porque puede contener config de autologin necesaria
+    rm -f "$TARGETDIR/etc/motd" \
+        "$TARGETDIR/etc/issue" \
+        "$TARGETDIR/usr/sbin/void-installer" \
+        "$TARGETDIR/etc/polkit-1/rules.d/void-live.rules"
+
     # Eliminar usuario live del target
     chroot "$TARGETDIR" userdel -r cuerdos >/dev/null 2>&1
 

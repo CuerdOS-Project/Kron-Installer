@@ -50,7 +50,7 @@ class InstallWorker(QThread):
         super().__init__()
         self.config_data = config_data
         self.demo = demo
-        self.conf_file = "/tmp/.void-installer.conf"
+        self.conf_file = "/tmp/.kron-installer.conf"
 
         # Calcular ruta al backend
         self.backend_script = os.path.abspath(os.path.join(

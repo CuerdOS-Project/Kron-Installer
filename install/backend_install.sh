@@ -3,7 +3,7 @@
 
 # --- 1. CONFIGURACIÓN DEL ENTORNO ---
 
-CONF_FILE="/tmp/.void-installer.conf"
+CONF_FILE="/tmp/.kron-installer.conf"
 # El conf contiene contraseñas en claro: borrarlo SIEMPRE al terminar,
 # tanto en éxito como en cualquier die() (el trap EXIT los cubre).
 # Si hay un contenedor LUKS abierto, cerrarlo también al salir.
@@ -253,7 +253,7 @@ copy_rootfs() {
 
     # Usamos tar tal cual el original para preservar atributos extendidos
     tar --create --one-file-system --xattrs \
-        --exclude='tmp/.void-installer.conf' \
+        --exclude='tmp/.kron-installer.conf' \
         -f - "${CKPT_ARGS[@]}" / 2>"$TAR_CREATE_ERR" | \
         tar --extract --xattrs --xattrs-include='*' --preserve-permissions -f - -C "$TARGETDIR" 2>"$TAR_EXTRACT_ERR"
 
@@ -279,7 +279,7 @@ copy_rootfs() {
         "$TARGETDIR/etc/issue" \
         "$TARGETDIR/usr/sbin/void-installer" \
         "$TARGETDIR/etc/polkit-1/rules.d/void-live.rules" \
-        "$TARGETDIR/tmp/.void-installer.conf"
+        "$TARGETDIR/tmp/.kron-installer.conf"
 
     # Eliminar usuario live del target
     chroot "$TARGETDIR" userdel -r cuerdos >/dev/null 2>&1

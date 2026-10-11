@@ -169,6 +169,24 @@ def global_stylesheet(assets_dir=None):
     }
 
     /* ============================
+       BOTON DE AYUDA "?"
+       ============================ */
+    QToolButton#helpButton {
+        background: transparent;
+        color: #9fb7a7;
+        border: 1px solid #3a4a42;
+        border-radius: 11px;
+        font-weight: bold;
+        font-size: 12px;
+        padding: 0px;
+    }
+
+    QToolButton#helpButton:hover {
+        background-color: #3a4a42;
+        color: #dff5e4;
+    }
+
+    /* ============================
        BOTONES DE NAVEGACION
        ============================ */
     QPushButton#navButton {

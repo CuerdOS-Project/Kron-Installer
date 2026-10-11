@@ -128,6 +128,24 @@ class InstallerConfigCollector(QObject):
             pag_discos = self.paginas["discos"]
 
             raw_parts = pag_discos.obtener_seleccion()
+
+            # --- Cifrado LUKS2 (opcional, casilla en la página de discos) ---
+            data["LUKS"] = "1" if pag_discos.luks_check.isChecked() else "0"
+            if data["LUKS"] == "1":
+                ok, msg = pag_discos.validate_luks()
+                if not ok:
+                    QMessageBox.warning(
+                        self.parent, self.tr("Error en el cifrado"), msg
+                    )
+                    return None
+                data["LUKSPASSWORD"] = pag_discos.luks_pass.text()
+                # Política de cifrado: TODO dentro del contenedor raíz (igual
+                # que los instaladores guiados de las grandes distros). Sin
+                # /home ni swap en particiones separadas.
+                raw_parts["home"] = None
+                raw_parts["swap"] = None
+            else:
+                data["LUKSPASSWORD"] = ""
             partitions = []
             filesys = pag_discos.filesys_combo.currentText().lower()
 

@@ -4,6 +4,16 @@
 # --- 1. CONFIGURACIÓN DEL ENTORNO ---
 
 CONF_FILE="/tmp/.void-installer.conf"
+# El conf contiene contraseñas en claro: borrarlo SIEMPRE al terminar,
+# tanto en éxito como en cualquier die() (el trap EXIT los cubre).
+# Si hay un contenedor LUKS abierto, cerrarlo también al salir.
+trap 'rm -f "$CONF_FILE"; if [ -e "$ROOT_MAPPER_DEV" ]; then cryptsetup close "$ROOT_MAPPER" 2>/dev/null || :; fi' EXIT
+
+# --- Estado LUKS (se rellena durante la instalación) ---
+USE_LUKS=0
+ROOT_MAPPER="kron-root"
+ROOT_MAPPER_DEV="/dev/mapper/kron-root"
+ROOT_LUKS_UUID=""
 TARGETDIR="/mnt/target"
 LOG="/tmp/installation.log"
 TARGET_FSTAB=$(mktemp -t vinstall-fstab-XXXXXXXX || exit 1)
@@ -79,6 +89,31 @@ create_filesystems() {
             uuid=$(blkid -o value -s UUID "$dev")
             echo "UUID=$uuid none swap defaults 0 0" >>"$TARGET_FSTAB"
             continue
+        fi
+
+        # --- Cifrado LUKS2 de la raíz (LUKS=1 en el conf) ---
+        # El contenedor se crea ANTES del mkfs para que el filesystem nazca
+        # ya dentro del mapper: formateo, montaje, fstab y UUIDs operan
+        # después sobre /dev/mapper/kron-root sin ningún cambio adicional.
+        # Esquema idéntico al de los instaladores guiados de las grandes
+        # distros: un solo contenedor, una sola frase al arrancar.
+        if [ "$USE_LUKS" = "1" ] && [ "$mntpt" = "/" ]; then
+            local luks_pass
+            luks_pass="$(get_option LUKSPASSWORD)"
+            if [ -z "$luks_pass" ]; then
+                die "LUKSPASSWORD missing in $CONF_FILE"
+            fi
+            echo "Encrypting $dev (LUKS2, argon2id)..."
+            wipefs -a "$dev" 2>/dev/null || die "Error wiping old signatures on $dev"
+            printf '%s' "$luks_pass" | \
+                cryptsetup luksFormat --type luks2 --pbkdf argon2id --batch-mode "$dev" - \
+                || die "Error creating LUKS2 container on $dev"
+            printf '%s' "$luks_pass" | \
+                cryptsetup open --type luks2 "$dev" "$ROOT_MAPPER" - \
+                || die "Error opening LUKS2 container $dev"
+            ROOT_LUKS_UUID=$(blkid -s UUID -o value "$dev")
+            dev="$ROOT_MAPPER_DEV"
+            echo "Root will live inside $dev"
         fi
 
         # Formatear particiones (Si mkfs=1)
@@ -217,7 +252,9 @@ copy_rootfs() {
     TAR_EXTRACT_ERR=$(mktemp -t kron-tar-extract-XXXXXXXX)
 
     # Usamos tar tal cual el original para preservar atributos extendidos
-    tar --create --one-file-system --xattrs -f - "${CKPT_ARGS[@]}" / 2>"$TAR_CREATE_ERR" | \
+    tar --create --one-file-system --xattrs \
+        --exclude='tmp/.void-installer.conf' \
+        -f - "${CKPT_ARGS[@]}" / 2>"$TAR_CREATE_ERR" | \
         tar --extract --xattrs --xattrs-include='*' --preserve-permissions -f - -C "$TARGETDIR" 2>"$TAR_EXTRACT_ERR"
 
     # Comprobar ambos procesos: PIPESTATUS debe capturarse inmediatamente.
@@ -241,7 +278,8 @@ copy_rootfs() {
     rm -f "$TARGETDIR/etc/motd" \
         "$TARGETDIR/etc/issue" \
         "$TARGETDIR/usr/sbin/void-installer" \
-        "$TARGETDIR/etc/polkit-1/rules.d/void-live.rules"
+        "$TARGETDIR/etc/polkit-1/rules.d/void-live.rules" \
+        "$TARGETDIR/tmp/.void-installer.conf"
 
     # Eliminar usuario live del target
     chroot "$TARGETDIR" userdel -r cuerdos >/dev/null 2>&1
@@ -277,6 +315,11 @@ umount_filesystems() {
     done
     # Desmontar recursivamente target
     umount -R "$TARGETDIR"
+
+    # Cerrar el contenedor LUKS de la raíz
+    if [ "$USE_LUKS" = "1" ] && [ -e "$ROOT_MAPPER_DEV" ]; then
+        cryptsetup close "$ROOT_MAPPER" || echo "WARNING: could not close LUKS container" >&2
+    fi
 }
 
 # --- 4. FUNCIONES DE CONFIGURACIÓN DEL SISTEMA ---
@@ -637,6 +680,28 @@ find_esp() {
     findmnt -rno TARGET "$TARGETDIR/boot/efi" 2>/dev/null || true
 }
 
+# Crea un swapfile dentro de la raíz cifrada ya montada (sin hibernación).
+# Tamaño: el de la RAM con tope de 4 GiB y mínimo 512 MiB.
+create_swapfile() {
+    local size_mb ram_mb
+    ram_mb=$(awk '/MemTotal/ {print int($2/1024)}' /proc/meminfo 2>/dev/null)
+    case "$ram_mb" in ''|*[!0-9]*) ram_mb=2048 ;; esac
+    size_mb=$(( ram_mb > 4096 ? 4096 : ram_mb ))
+    [ "$size_mb" -lt 512 ] && size_mb=512
+    echo "Creating ${size_mb}MiB swapfile inside the encrypted root..."
+    # NOCOW para que btrfs permita swapfile (no-op en ext4/xfs)
+    chattr +C "$TARGETDIR/swapfile" 2>/dev/null || :
+    if ! fallocate -l "${size_mb}M" "$TARGETDIR/swapfile" 2>/dev/null; then
+        dd if=/dev/zero of="$TARGETDIR/swapfile" bs=1M count="$size_mb" status=none \
+            || die "Error creating swapfile"
+    fi
+    chmod 600 "$TARGETDIR/swapfile"
+    mkswap "$TARGETDIR/swapfile" >/dev/null \
+        || die "Error formatting swapfile (kernels antiguos no permiten swapfile en btrfs)"
+    # El fstab ya está instalado en el target: añadir la línea directamente
+    echo "/swapfile none swap defaults 0 0" >> "$TARGETDIR/etc/fstab"
+}
+
 # UUID y fstype del sistema de archivos raíz, leyendo el config generado
 # por Python (líneas "MOUNTPOINT <dev> <fstype> <size> <mntpt> <mkfs>").
 get_root_info() {
@@ -644,7 +709,13 @@ get_root_info() {
     line="$(grep -E '^MOUNTPOINT .* / ' "$CONF_FILE" | head -n1)"
     ROOT_DEV=$(echo "$line" | awk '{print $2}')
     ROOT_FSTYPE=$(echo "$line" | awk '{print $3}')
-    ROOT_UUID=$(blkid -s UUID -o value "$ROOT_DEV" 2>/dev/null)
+    if [ "$USE_LUKS" = "1" ] && [ -e "$ROOT_MAPPER_DEV" ]; then
+        # UUID del filesystem DENTRO del contenedor: es el que el kernel
+        # monta como root tras el desbloqueo del initramfs.
+        ROOT_UUID=$(blkid -s UUID -o value "$ROOT_MAPPER_DEV" 2>/dev/null)
+    else
+        ROOT_UUID=$(blkid -s UUID -o value "$ROOT_DEV" 2>/dev/null)
+    fi
     [ -n "$ROOT_UUID" ] || die "Could not determine UUID of root partition $ROOT_DEV"
 }
 
@@ -706,6 +777,22 @@ set_bootloader() {
     # rootflags solo aplica a btrfs (subvolumen @ creado por create_filesystems)
     if [ "$ROOT_FSTYPE" = "btrfs" ]; then
         cmdline_opts="rw rootflags=subvol=@"
+    fi
+
+    # Con raíz cifrada, el initramfs precompilado de la ISO puede carecer del
+    # módulo crypt de dracut: regenerarlo en el chroot para garantizar el
+    # desbloqueo en el arranque (el usuario escribe la frase una sola vez).
+    if [ "$USE_LUKS" = "1" ]; then
+        local kver="${kernel#/boot/vmlinuz-}"
+        echo "Regenerating initramfs with crypt support (dracut)..."
+        chroot "$TARGETDIR" dracut --force --add crypt --quiet \
+            "/boot/initramfs-${kver}.img" "${kver}" \
+            || die "Error regenerating initramfs for LUKS"
+    fi
+
+    # El initramfs necesita saber qué contenedor abrir (UUID crudo del LUKS)
+    if [ "$USE_LUKS" = "1" ]; then
+        cmdline_opts="$cmdline_opts rd.luks.uuid=$ROOT_LUKS_UUID"
     fi
 
     # Limine solo lee FAT32/ISO9660: el ESP es obligatorio como partición
@@ -776,6 +863,16 @@ fi
 log_ui "INIT"
 echo "Log started at $LOG"
 
+# Cifrado opcional de la raíz (LUKS2): validar prerrequisitos cuanto antes
+# para no llegar a mitad de instalación con un fallo evitable.
+if [ "$(get_option LUKS)" = "1" ]; then
+    USE_LUKS=1
+    command -v cryptsetup >/dev/null 2>&1 \
+        || die "LUKS requested but cryptsetup is not installed in the live ISO"
+    command -v dracut >/dev/null 2>&1 \
+        || die "LUKS requested but dracut is not installed in the live ISO"
+fi
+
 # Paso 1: Discos
 log_ui "CREATE_FS"
 create_filesystems
@@ -790,6 +887,14 @@ mount_filesystems
 install -Dm644 "$TARGET_FSTAB" "$TARGETDIR/etc/fstab"
 echo "tmpfs /tmp tmpfs defaults,nosuid,nodev 0 0" >> "$TARGETDIR/etc/fstab"
 touch "$TARGETDIR/etc/cuerdos-release"
+
+if [ "$USE_LUKS" = "1" ]; then
+    # Desbloqueo en el arranque: crypttab apunta al UUID crudo del contenedor
+    echo "kron-root UUID=$ROOT_LUKS_UUID none luks" > "$TARGETDIR/etc/crypttab"
+    chmod 600 "$TARGETDIR/etc/crypttab"
+    # Swap seguro: swapfile DENTRO del contenedor (sin hibernación)
+    create_swapfile
+fi
 
 set_keymap
 set_locale
@@ -816,6 +921,7 @@ log_ui "FINISH"
 sync
 umount_filesystems
 rm -f "$TARGET_FSTAB"
+rm -f "$CONF_FILE"
 
 
 log_ui "DONE"

@@ -171,7 +171,16 @@ class InstallWorker(QThread):
     def generate_conf_file(self):
         """Genera el archivo .conf que espera el backend bash."""
         try:
-            with open(self.conf_file, "w") as f:
+            # 0600: el conf contiene USERPASSWORD/ROOTPASSWORD en claro.
+            # os.open+fdopen evita la ventana con permisos por defecto (0644)
+            # y fchmod cubre el caso de un fichero previo ya existente.
+            fd = os.open(
+                self.conf_file,
+                os.O_WRONLY | os.O_CREAT | os.O_TRUNC,
+                0o600,
+            )
+            os.fchmod(fd, 0o600)
+            with os.fdopen(fd, "w") as f:
                 # Escribir opciones simples
                 for key, value in self.config_data.items():
                     if key != "PARTITIONS": # Las particiones se tratan especial

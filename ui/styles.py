@@ -169,10 +169,17 @@ def global_stylesheet(assets_dir=None):
     }
 
     /* ============================
+       ENVOLTORIO COMBO + "?"
+       ============================ */
+    QWidget#comboHelpWrap {
+        background-color: transparent;
+    }
+
+    /* ============================
        BOTON DE AYUDA "?"
        ============================ */
     QToolButton#helpButton {
-        background: transparent;
+        background-color: #2a312d;
         color: #9fb7a7;
         border: 1px solid #3a4a42;
         border-radius: 11px;
@@ -412,6 +419,11 @@ def global_stylesheet(assets_dir=None):
         image: url(_ARROW_URL_PLACEHOLDER_);
     }
 
+    QComboBox QFrame {
+        background-color: #2a312d;
+        border: none;
+    }
+
     QComboBox QAbstractItemView {
         background-color: #2a312d;
         border: 1px solid #3a4a42;
@@ -429,6 +441,11 @@ def global_stylesheet(assets_dir=None):
 
     QComboBox QAbstractItemView::item:hover {
         background-color: #323b36;
+    }
+
+    QComboBox QAbstractItemView::item:selected {
+        background-color: #3e5f4a;
+        color: #ffffff;
     }
 
     /* ============================

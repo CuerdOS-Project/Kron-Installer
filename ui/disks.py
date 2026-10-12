@@ -261,7 +261,7 @@ class DisksPage(QWidget):
     def _with_help(self, combo, btn):
         # Coloca el icono de ayuda justo al lado del combobox.
         wrap = QWidget()
-        wrap.setStyleSheet("background-color: transparent;")
+        # NO poner stylesheet per-widget aqui: un setStyleSheet en un ancestro rompe la cascada del QSS global
         lay = QHBoxLayout(wrap)
         lay.setContentsMargins(0, 0, 0, 0)
         lay.setSpacing(6)
@@ -361,9 +361,9 @@ class DisksPage(QWidget):
         self.help_luks.setToolTip(self.tr(
             "Crea un contenedor cifrado en la partición raíz. Se pedirá la "
             "frase al arrancar el equipo.\n\n"
-            "Todo el sistema (incluido /home y el swap) vivirá dentro del "
-            "contenedor cifrado, por lo que no se usarán las particiones "
-            "Home/Swap separadas. Recomendación: frase larga (12+ caracteres)."
+            "Todo el sistema (incluido /home) vivirá dentro del contenedor "
+            "cifrado, sin usar las particiones Home/Swap separadas. El swap "
+            "lo cubre zram de serie. Recomendación: frase larga (12+ caracteres)."
         ))
 
         self.luks_check.setText(self.tr("Cifrar partición raíz (LUKS2)"))
@@ -457,12 +457,7 @@ class DisksPage(QWidget):
             _set(self.home_combo, other_sorted[1])
 
     def _apply_luks_policy(self):
-        """Aplica la política de cifrado: TODO dentro del contenedor raíz.
-
-        Con LUKS activo se deshabilitan y limpian las selecciones de Home y
-        Swap separadas (mismo enfoque que los instaladores guiados de las
-        grandes distros: un solo contenedor, una sola frase al arrancar).
-        """
+        """Aplica la política de cifrado: TODO dentro del contenedor raíz."""
         on = self.luks_check.isChecked()
         self.luks_pass.setEnabled(on)
         self.luks_pass2.setEnabled(on)

@@ -41,7 +41,7 @@ It allows you to configure partitions, user, system language, keyboard layout, a
 - **PySide6** (Qt6 for Python)
 - Qt6 Core and Widgets libraries
 - System tools (Void Linux base):
-  - `tar`, `chroot`, `mkfs`, `grub-install`, `xbps-reconfigure`
+  - `tar`, `chroot`, `mkfs`, `limine`, `xbps-reconfigure`
   - `gptfdisk` (provides sgdisk, required for automatic partition)
   - `partitionmanager` (KDE Partition Manager) for manual disk setup.
   - `pkexec` (for policykit/root privileges)

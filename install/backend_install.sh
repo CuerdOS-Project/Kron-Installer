@@ -680,28 +680,6 @@ find_esp() {
     findmnt -rno TARGET "$TARGETDIR/boot/efi" 2>/dev/null || true
 }
 
-# Crea un swapfile dentro de la raíz cifrada ya montada (sin hibernación).
-# Tamaño: el de la RAM con tope de 4 GiB y mínimo 512 MiB.
-create_swapfile() {
-    local size_mb ram_mb
-    ram_mb=$(awk '/MemTotal/ {print int($2/1024)}' /proc/meminfo 2>/dev/null)
-    case "$ram_mb" in ''|*[!0-9]*) ram_mb=2048 ;; esac
-    size_mb=$(( ram_mb > 4096 ? 4096 : ram_mb ))
-    [ "$size_mb" -lt 512 ] && size_mb=512
-    echo "Creating ${size_mb}MiB swapfile inside the encrypted root..."
-    # NOCOW para que btrfs permita swapfile (no-op en ext4/xfs)
-    chattr +C "$TARGETDIR/swapfile" 2>/dev/null || :
-    if ! fallocate -l "${size_mb}M" "$TARGETDIR/swapfile" 2>/dev/null; then
-        dd if=/dev/zero of="$TARGETDIR/swapfile" bs=1M count="$size_mb" status=none \
-            || die "Error creating swapfile"
-    fi
-    chmod 600 "$TARGETDIR/swapfile"
-    mkswap "$TARGETDIR/swapfile" >/dev/null \
-        || die "Error formatting swapfile (kernels antiguos no permiten swapfile en btrfs)"
-    # El fstab ya está instalado en el target: añadir la línea directamente
-    echo "/swapfile none swap defaults 0 0" >> "$TARGETDIR/etc/fstab"
-}
-
 # UUID y fstype del sistema de archivos raíz, leyendo el config generado
 # por Python (líneas "MOUNTPOINT <dev> <fstype> <size> <mntpt> <mkfs>").
 get_root_info() {
@@ -892,8 +870,6 @@ if [ "$USE_LUKS" = "1" ]; then
     # Desbloqueo en el arranque: crypttab apunta al UUID crudo del contenedor
     echo "kron-root UUID=$ROOT_LUKS_UUID none luks" > "$TARGETDIR/etc/crypttab"
     chmod 600 "$TARGETDIR/etc/crypttab"
-    # Swap seguro: swapfile DENTRO del contenedor (sin hibernación)
-    create_swapfile
 fi
 
 set_keymap

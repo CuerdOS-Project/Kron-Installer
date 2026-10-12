@@ -120,7 +120,7 @@ class DisksPage(QWidget):
         self.part_table.setAlternatingRowColors(True)
         self.part_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.part_table.setSelectionMode(QTableWidget.SelectionMode.NoSelection)
-        self.part_table.setFixedHeight(140)
+        self.part_table.setFixedHeight(160)
         self.part_table.showGrid = False
 
         tc_layout.addWidget(self.part_table)

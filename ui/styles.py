@@ -550,13 +550,13 @@ def global_stylesheet(assets_dir=None):
     }
 
     /* ============================
-       TABLE WIDGET (Particiones)
-       ============================ */
+    TABLE WIDGET (Particiones)
+    ============================ */
     QTableWidget {
         background-color: #2a312d;
         alternate-background-color: #252b28;
         gridline-color: #3a4a42;
-        border: 1px solid #3a4a42;
+        border: none;
         border-radius: 8px;
         color: #e6f1ea;
         font-size: 13px;

@@ -107,8 +107,8 @@ class InstallWin(QWidget):
         self.translate_ui()
 
     def setup_ui(self):
-        self.setMinimumSize(980, 620)
-        self.resize(1120, 720)
+        self.setMinimumSize(1030, 620)
+        self.resize(1180, 720)
 
         # --- DETECCION DE HARDWARE ---
         self.system_data = {

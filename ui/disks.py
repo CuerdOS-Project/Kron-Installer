@@ -262,6 +262,7 @@ class DisksPage(QWidget):
         # Coloca el icono de ayuda justo al lado del combobox.
         wrap = QWidget()
         # NO poner stylesheet per-widget aqui: un setStyleSheet en un ancestro rompe la cascada del QSS global
+        wrap.setObjectName("comboHelpWrap")
         lay = QHBoxLayout(wrap)
         lay.setContentsMargins(0, 0, 0, 0)
         lay.setSpacing(6)

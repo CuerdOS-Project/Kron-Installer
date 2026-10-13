@@ -749,12 +749,9 @@ part_node() {
     echo "$node"
 }
 
-# Imprime el número de la primera partición BIOS boot (EF02) del disco $1 que
-# sea realmente utilizable por Limine: sin ningún filesystem/firma reconocible
-# y de tamaño razonable. El código de tipo GPT por sí solo no es fiable (puede
-# haber sobrevivido de una instalación anterior en una partición con datos), y
-# limine bios-install se niega a escribir sobre un filesystem reconocido.
-# Imprime vacío si no hay ninguna válida.
+# Imprime la primera partición EF02 válida para Limine
+# sin filesystem reconocible y de tamaño suficiente.
+# Vacío si no hay ninguna.
 find_bios_boot_part() {
     local dev="$1" n node size fs
     local max_bytes=$((16 * 1024 * 1024))   # una BIOS boot real mide ~1 MiB
@@ -819,16 +816,16 @@ set_bootloader() {
         cmdline_opts="rw rootflags=subvol=@"
     fi
 
-    # Con raíz cifrada, el initramfs precompilado de la ISO puede carecer del
-    # módulo crypt de dracut: regenerarlo en el chroot para garantizar el
-    # desbloqueo en el arranque (el usuario escribe la frase una sola vez).
+    # Regenerar el initramfs SIEMPRE en el chroot.
+    local kver="${kernel#/boot/vmlinuz-}"
+    local dracut_args="--force --quiet"
     if [ "$USE_LUKS" = "1" ]; then
-        local kver="${kernel#/boot/vmlinuz-}"
-        echo "Regenerating initramfs with crypt support (dracut)..."
-        chroot "$TARGETDIR" dracut --force --add crypt --quiet \
-            "/boot/initramfs-${kver}.img" "${kver}" \
-            || die "Error regenerating initramfs for LUKS"
+        dracut_args="$dracut_args --add crypt"
     fi
+    echo "Regenerating initramfs (dracut)..."
+    chroot "$TARGETDIR" dracut $dracut_args \
+        "/boot/initramfs-${kver}.img" "${kver}" \
+        || die "Error regenerating initramfs"
 
     # El initramfs necesita saber qué contenedor abrir (UUID crudo del LUKS)
     if [ "$USE_LUKS" = "1" ]; then
@@ -921,9 +918,12 @@ if [ "$(get_option LUKS)" = "1" ]; then
     USE_LUKS=1
     command -v cryptsetup >/dev/null 2>&1 \
         || die "LUKS requested but cryptsetup is not installed in the live ISO"
-    command -v dracut >/dev/null 2>&1 \
-        || die "LUKS requested but dracut is not installed in the live ISO"
 fi
+
+# dracut es obligatorio siempre: el initramfs se regenera en todas las
+# instalaciones para que incluya los drivers del disco del equipo destino.
+command -v dracut >/dev/null 2>&1 \
+    || die "dracut is not installed in the live ISO (required to regenerate the initramfs)"
 
 # Paso 1: Discos
 log_ui "CREATE_FS"

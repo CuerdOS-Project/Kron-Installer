@@ -490,6 +490,18 @@ class DisksPage(QWidget):
             )
         return True, ""
 
+    def fstype_de(self, dev):
+        """Sistema de archivos detectado en una partición ('' si no tiene)."""
+        return self._partitions.get(dev, {}).get("fstype", "")
+
+    def montada_en(self, dev):
+        """Punto de montaje actual de una partición ('' si no está montada).
+
+        La swap activa ('[SWAP]') no cuenta: el backend la desactiva solo.
+        """
+        mp = self._partitions.get(dev, {}).get("mountpoint", "")
+        return "" if mp == "[SWAP]" else mp
+
     def obtener_seleccion(self):
         # Devuelve {root, efi, home, swap} con el nombre de dispositivo (/dev/sdaN).
         return {
@@ -531,8 +543,11 @@ class DisksPage(QWidget):
                     "auto_partition.sh"
                 )
                 self.part_script = os.path.abspath(self.part_script)
+                # capture_output: así el mensaje de error del script (p.ej.
+                # "el disco tiene particiones montadas") llega al usuario.
                 subprocess.run(
-                    ["pkexec", "bash", self.part_script, disk], check=True
+                    ["pkexec", "bash", self.part_script, disk],
+                    check=True, capture_output=True, text=True,
                 )
                 QMessageBox.information(
                     self,
@@ -549,5 +564,5 @@ class DisksPage(QWidget):
                     self.tr("Error"),
                     self.tr(
                         "Fallo al particionar {disk}:\n{e}"
-                    ).format(disk=disk, e=e)
+                    ).format(disk=disk, e=(e.stderr or "").strip() or e)
                 )

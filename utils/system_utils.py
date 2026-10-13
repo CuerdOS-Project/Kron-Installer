@@ -1,4 +1,5 @@
 import os
+import re
 import subprocess
 import json
 import glob
@@ -31,7 +32,7 @@ class SystemDetector:
         Filtra loops, rams y discos sin tamaño o modelo válido.
         """
         try:
-            cmd = ["lsblk", "-J", "-o", "NAME,SIZE,TYPE,MODEL,FSTYPE"]
+            cmd = ["lsblk", "-J", "-o", "NAME,SIZE,TYPE,MODEL,FSTYPE,MOUNTPOINT"]
             result = subprocess.run(cmd, capture_output=True, text=True)
             data = json.loads(result.stdout)
             
@@ -76,6 +77,28 @@ class SystemDetector:
             return 0
 
     @staticmethod
+    def disk_of_partition(dev):
+        """Devuelve el disco al que pertenece una partición (/dev/sda2 -> /dev/sda).
+
+        Se pregunta a lsblk (PKNAME) porque el nombre de la partición no es
+        fiable: sdaN, vdaN, nvme0n1pN, mmcblk0pN, loop0pN...
+        Si lsblk falla se usa una expresión regular como alternativa.
+        """
+        try:
+            out = subprocess.run(
+                ["lsblk", "-no", "PKNAME", dev],
+                capture_output=True, text=True, check=True,
+            ).stdout.split()
+            if out:
+                return f"/dev/{out[0]}"
+        except Exception:
+            pass
+        # Alternativa: quitar el sufijo de partición (pN si el disco acaba en
+        # dígito: nvme, mmcblk, loop; N en el resto: sda, vda...)
+        m = re.match(r"^(/dev/.*\d)p\d+$", dev) or re.match(r"^(/dev/\D+)\d+$", dev)
+        return m.group(1) if m else dev
+
+    @staticmethod
     def get_partitions_detailed():
         """
         Retorna una lista de dicts con info detallada de cada particion:
@@ -92,11 +115,18 @@ class SystemDetector:
                 if part.get("type") == "part":
                     name = f"/dev/{part['name']}"
                     size_str = part.get("size", "0")
+                    # Punto de montaje actual (p.ej. el USB live o un disco
+                    # abierto en el gestor de archivos). "[SWAP]" es swap activa.
+                    mountpoint = part.get("mountpoint") or ""
+                    display = f"{name} ({size_str})"
+                    if mountpoint and mountpoint != "[SWAP]":
+                        display += " [montada]"
                     partitions.append({
                         "name": name,
-                        "display": f"{name} ({size_str})",
+                        "display": display,
                         "size_bytes": SystemDetector._parse_size_to_bytes(size_str),
                         "fstype": (part.get("fstype") or "").lower(),
+                        "mountpoint": mountpoint,
                     })
         return partitions
 

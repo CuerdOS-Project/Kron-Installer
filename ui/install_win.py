@@ -321,6 +321,30 @@ class InstallWin(QWidget):
     def _on_toggle_log_clicked(self):
         self.pag_instalacion.toggle_log()
 
+    def _confirmar_formateo(self, config):
+        """Muestra qué se va a formatear y pide confirmación (por defecto: No)."""
+        a_formatear = [
+            f"  {p['dev']}  →  {p['point']}  ({p['fs']})"
+            for p in config.get("PARTITIONS", [])
+            if p.get("format") == "1"
+        ]
+        if not a_formatear:
+            return True
+        texto = self.tr(
+            "Se van a FORMATEAR las siguientes particiones y se perderán sus datos:"
+        ) + "\n\n" + "\n".join(a_formatear)
+        if config.get("LUKS") == "1":
+            texto += "\n\n" + self.tr("La partición raíz se cifrará con LUKS2.")
+        texto += "\n\n" + self.tr("¿Continuar con la instalación?")
+        reply = QMessageBox.warning(
+            self,
+            self.tr("Confirmar instalación"),
+            texto,
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No,
+        )
+        return reply == QMessageBox.Yes
+
     # --- Boton 'Siguiente' ---
     def ir_siguiente(self):
         index = self.stack.currentIndex()
@@ -348,6 +372,9 @@ class InstallWin(QWidget):
                 system_data=self.system_data
             )
             config = collector.collect_data()
+
+            if config and not self._confirmar_formateo(config):
+                return
 
             if config:
                 self.stack.setCurrentIndex(index + 1)

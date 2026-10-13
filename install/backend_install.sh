@@ -39,9 +39,9 @@ die() {
 }
 
 # Detectar EFI (Lógica original líneas 58-65)
-if [ -e /sys/firmware/efi/systab ]; then
+if [ -d /sys/firmware/efi ]; then
     EFI_SYSTEM=1
-    EFI_FW_BITS=$(cat /sys/firmware/efi/fw_platform_size)
+    EFI_FW_BITS=$(cat /sys/firmware/efi/fw_platform_size 2>/dev/null || echo 64)
     if [ $EFI_FW_BITS -eq 32 ]; then
         EFI_TARGET=i386-efi
     else
@@ -65,7 +65,13 @@ enable_service() {
 
 # Crea sistemas de archivos y monta particiones
 create_filesystems() {
-    local mnts dev mntpt fstype fspassno mkfs size rv uuid
+    local mnts dev mntpt fstype fspassno mkfs size rv uuid sep_home=0
+
+    # ¿Hay una partición /home aparte? Entonces btrfs no debe crear @home
+    # (si no, /home quedaría montado dos veces en el fstab).
+    if awk '$1=="MOUNTPOINT" && $5=="/home" {f=1} END {exit !f}' "$CONF_FILE"; then
+        sep_home=1
+    fi
 
     # Leer líneas MOUNTPOINT del config (ordenadas por punto de montaje)
     mnts=$(grep -E '^MOUNTPOINT .*' "$CONF_FILE" | sort -k 5)
@@ -145,7 +151,9 @@ create_filesystems() {
 
                 # Subvolúmenes estándar
                 btrfs subvolume create "$TARGETDIR/@" || die "Error creating @"
-                btrfs subvolume create "$TARGETDIR/@home" || die "Error creating @home"
+                if [ "$sep_home" -eq 0 ]; then
+                    btrfs subvolume create "$TARGETDIR/@home" || die "Error creating @home"
+                fi
                 btrfs subvolume create "$TARGETDIR/@log" || die "Error creating @log"
                 btrfs subvolume create "$TARGETDIR/@pkg" || die "Error creating @pkg"
 
@@ -158,13 +166,17 @@ create_filesystems() {
                 mkdir -p "$TARGETDIR/var/log"
                 mkdir -p "$TARGETDIR/var/cache/xbps"
 
-                mount -o subvol=@home "$dev" "$TARGETDIR/home"
+                if [ "$sep_home" -eq 0 ]; then
+                    mount -o subvol=@home "$dev" "$TARGETDIR/home"
+                fi
                 mount -o subvol=@log  "$dev" "$TARGETDIR/var/log"
                 mount -o subvol=@pkg  "$dev" "$TARGETDIR/var/cache/xbps"
 
                 uuid=$(blkid -o value -s UUID "$dev")
                 echo "UUID=$uuid / btrfs defaults,subvol=@ 0 0" >>"$TARGET_FSTAB"
-                echo "UUID=$uuid /home btrfs defaults,subvol=@home 0 0" >>"$TARGET_FSTAB"
+                if [ "$sep_home" -eq 0 ]; then
+                    echo "UUID=$uuid /home btrfs defaults,subvol=@home 0 0" >>"$TARGET_FSTAB"
+                fi
                 echo "UUID=$uuid /var/log btrfs defaults,subvol=@log 0 0" >>"$TARGET_FSTAB"
                 echo "UUID=$uuid /var/cache/xbps btrfs defaults,subvol=@pkg 0 0" >>"$TARGET_FSTAB"
 
@@ -485,16 +497,30 @@ EOF
 }
 
 set_rootpassword() {
-    echo "root:$(get_option ROOTPASSWORD)" | chroot "$TARGETDIR" chpasswd -c SHA512
+    echo "root:$(get_option ROOTPASSWORD)" | chroot "$TARGETDIR" chpasswd -c SHA512 \
+        || die "Error setting root password"
 }
 
 set_useraccount() {
     local USERLOGIN="$(get_option USERLOGIN)"
     if [ -n "$USERLOGIN" ]; then
-        chroot "$TARGETDIR" useradd -m -G "$(get_option USERGROUPS)" \
-            -c "$(get_option USERNAME)" "$USERLOGIN"
+        # Solo se usan los grupos que existen en el sistema instalado: si falta
+        # alguno, useradd fallaría entero y no se crearía el usuario.
+        local g groups=""
+        for g in $(get_option USERGROUPS | tr ',' ' '); do
+            if chroot "$TARGETDIR" getent group "$g" >/dev/null 2>&1; then
+                groups="${groups:+$groups,}$g"
+            else
+                echo "WARNING: group '$g' does not exist in target, skipped" >&2
+            fi
+        done
+
+        chroot "$TARGETDIR" useradd -m ${groups:+-G "$groups"} \
+            -c "$(get_option USERNAME)" "$USERLOGIN" \
+            || die "Error creating user $USERLOGIN"
         echo "$USERLOGIN:$(get_option USERPASSWORD)" | \
-            chroot "$TARGETDIR" chpasswd -c SHA512
+            chroot "$TARGETDIR" chpasswd -c SHA512 \
+            || die "Error setting password for $USERLOGIN"
             
         # Sudoers
         if [ -d "$TARGETDIR/etc/sudoers.d" ]; then
@@ -709,12 +735,14 @@ sync_kernels_to_esp() {
         # Solo copiar si cambió (ahorra tiempo en el hook de kernel)
         if ! cmp -s "$k" "$esp/EFI/cuerdos/$(basename "$k")"; then
             echo "Syncing $(basename "$k") to ESP..."
-            install -m 644 "$k" "$esp/EFI/cuerdos/"
+            install -m 644 "$k" "$esp/EFI/cuerdos/" \
+                || die "Error copying $(basename "$k") to the ESP (is it full?)"
         fi
         initr="${k/vmlinuz-/initramfs-}.img"
         if [ -f "$initr" ]; then
             if ! cmp -s "$initr" "$esp/EFI/cuerdos/$(basename "$initr")"; then
-                install -m 644 "$initr" "$esp/EFI/cuerdos/"
+                install -m 644 "$initr" "$esp/EFI/cuerdos/" \
+                    || die "Error copying $(basename "$initr") to the ESP (is it full?)"
             fi
         fi
     done

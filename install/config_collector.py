@@ -3,6 +3,8 @@ import re
 from PySide6.QtWidgets import QMessageBox
 from PySide6.QtCore import QObject
 
+from utils.system_utils import SystemDetector
+
 
 class InstallerConfigCollector(QObject):
     def __init__(self, parent, paginas, system_data):
@@ -93,6 +95,16 @@ class InstallerConfigCollector(QObject):
                 )
                 return None
 
+            # useradd -c (nombre completo) rechaza ':' y los caracteres de control
+            fullname = data["USERNAME"]
+            if ":" in fullname or any(ord(c) < 32 for c in fullname):
+                QMessageBox.warning(
+                    self.parent,
+                    self.tr("Nombre inválido"),
+                    self.tr("El nombre completo no puede contener el carácter ':'."),
+                )
+                return None
+
             for key, label, pwd in [
                 ("USERPASSWORD", self.tr("Contraseña del usuario"), user_pass),
                 ("ROOTPASSWORD", self.tr("Contraseña de root"), root_pass),
@@ -161,11 +173,18 @@ class InstallerConfigCollector(QObject):
                 if raw_parts[key] is None:
                     QMessageBox.warning(self.parent, self.tr("Error"), msg)
                     return None
+                dev = raw_parts[key]
+                do_format = must_format
+                # Una EFI que ya es FAT se conserva tal cual (puede contener el
+                # arranque de otros sistemas, p.ej. Windows). Solo se formatea
+                # si está vacía o tiene otro sistema de archivos.
+                if key == "efi" and pag_discos.fstype_de(dev) in ("vfat", "fat32", "fat"):
+                    do_format = False
                 partitions.append({
-                    "dev": raw_parts[key],
+                    "dev": dev,
                     "point": point,
                     "fs": "vfat" if key == "efi" else filesys,
-                    "format": "1" if must_format else "0"
+                    "format": "1" if do_format else "0"
                 })
 
             # SWAP
@@ -174,16 +193,50 @@ class InstallerConfigCollector(QObject):
 
             # HOME
             if raw_parts["home"] is not None:
-                partitions.append({"dev": raw_parts["home"], "point": "/home", "fs": filesys, "format": "0"})
+                home_dev = raw_parts["home"]
+                home_fs = pag_discos.fstype_de(home_dev)
+                supported = ("ext2", "ext3", "ext4", "btrfs", "xfs", "f2fs")
+                if not home_fs:
+                    # Partición sin sistema de archivos: se crea con el elegido
+                    # (no hay datos que perder).
+                    home_fs, home_format = filesys, "1"
+                elif home_fs in supported:
+                    # /home ya existente: se conserva y se monta con SU tipo,
+                    # no con el elegido para la raíz.
+                    home_format = "0"
+                else:
+                    QMessageBox.warning(
+                        self.parent,
+                        self.tr("Error"),
+                        self.tr("La partición /home tiene un sistema de archivos no soportado: {fs}.").format(fs=home_fs),
+                    )
+                    return None
+                partitions.append({"dev": home_dev, "point": "/home", "fs": home_fs, "format": home_format})
+
+            # Comprobaciones de seguridad sobre lo seleccionado
+            devs = [p["dev"] for p in partitions]
+            if len(devs) != len(set(devs)):
+                QMessageBox.warning(
+                    self.parent,
+                    self.tr("Error"),
+                    self.tr("La misma partición está seleccionada para más de un uso."),
+                )
+                return None
+            for dev in devs:
+                mp = pag_discos.montada_en(dev)
+                if mp:
+                    QMessageBox.warning(
+                        self.parent,
+                        self.tr("Error"),
+                        self.tr("La partición {dev} está montada en {mp}. Desmóntala antes de continuar.").format(dev=dev, mp=mp),
+                    )
+                    return None
 
             data["PARTITIONS"] = partitions
 
             # --- BOOTLOADER ---
             root_dev = raw_parts["root"]
-            disk_dev = re.sub(r'\d+$', '', root_dev)
-            if "nvme" in disk_dev and disk_dev.endswith("p"):
-                disk_dev = disk_dev[:-1]
-            data["BOOTLOADER"] = disk_dev
+            data["BOOTLOADER"] = SystemDetector.disk_of_partition(root_dev)
 
             return data
 

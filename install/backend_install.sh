@@ -735,6 +735,53 @@ sync_kernels_to_esp() {
     done
 }
 
+# Devuelve el nodo de dispositivo de la partición N del disco $1
+# (/dev/sda + 2 -> /dev/sda2; /dev/nvme0n1 + 2 -> /dev/nvme0n1p2).
+part_node() {
+    local dev="$1" n="$2" node
+    node="$(lsblk -lnpo NAME,PARTN "$dev" 2>/dev/null | awk -v n="$n" '$2==n {print $1; exit}')"
+    if [ -z "$node" ]; then
+        case "$dev" in
+            *[0-9]) node="${dev}p${n}" ;;
+            *)      node="${dev}${n}" ;;
+        esac
+    fi
+    echo "$node"
+}
+
+# Imprime el número de la primera partición BIOS boot (EF02) del disco $1 que
+# sea realmente utilizable por Limine: sin ningún filesystem/firma reconocible
+# y de tamaño razonable. El código de tipo GPT por sí solo no es fiable (puede
+# haber sobrevivido de una instalación anterior en una partición con datos), y
+# limine bios-install se niega a escribir sobre un filesystem reconocido.
+# Imprime vacío si no hay ninguna válida.
+find_bios_boot_part() {
+    local dev="$1" n node size fs
+    local max_bytes=$((16 * 1024 * 1024))   # una BIOS boot real mide ~1 MiB
+    local min_bytes=$((32 * 1024))          # Limine necesita >= 32 KiB
+
+    for n in $(sgdisk -p "$dev" 2>/dev/null | \
+        awk '{for (i=2; i<=NF; i++) if (toupper($i)=="EF02") {print $1; break}}'); do
+        node="$(part_node "$dev" "$n")"
+        [ -b "$node" ] || continue
+
+        size="$(blockdev --getsize64 "$node" 2>/dev/null || echo 0)"
+        if [ "$size" -lt "$min_bytes" ] || [ "$size" -gt "$max_bytes" ]; then
+            echo "NOTE: se ignora $node (tipo EF02, tamaño $size bytes): no parece una partición BIOS boot." >&2
+            continue
+        fi
+
+        fs="$(blkid -p -o value -s TYPE "$node" 2>/dev/null)"
+        if [ -n "$fs" ]; then
+            echo "NOTE: se ignora $node (tipo EF02 pero contiene un filesystem '$fs')." >&2
+            continue
+        fi
+
+        echo "$n"
+        return 0
+    done
+}
+
 # Instalar Limine (stage 1/2 en BIOS, binario EFI en el ESP) y escribir limine.conf
 set_bootloader() {
     local dev="$(get_option BOOTLOADER)" kernel initramfs ESP_MNT
@@ -821,21 +868,33 @@ interface_branding: CuerdOS
 EOF
 
     # --- Stage 1/2 para arranque BIOS (híbrido: también bajo UEFI) ---
+    # En un sistema UEFI el arranque BIOS es solo un respaldo opcional: nunca
+    # debe abortar una instalación cuyo arranque UEFI ya está listo. En un
+    # sistema BIOS puro sigue siendo obligatorio.
     if [ "$(blkid -s PTTYPE -o value "$dev" 2>/dev/null)" = "gpt" ]; then
-        # GPT: Limine exige una partición BIOS boot (EF02) para stage 2
-        stage2_part="$(sgdisk -p "$dev" 2>/dev/null | \
-            awk '{for (i=2; i<=NF; i++) if (toupper($i)=="EF02") {print $1; exit}}')"
+        # GPT: Limine exige una partición BIOS boot (EF02) vacía para stage 2
+        stage2_part="$(find_bios_boot_part "$dev")"
         if [ -n "$stage2_part" ]; then
-            chroot "$TARGETDIR" limine bios-install "$dev" "$stage2_part" \
-                || die "Error installing Limine BIOS stage 2 on $dev partition $stage2_part"
+            if ! chroot "$TARGETDIR" limine bios-install "$dev" "$stage2_part"; then
+                if [ -n "$EFI_SYSTEM" ]; then
+                    echo "WARNING: falló limine bios-install en $dev (partición $stage2_part): sin arranque BIOS de respaldo." >&2
+                else
+                    die "Error installing Limine BIOS stage 2 on $dev partition $stage2_part"
+                fi
+            fi
         elif [ -n "$EFI_SYSTEM" ]; then
-            echo "WARNING: GPT sin partición BIOS boot (EF02): no habrá arranque BIOS de respaldo." >&2
+            echo "WARNING: GPT sin partición BIOS boot (EF02) válida: no habrá arranque BIOS de respaldo." >&2
         else
-            die "GPT en modo BIOS requiere una partición BIOS boot (EF02) de al menos 32KiB"
+            die "GPT en modo BIOS requiere una partición BIOS boot (EF02) vacía de al menos 32KiB"
         fi
     else
-        chroot "$TARGETDIR" limine bios-install "$dev" \
-            || die "Error installing Limine BIOS on $dev"
+        if ! chroot "$TARGETDIR" limine bios-install "$dev"; then
+            if [ -n "$EFI_SYSTEM" ]; then
+                echo "WARNING: falló limine bios-install en $dev: sin arranque BIOS de respaldo." >&2
+            else
+                die "Error installing Limine BIOS on $dev"
+            fi
+        fi
     fi
 
     echo "Limine installed successfully"

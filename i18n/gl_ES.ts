@@ -4,7 +4,7 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../ui/about.py" line="58"/>
+        <location filename="../ui/about.py" line="59"/>
         <source>Acerca de {app_name}</source>
         <translation>Sobre {app_name}</translation>
     </message>
@@ -14,27 +14,27 @@
         <translation>Instalador gráfico para CuerdOS GNU/Linux.</translation>
     </message>
     <message>
-        <location filename="../ui/about.py" line="66"/>
+        <location filename="../ui/about.py" line="67"/>
         <source>Versión</source>
         <translation>Versión</translation>
     </message>
     <message>
-        <location filename="../ui/about.py" line="67"/>
+        <location filename="../ui/about.py" line="68"/>
         <source>Licencia</source>
         <translation>Licenza</translation>
     </message>
     <message>
-        <location filename="../ui/about.py" line="68"/>
+        <location filename="../ui/about.py" line="69"/>
         <source>Autores</source>
         <translation>Autores</translation>
     </message>
     <message>
-        <location filename="../ui/about.py" line="164"/>
+        <location filename="../ui/about.py" line="165"/>
         <source>Visitar página web</source>
         <translation>Visitar páxina web</translation>
     </message>
     <message>
-        <location filename="../ui/about.py" line="171"/>
+        <location filename="../ui/about.py" line="172"/>
         <source>Cerrar</source>
         <translation>Pechar</translation>
     </message>
@@ -52,7 +52,7 @@
         <translation>Benvido a CuerdOS!</translation>
     </message>
     <message>
-        <location filename="../ui/completion.py" line="122"/>
+        <location filename="../ui/completion.py" line="119"/>
         <source>Tu sistema ha sido instalado correctamente.
 Haz clic en &apos;Reiniciar&apos; para completar el proceso.</source>
         <translation>O teu sistema instalouse correctamente.
@@ -111,7 +111,7 @@ Fai clic en &apos;Reiniciar&apos; para completar o proceso.</translation>
         <translation>Raíz (/):</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="516"/>
+        <location filename="../ui/disks.py" line="528"/>
         <source>Advertencia: Particionado automático</source>
         <translation>Advertencia: Particionado automático</translation>
     </message>
@@ -142,7 +142,7 @@ Fai clic en &apos;Reiniciar&apos; para completar o proceso.</translation>
         <translation>Pto. de montaxe</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="376"/>
+        <location filename="../ui/disks.py" line="375"/>
         <source>Sistema</source>
         <translation>Sistema</translation>
     </message>
@@ -152,7 +152,7 @@ Fai clic en &apos;Reiniciar&apos; para completar o proceso.</translation>
         <translation>Partición</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="287"/>
+        <location filename="../ui/disks.py" line="285"/>
         <source>No disponible con el cifrado LUKS: esta asignación vive dentro del contenedor raíz.</source>
         <translation>Non dispoñible co cifrado LUKS: esta asignación vive dentro do contedor raíz.</translation>
     </message>
@@ -178,12 +178,12 @@ Fai clic en &apos;Reiniciar&apos; para completar o proceso.</translation>
         <translation>Home (/home): garda os teus ficheiros persoais e configuracións.</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="355"/>
+        <location filename="../ui/disks.py" line="353"/>
         <source>EFI (/boot/efi): partición FAT32 donde vive el arranque; obligatoria en UEFI y en BIOS (la requiere Limine).</source>
         <translation>EFI (/boot/efi): partición FAT32 onde vive o arranque; obrigatoria en UEFI e en BIOS (a require Limine).</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="368"/>
+        <location filename="../ui/disks.py" line="363"/>
         <source>Crea un contenedor cifrado en la partición raíz. Se pedirá la frase al arrancar el equipo.
 
 Todo el sistema (incluido /home) vivirá dentro del contenedor cifrado, sin usar las particiones Home/Swap separadas. El swap lo cubre zram de serie. Recomendación: frase larga (12+ caracteres).</source>
@@ -223,22 +223,22 @@ Todo o sistema (incluído /home) vivirá dentro do contedor cifrado, sen usar as
         <translation>Sen Swap</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="484"/>
+        <location filename="../ui/disks.py" line="482"/>
         <source>Introduce y confirma la frase de cifrado LUKS.</source>
         <translation>Introduce e confirma a frase de cifrado LUKS.</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="486"/>
+        <location filename="../ui/disks.py" line="485"/>
         <source>Las frases de cifrado no coinciden.</source>
         <translation>As frases de cifrado non coinciden.</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="491"/>
+        <location filename="../ui/disks.py" line="488"/>
         <source>La frase no puede empezar ni terminar con espacios y debe tener al menos 4 caracteres.</source>
         <translation>A frase non pode empezar nin rematar con espazos e debe ter polo menos 4 caracteres.</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="521"/>
+        <location filename="../ui/disks.py" line="530"/>
         <source>El disco {disk} se formateara y perdera todos sus datos.
 Esta accion NO se puede deshacer.
 
@@ -249,22 +249,22 @@ Esta acción NON se pode desfacer.
 Desexas continuar?</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="539"/>
+        <location filename="../ui/disks.py" line="554"/>
         <source>Particionado completado</source>
         <translation>Particionado completado</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="542"/>
+        <location filename="../ui/disks.py" line="556"/>
         <source>El disco {disk} ha sido particionado correctamente.</source>
         <translation>O disco {disk} foi particionado correctamente.</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="549"/>
+        <location filename="../ui/disks.py" line="564"/>
         <source>Error</source>
         <translation>Erro</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="552"/>
+        <location filename="../ui/disks.py" line="566"/>
         <source>Fallo al particionar {disk}:
 {e}</source>
         <translation>Fallo ao particionar {disk}:
@@ -276,12 +276,12 @@ Desexas continuar?</translation>
         <translation>Onde instalar CuerdOS</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="333"/>
+        <location filename="../ui/disks.py" line="331"/>
         <source>En esta pantalla eliges el disco y las particiones donde se instalará CuerdOS. Puedes usar el particionado automático o asignar manualmente cada punto de montaje.</source>
         <translation>Nesta pantalla escolles o disco e as particións onde se instalará CuerdOS. Podes usar o particionado automático ou asignar manualmente cada punto de montaxe.</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="361"/>
+        <location filename="../ui/disks.py" line="359"/>
         <source>BTRFS y EXT4 son las opciones recomendadas. BTRFS ofrece funciones avanzadas; EXT4 prioriza sencillez y compatibilidad.</source>
         <translation>BTRFS e EXT4 son as opcións recomendadas. BTRFS ofrece funcións avanzadas; EXT4 prioriza sinxeleza e compatibilidade.</translation>
     </message>
@@ -369,49 +369,69 @@ Desexas continuar?</translation>
         <translation>Ocultar log</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="319"/>
+        <location filename="../ui/install_win.py" line="318"/>
         <source>Mostrar log</source>
         <translation>Mostrar log</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="453"/>
+        <location filename="../ui/install_win.py" line="334"/>
+        <source>Se van a FORMATEAR las siguientes particiones y se perderán sus datos:</source>
+        <translation>Vanse FORMATAR as seguintes particións e perderanse os seus datos:</translation>
+    </message>
+    <message>
+        <location filename="../ui/install_win.py" line="337"/>
+        <source>La partición raíz se cifrará con LUKS2.</source>
+        <translation>A partición raíz cifrarase con LUKS2.</translation>
+    </message>
+    <message>
+        <location filename="../ui/install_win.py" line="338"/>
+        <source>¿Continuar con la instalación?</source>
+        <translation>Continuar coa instalación?</translation>
+    </message>
+    <message>
+        <location filename="../ui/install_win.py" line="341"/>
+        <source>Confirmar instalación</source>
+        <translation>Confirmar a instalación</translation>
+    </message>
+    <message>
+        <location filename="../ui/install_win.py" line="480"/>
         <source>¿Salir del instalador?</source>
         <translation>Saír do instalador?</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="454"/>
+        <location filename="../ui/install_win.py" line="481"/>
         <source>¿Estás seguro de que deseas salir? La instalación no ha finalizado.</source>
         <translation>Estás seguro de que queres saír? A instalación non finalizou.</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="274"/>
+        <location filename="../ui/install_win.py" line="273"/>
         <source>Instalador Kron</source>
         <translation>Instalador Kron</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="276"/>
+        <location filename="../ui/install_win.py" line="275"/>
         <source>(Modo demo)</source>
         <translation>(Modo demo)</translation>
     </message>
     <message>
         <location filename="../ui/install_win.py" line="278"/>
-        <location filename="../ui/install_win.py" line="410"/>
+        <location filename="../ui/install_win.py" line="437"/>
         <source>Siguiente</source>
         <translation>Seguinte</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="336"/>
+        <location filename="../ui/install_win.py" line="360"/>
         <source>Pulsa otra vez para instalar</source>
         <translation>Pulse outra vez para instalar</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="390"/>
+        <location filename="../ui/install_win.py" line="417"/>
         <source>Instalar</source>
         <translation>Instalar</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="395"/>
-        <location filename="../ui/install_win.py" line="401"/>
+        <location filename="../ui/install_win.py" line="422"/>
+        <location filename="../ui/install_win.py" line="428"/>
         <source>Reiniciar</source>
         <translation>Reiniciar</translation>
     </message>
@@ -454,7 +474,7 @@ Desexas continuar?</translation>
         <translation>Erro ao escribir a configuración: {e}</translation>
     </message>
     <message>
-        <location filename="../install/install_thread.py" line="245"/>
+        <location filename="../install/install_thread.py" line="244"/>
         <source>El instalador ha fallado. Mire en /tmp/installation.log.</source>
         <translation>O instalador fallou. Mire en /tmp/installation.log.</translation>
     </message>
@@ -528,7 +548,7 @@ Desexas continuar?</translation>
         <translation>O rexistro exportouse correctamente.</translation>
     </message>
     <message>
-        <location filename="../ui/installation_error.py" line="114"/>
+        <location filename="../ui/installation_error.py" line="113"/>
         <source>Error desconocido</source>
         <translation>Erro descoñecido</translation>
     </message>
@@ -548,7 +568,7 @@ Desexas continuar?</translation>
 <context>
     <name>InstallationPage</name>
     <message>
-        <location filename="../ui/installation.py" line="438"/>
+        <location filename="../ui/installation.py" line="435"/>
         <source>Realizando tareas del sistema...</source>
         <translation>Realizando tarefas do sistema...</translation>
     </message>
@@ -593,7 +613,7 @@ Desexas continuar?</translation>
         <translation>Benvido a CuerdOS</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="139"/>
+        <location filename="../ui/installation.py" line="136"/>
         <source>Estás a punto de descubrir un sistema rápido, ligero y pensado para que todo simplemente funcione. Gracias por darle una oportunidad.</source>
         <translation>Estás a punto de descubrir un sistema rápido, lixeiro e pensado para que todo simplemente funcione. Grazas por darlle unha oportunidade.</translation>
     </message>
@@ -603,7 +623,7 @@ Desexas continuar?</translation>
         <translation>Instalar programas, moi fácil</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="147"/>
+        <location filename="../ui/installation.py" line="144"/>
         <source>Encontrar y añadir nuevas aplicaciones es tan sencillo como un par de clics, sin complicaciones ni pasos técnicos de por medio.</source>
         <translation>Atopar e engadir novas aplicacións é tan sinxelo como un par de clics, sen complicacións nin pasos técnicos.</translation>
     </message>
@@ -613,7 +633,7 @@ Desexas continuar?</translation>
         <translation>Rápido dende que o acendes</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="154"/>
+        <location filename="../ui/installation.py" line="152"/>
         <source>Tu equipo arrancará en segundos. Por debajo, CuerdOS está optimizado para que tú solo te preocupes de usarlo.</source>
         <translation>O teu equipo arrincará en segundos. Por debaixo, CuerdOS está optimizado para que ti só te preocupes de usalo.</translation>
     </message>
@@ -623,7 +643,7 @@ Desexas continuar?</translation>
         <translation>O teu escritorio, ao teu gusto</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="161"/>
+        <location filename="../ui/installation.py" line="159"/>
         <source>Elige el aspecto que más te guste: simple y minimalista, o lleno de detalles. Tú decides cómo se ve tu equipo.</source>
         <translation>Escolle o aspecto que máis te guste: sinxelo e minimalista, ou cheo de detalles. Ti decides como se ve o teu equipo.</translation>
     </message>
@@ -633,7 +653,7 @@ Desexas continuar?</translation>
         <translation>Sempre ao día, sen esforzo</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="168"/>
+        <location filename="../ui/installation.py" line="166"/>
         <source>Mantener tu sistema actualizado es muy sencillo: con un clic tendrás las últimas mejoras y parches de seguridad.</source>
         <translation>Manter o teu sistema actualizado é moi sinxelo: cun clic terás as últimas melloras e parches de seguridade.</translation>
     </message>
@@ -643,7 +663,7 @@ Desexas continuar?</translation>
         <translation>Seguro e preparado para os erros</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="176"/>
+        <location filename="../ui/installation.py" line="173"/>
         <source>CuerdOS protege tu equipo desde el primer momento y está pensado para que, si algo falla, todo siga funcionando: la estabilidad es siempre la prioridad.</source>
         <translation>CuerdOS protexe o teu equipo desde o primeiro momento e está pensado para que, se algo falla, todo siga funcionando: a estabilidade é sempre a prioridade.</translation>
     </message>
@@ -653,7 +673,7 @@ Desexas continuar?</translation>
         <translation>Unha comunidade que te acompaña</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="183"/>
+        <location filename="../ui/installation.py" line="181"/>
         <source>Si tienes dudas o quieres compartir tu experiencia, nuestra comunidad está lista para ayudarte en todo momento.</source>
         <translation>Se tes dúbidas ou queres compartir a túa experiencia, a nosa comunidade está lista para axudarte en todo momento.</translation>
     </message>
@@ -757,69 +777,79 @@ Pode reiniciar o seu equipo.</translation>
 <context>
     <name>InstallerConfigCollector</name>
     <message>
-        <location filename="../install/config_collector.py" line="33"/>
+        <location filename="../install/config_collector.py" line="35"/>
         <source>Error en contraseñas</source>
         <translation>Erro nos contrasinais</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="34"/>
+        <location filename="../install/config_collector.py" line="36"/>
         <source>Las contraseñas no coinciden o están vacías. Por favor, verifica los campos de contraseña.</source>
         <translation>Os contrasinais non coinciden ou están baleiros. Verifica os campos de contrasinal.</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="49"/>
+        <location filename="../install/config_collector.py" line="51"/>
         <source>Nombre del equipo (hostname)</source>
         <translation>Nome do equipo (hostname)</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="50"/>
+        <location filename="../install/config_collector.py" line="52"/>
         <source>Usuario (login)</source>
         <translation>Usuario (login)</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="51"/>
+        <location filename="../install/config_collector.py" line="53"/>
         <source>Nombre completo</source>
         <translation>Nome completo</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="52"/>
-        <location filename="../install/config_collector.py" line="97"/>
+        <location filename="../install/config_collector.py" line="54"/>
+        <location filename="../install/config_collector.py" line="109"/>
         <source>Contraseña del usuario</source>
         <translation>Contrasinal do usuario</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="53"/>
-        <location filename="../install/config_collector.py" line="98"/>
+        <location filename="../install/config_collector.py" line="55"/>
+        <location filename="../install/config_collector.py" line="110"/>
         <source>Contraseña de root</source>
         <translation>Contrasinal de root</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="77"/>
+        <location filename="../install/config_collector.py" line="79"/>
         <source>Hostname inválido</source>
         <translation>Nome de host non válido</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="88"/>
+        <location filename="../install/config_collector.py" line="90"/>
         <source>Usuario inválido</source>
         <translation>Usuario non válido</translation>
     </message>
     <message>
         <location filename="../install/config_collector.py" line="103"/>
+        <source>Nombre inválido</source>
+        <translation>Nome non válido</translation>
+    </message>
+    <message>
+        <location filename="../install/config_collector.py" line="104"/>
+        <source>El nombre completo no puede contener el carácter &apos;:&apos;.</source>
+        <translation>O nome completo non pode conter o carácter &apos;:&apos;.</translation>
+    </message>
+    <message>
+        <location filename="../install/config_collector.py" line="115"/>
         <source>Contraseña inválida</source>
         <translation>Contrasinal non válido</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="111"/>
+        <location filename="../install/config_collector.py" line="123"/>
         <source>Contraseña demasiado corta</source>
         <translation>Contrasinal demasiado curto</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="138"/>
+        <location filename="../install/config_collector.py" line="150"/>
         <source>Error en el cifrado</source>
         <translation>Erro no cifrado</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="156"/>
+        <location filename="../install/config_collector.py" line="168"/>
         <source>Debe seleccionar una partición Raíz (/).</source>
         <translation>Debes seleccionar unha partición Raíz (/).</translation>
     </message>
@@ -828,12 +858,12 @@ Pode reiniciar o seu equipo.</translation>
         <translation type="vanished">Debes seleccionar unha partición EFI (/boot/efi).</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="59"/>
+        <location filename="../install/config_collector.py" line="61"/>
         <source>Faltan datos</source>
         <translation>Faltan datos</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="61"/>
+        <location filename="../install/config_collector.py" line="62"/>
         <source>Debes completar los siguientes campos:
 
 - </source>
@@ -856,28 +886,46 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
 números, guións e guións baixos, e non pode conter espazos.</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="104"/>
+        <location filename="../install/config_collector.py" line="116"/>
         <source>{label} no puede empezar ni terminar con espacios.</source>
         <translation>{label} non pode comezar nin rematar con espazos.</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="112"/>
+        <location filename="../install/config_collector.py" line="124"/>
         <source>{label} debe tener al menos 4 caracteres.</source>
         <translation>{label} debe ter polo menos 4 caracteres.</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="157"/>
+        <location filename="../install/config_collector.py" line="169"/>
         <source>Debe seleccionar una partición EFI (/boot/efi), ya sea un equipo UEFI o BIOS.</source>
         <translation>Debe seleccionar unha partición EFI (/boot/efi), tanto se o equipo é UEFI como BIOS.</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="162"/>
-        <location filename="../install/config_collector.py" line="191"/>
+        <location filename="../install/config_collector.py" line="174"/>
+        <location filename="../install/config_collector.py" line="210"/>
+        <location filename="../install/config_collector.py" line="221"/>
+        <location filename="../install/config_collector.py" line="230"/>
+        <location filename="../install/config_collector.py" line="244"/>
         <source>Error</source>
         <translation>Erro</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="191"/>
+        <location filename="../install/config_collector.py" line="211"/>
+        <source>La partición /home tiene un sistema de archivos no soportado: {fs}.</source>
+        <translation>A partición /home ten un sistema de ficheiros non compatible: {fs}.</translation>
+    </message>
+    <message>
+        <location filename="../install/config_collector.py" line="222"/>
+        <source>La misma partición está seleccionada para más de un uso.</source>
+        <translation>A mesma partición está seleccionada para máis dun uso.</translation>
+    </message>
+    <message>
+        <location filename="../install/config_collector.py" line="231"/>
+        <source>La partición {dev} está montada en {mp}. Desmóntala antes de continuar.</source>
+        <translation>A partición {dev} está montada en {mp}. Desmóntaa antes de continuar.</translation>
+    </message>
+    <message>
+        <location filename="../install/config_collector.py" line="244"/>
         <source>Error procesando datos: </source>
         <translation>Erro procesando datos: </translation>
     </message>
@@ -957,7 +1005,7 @@ números, guións e guións baixos, e non pode conter espazos.</translation>
         <translation>Norteamérica, EE. UU.</translation>
     </message>
     <message>
-        <location filename="../ui/mirrors.py" line="100"/>
+        <location filename="../ui/mirrors.py" line="98"/>
         <source>Instala los drivers propietarios de NVIDIA, optimizando el rendimiento gráfico y la compatibilidad con juegos y aplicaciones 3D.</source>
         <translation>Instala os controladores propietarios de NVIDIA, optimizando o rendemento gráfico e a compatibilidade con xogos e aplicacións 3D.</translation>
     </message>
@@ -967,7 +1015,7 @@ números, guións e guións baixos, e non pode conter espazos.</translation>
         <translation>Instalar microcódigos Intel</translation>
     </message>
     <message>
-        <location filename="../ui/mirrors.py" line="105"/>
+        <location filename="../ui/mirrors.py" line="103"/>
         <source>Instala microcódigos recientes de Intel para mejorar seguridad, estabilidad y compatibilidad con CPUs Intel modernas.</source>
         <translation>Instala microcódigos recentes de Intel para mellorar a seguridade, estabilidade e compatibilidade con CPUs Intel modernas.</translation>
     </message>
@@ -986,7 +1034,7 @@ números, guións e guións baixos, e non pode conter espazos.</translation>
         <translation>Canle de software</translation>
     </message>
     <message>
-        <location filename="../ui/mirrors.py" line="82"/>
+        <location filename="../ui/mirrors.py" line="80"/>
         <source>Aquí eliges el servidor desde el que se descargarán los paquetes y qué componentes adicionales se instalarán. Los repositorios no libres permiten acceder a software y firmware con licencias distintas a la base libre del sistema.</source>
         <translation>Aquí escolles o servidor desde o que se descargarán os paquetes e os compoñentes adicionais. Os repositorios non libres permiten acceder a software e firmware con licenzas distintas da base libre do sistema.</translation>
     </message>
@@ -1041,22 +1089,22 @@ números, guións e guións baixos, e non pode conter espazos.</translation>
         <translation>Repetir contrasinal</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="241"/>
+        <location filename="../ui/users.py" line="240"/>
         <source>Las contraseñas de usuario no coinciden</source>
         <translation>Os contrasinais de usuario non coinciden</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="244"/>
+        <location filename="../ui/users.py" line="243"/>
         <source>Las contraseñas de root no coinciden</source>
         <translation>Os contrasinais de root non coinciden</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="248"/>
+        <location filename="../ui/users.py" line="247"/>
         <source>Usar la misma contraseña para el usuario root</source>
         <translation>Usar o mesmo contrasinal para o usuario root</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="303"/>
+        <location filename="../ui/users.py" line="302"/>
         <source>Debe repetir la contraseña</source>
         <translation>Debes repetir o contrasinal</translation>
     </message>
@@ -1066,13 +1114,13 @@ números, guións e guións baixos, e non pode conter espazos.</translation>
         <translation>Os contrasinais de {ctx_user} non coinciden</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="365"/>
-        <location filename="../ui/users.py" line="377"/>
+        <location filename="../ui/users.py" line="364"/>
+        <location filename="../ui/users.py" line="376"/>
         <source>La contraseña de usuario es obligatoria</source>
         <translation>O contrasinal de usuario é obrigatorio</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="384"/>
+        <location filename="../ui/users.py" line="383"/>
         <source>La contraseña de root es obligatoria</source>
         <translation>O contrasinal de root é obrigatorio</translation>
     </message>
@@ -1088,7 +1136,7 @@ números, guións e guións baixos, e non pode conter espazos.</translation>
         <translation>Iniciar sesión automaticamente</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="227"/>
+        <location filename="../ui/users.py" line="226"/>
         <source>Disponible con SDDM, LightDM o GDM. Con greetd no es posible configurarlo desde este instalador.</source>
         <translation>Dispoñible con SDDM, LightDM ou GDM. Con greetd non se pode configurar desde este instalador.</translation>
     </message>
@@ -1098,7 +1146,7 @@ números, guións e guións baixos, e non pode conter espazos.</translation>
         <translation>Inicio automático dispoñible mediante {manager}.</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="347"/>
+        <location filename="../ui/users.py" line="346"/>
         <source>Con greetd no es posible configurar autologin con este instalador.</source>
         <translation>Con greetd non se pode configurar o inicio automático con este instalador.</translation>
     </message>
@@ -1121,14 +1169,14 @@ números, guións e guións baixos, e non pode conter espazos.</translation>
         <translation>“Optimizado até o último píxel”</translation>
     </message>
     <message>
-        <location filename="../ui/welcome.py" line="127"/>
+        <location filename="../ui/welcome.py" line="124"/>
         <source>Se ha detectado conexion a internet.
 Instalador en modo online.</source>
         <translation>Detectouse conexión a internet.
 Instalador en modo en liña.</translation>
     </message>
     <message>
-        <location filename="../ui/welcome.py" line="134"/>
+        <location filename="../ui/welcome.py" line="131"/>
         <source>No se ha detectado conexion a internet.
 Instalador en modo offline.</source>
         <translation>Non se detectou conexión a internet.

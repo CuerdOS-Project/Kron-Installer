@@ -101,8 +101,6 @@ create_filesystems() {
         # El contenedor se crea ANTES del mkfs para que el filesystem nazca
         # ya dentro del mapper: formateo, montaje, fstab y UUIDs operan
         # después sobre /dev/mapper/kron-root sin ningún cambio adicional.
-        # Esquema idéntico al de los instaladores guiados de las grandes
-        # distros: un solo contenedor, una sola frase al arrancar.
         if [ "$USE_LUKS" = "1" ] && [ "$mntpt" = "/" ]; then
             local luks_pass
             luks_pass="$(get_option LUKSPASSWORD)"

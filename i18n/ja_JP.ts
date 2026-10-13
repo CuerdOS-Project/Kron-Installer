@@ -4,7 +4,7 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../ui/about.py" line="58"/>
+        <location filename="../ui/about.py" line="59"/>
         <source>Acerca de {app_name}</source>
         <translation>{app_name} について</translation>
     </message>
@@ -14,27 +14,27 @@
         <translation>CuerdOS GNU/Linux 用グラフィカルインストーラー。</translation>
     </message>
     <message>
-        <location filename="../ui/about.py" line="66"/>
+        <location filename="../ui/about.py" line="67"/>
         <source>Versión</source>
         <translation>バージョン</translation>
     </message>
     <message>
-        <location filename="../ui/about.py" line="67"/>
+        <location filename="../ui/about.py" line="68"/>
         <source>Licencia</source>
         <translation>ライセンス</translation>
     </message>
     <message>
-        <location filename="../ui/about.py" line="68"/>
+        <location filename="../ui/about.py" line="69"/>
         <source>Autores</source>
         <translation>作者</translation>
     </message>
     <message>
-        <location filename="../ui/about.py" line="164"/>
+        <location filename="../ui/about.py" line="165"/>
         <source>Visitar página web</source>
         <translation>ウェブサイトを開く</translation>
     </message>
     <message>
-        <location filename="../ui/about.py" line="171"/>
+        <location filename="../ui/about.py" line="172"/>
         <source>Cerrar</source>
         <translation>閉じる</translation>
     </message>
@@ -52,7 +52,7 @@
         <translation>CuerdOSへようこそ！</translation>
     </message>
     <message>
-        <location filename="../ui/completion.py" line="122"/>
+        <location filename="../ui/completion.py" line="119"/>
         <source>Tu sistema ha sido instalado correctamente.
 Haz clic en &apos;Reiniciar&apos; para completar el proceso.</source>
         <translation>システムが正常にインストールされました。
@@ -111,7 +111,7 @@ Haz clic en &apos;Reiniciar&apos; para completar el proceso.</source>
         <translation>ルート (/):</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="516"/>
+        <location filename="../ui/disks.py" line="528"/>
         <source>Advertencia: Particionado automático</source>
         <translation>警告: 自動パーティション作成</translation>
     </message>
@@ -142,7 +142,7 @@ Haz clic en &apos;Reiniciar&apos; para completar el proceso.</source>
         <translation>マウント先</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="376"/>
+        <location filename="../ui/disks.py" line="375"/>
         <source>Sistema</source>
         <translation>システム</translation>
     </message>
@@ -152,7 +152,7 @@ Haz clic en &apos;Reiniciar&apos; para completar el proceso.</source>
         <translation>パーティション</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="287"/>
+        <location filename="../ui/disks.py" line="285"/>
         <source>No disponible con el cifrado LUKS: esta asignación vive dentro del contenedor raíz.</source>
         <translation>LUKS暗号化では利用できません：この割り当てはルートコンテナ内にあります。</translation>
     </message>
@@ -178,12 +178,12 @@ Haz clic en &apos;Reiniciar&apos; para completar el proceso.</source>
         <translation>Home (/home)：個人のファイルと設定を保存します。</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="355"/>
+        <location filename="../ui/disks.py" line="353"/>
         <source>EFI (/boot/efi): partición FAT32 donde vive el arranque; obligatoria en UEFI y en BIOS (la requiere Limine).</source>
         <translation>EFI (/boot/efi)：起動プログラムがあるFAT32パーティション。UEFIとBIOSの両方で必須です（Limineが必要とします）。</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="368"/>
+        <location filename="../ui/disks.py" line="363"/>
         <source>Crea un contenedor cifrado en la partición raíz. Se pedirá la frase al arrancar el equipo.
 
 Todo el sistema (incluido /home) vivirá dentro del contenedor cifrado, sin usar las particiones Home/Swap separadas. El swap lo cubre zram de serie. Recomendación: frase larga (12+ caracteres).</source>
@@ -223,22 +223,22 @@ Todo el sistema (incluido /home) vivirá dentro del contenedor cifrado, sin usar
         <translation>Swap なし</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="484"/>
+        <location filename="../ui/disks.py" line="482"/>
         <source>Introduce y confirma la frase de cifrado LUKS.</source>
         <translation>LUKS暗号化のパスフレーズを入力して確認してください。</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="486"/>
+        <location filename="../ui/disks.py" line="485"/>
         <source>Las frases de cifrado no coinciden.</source>
         <translation>パスフレーズが一致しません。</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="491"/>
+        <location filename="../ui/disks.py" line="488"/>
         <source>La frase no puede empezar ni terminar con espacios y debe tener al menos 4 caracteres.</source>
         <translation>パスフレーズは空白文字で始めたり終わらせたりできず、4文字以上である必要があります。</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="521"/>
+        <location filename="../ui/disks.py" line="530"/>
         <source>El disco {disk} se formateara y perdera todos sus datos.
 Esta accion NO se puede deshacer.
 
@@ -249,22 +249,22 @@ Deseas continuar?</source>
 続行しますか?</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="539"/>
+        <location filename="../ui/disks.py" line="554"/>
         <source>Particionado completado</source>
         <translation>パーティション分割が完了しました</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="542"/>
+        <location filename="../ui/disks.py" line="556"/>
         <source>El disco {disk} ha sido particionado correctamente.</source>
         <translation>ディスク {disk} は正しくパーティション分割されました。</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="549"/>
+        <location filename="../ui/disks.py" line="564"/>
         <source>Error</source>
         <translation>エラー</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="552"/>
+        <location filename="../ui/disks.py" line="566"/>
         <source>Fallo al particionar {disk}:
 {e}</source>
         <translation>{disk} のパーティション分割に失敗しました:
@@ -276,12 +276,12 @@ Deseas continuar?</source>
         <translation>CuerdOSのインストール先</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="333"/>
+        <location filename="../ui/disks.py" line="331"/>
         <source>En esta pantalla eliges el disco y las particiones donde se instalará CuerdOS. Puedes usar el particionado automático o asignar manualmente cada punto de montaje.</source>
         <translation>CuerdOSをインストールするディスクとパーティションを選択します。自動パーティションまたは各マウントポイントの手動割り当てを利用できます。</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="361"/>
+        <location filename="../ui/disks.py" line="359"/>
         <source>BTRFS y EXT4 son las opciones recomendadas. BTRFS ofrece funciones avanzadas; EXT4 prioriza sencillez y compatibilidad.</source>
         <translation>BTRFSとEXT4を推奨します。BTRFSは高度な機能を提供し、EXT4はシンプルさと互換性を重視します。</translation>
     </message>
@@ -369,49 +369,69 @@ Deseas continuar?</source>
         <translation>ログを非表示</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="319"/>
+        <location filename="../ui/install_win.py" line="318"/>
         <source>Mostrar log</source>
         <translation>ログを表示</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="453"/>
+        <location filename="../ui/install_win.py" line="334"/>
+        <source>Se van a FORMATEAR las siguientes particiones y se perderán sus datos:</source>
+        <translation>次のパーティションはフォーマットされ、データはすべて失われます：</translation>
+    </message>
+    <message>
+        <location filename="../ui/install_win.py" line="337"/>
+        <source>La partición raíz se cifrará con LUKS2.</source>
+        <translation>ルートパーティションは LUKS2 で暗号化されます。</translation>
+    </message>
+    <message>
+        <location filename="../ui/install_win.py" line="338"/>
+        <source>¿Continuar con la instalación?</source>
+        <translation>インストールを続行しますか？</translation>
+    </message>
+    <message>
+        <location filename="../ui/install_win.py" line="341"/>
+        <source>Confirmar instalación</source>
+        <translation>インストールの確認</translation>
+    </message>
+    <message>
+        <location filename="../ui/install_win.py" line="480"/>
         <source>¿Salir del instalador?</source>
         <translation>インストーラーを終了しますか？</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="454"/>
+        <location filename="../ui/install_win.py" line="481"/>
         <source>¿Estás seguro de que deseas salir? La instalación no ha finalizado.</source>
         <translation>本当に終了しますか？インストールはまだ完了していません。</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="274"/>
+        <location filename="../ui/install_win.py" line="273"/>
         <source>Instalador Kron</source>
         <translation>Kron インストーラー</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="276"/>
+        <location filename="../ui/install_win.py" line="275"/>
         <source>(Modo demo)</source>
         <translation>(デモモード)</translation>
     </message>
     <message>
         <location filename="../ui/install_win.py" line="278"/>
-        <location filename="../ui/install_win.py" line="410"/>
+        <location filename="../ui/install_win.py" line="437"/>
         <source>Siguiente</source>
         <translation>次へ</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="336"/>
+        <location filename="../ui/install_win.py" line="360"/>
         <source>Pulsa otra vez para instalar</source>
         <translation>もう一度押すとインストールします</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="390"/>
+        <location filename="../ui/install_win.py" line="417"/>
         <source>Instalar</source>
         <translation>インストール</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="395"/>
-        <location filename="../ui/install_win.py" line="401"/>
+        <location filename="../ui/install_win.py" line="422"/>
+        <location filename="../ui/install_win.py" line="428"/>
         <source>Reiniciar</source>
         <translation>再起動</translation>
     </message>
@@ -454,7 +474,7 @@ Deseas continuar?</source>
         <translation>設定の書き込みエラー: {e}</translation>
     </message>
     <message>
-        <location filename="../install/install_thread.py" line="245"/>
+        <location filename="../install/install_thread.py" line="244"/>
         <source>El instalador ha fallado. Mire en /tmp/installation.log.</source>
         <translation>インストーラーが失敗しました。/tmp/installation.log を確認してください。</translation>
     </message>
@@ -528,7 +548,7 @@ Deseas continuar?</source>
         <translation>ログを正常にエクスポートしました。</translation>
     </message>
     <message>
-        <location filename="../ui/installation_error.py" line="114"/>
+        <location filename="../ui/installation_error.py" line="113"/>
         <source>Error desconocido</source>
         <translation>不明なエラー</translation>
     </message>
@@ -548,7 +568,7 @@ Deseas continuar?</source>
 <context>
     <name>InstallationPage</name>
     <message>
-        <location filename="../ui/installation.py" line="438"/>
+        <location filename="../ui/installation.py" line="435"/>
         <source>Realizando tareas del sistema...</source>
         <translation>システムタスクを実行中...</translation>
     </message>
@@ -593,7 +613,7 @@ Deseas continuar?</source>
         <translation>CuerdOS へようこそ</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="139"/>
+        <location filename="../ui/installation.py" line="136"/>
         <source>Estás a punto de descubrir un sistema rápido, ligero y pensado para que todo simplemente funcione. Gracias por darle una oportunidad.</source>
         <translation>高速で軽量、そしてただ「動く」ことを目指したシステムをこれから体験します。お試しいただきありがとうございます。</translation>
     </message>
@@ -603,7 +623,7 @@ Deseas continuar?</source>
         <translation>アプリのインストールも、とても簡単</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="147"/>
+        <location filename="../ui/installation.py" line="144"/>
         <source>Encontrar y añadir nuevas aplicaciones es tan sencillo como un par de clics, sin complicaciones ni pasos técnicos de por medio.</source>
         <translation>新しいアプリを見つけて追加するのも、数回クリックするだけ。技術的な手順は必要ありません。</translation>
     </message>
@@ -613,7 +633,7 @@ Deseas continuar?</source>
         <translation>起動した瞬間から速い</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="154"/>
+        <location filename="../ui/installation.py" line="152"/>
         <source>Tu equipo arrancará en segundos. Por debajo, CuerdOS está optimizado para que tú solo te preocupes de usarlo.</source>
         <translation>パソコンは数秒で起動します。裏側では CuerdOS が最適化されているので、あとは使うだけです。</translation>
     </message>
@@ -623,7 +643,7 @@ Deseas continuar?</source>
         <translation>あなた好みのデスクトップに</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="161"/>
+        <location filename="../ui/installation.py" line="159"/>
         <source>Elige el aspecto que más te guste: simple y minimalista, o lleno de detalles. Tú decides cómo se ve tu equipo.</source>
         <translation>シンプルで控えめな見た目も、細部までこだわった見た目も、お好みで選べます。パソコンの見た目はあなた次第です。</translation>
     </message>
@@ -633,7 +653,7 @@ Deseas continuar?</source>
         <translation>いつでも最新、しかも簡単に</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="168"/>
+        <location filename="../ui/installation.py" line="166"/>
         <source>Mantener tu sistema actualizado es muy sencillo: con un clic tendrás las últimas mejoras y parches de seguridad.</source>
         <translation>システムを最新の状態に保つのも簡単です。クリック一つで最新の改善とセキュリティパッチが手に入ります。</translation>
     </message>
@@ -643,7 +663,7 @@ Deseas continuar?</source>
         <translation>安全でエラーに強い</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="176"/>
+        <location filename="../ui/installation.py" line="173"/>
         <source>CuerdOS protege tu equipo desde el primer momento y está pensado para que, si algo falla, todo siga funcionando: la estabilidad es siempre la prioridad.</source>
         <translation>CuerdOSは最初から大切なパソコンを守り、何か問題が起きても動作が止まらないように設計されています。安定性を常に最優先します。</translation>
     </message>
@@ -653,7 +673,7 @@ Deseas continuar?</source>
         <translation>あなたを支えるコミュニティ</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="183"/>
+        <location filename="../ui/installation.py" line="181"/>
         <source>Si tienes dudas o quieres compartir tu experiencia, nuestra comunidad está lista para ayudarte en todo momento.</source>
         <translation>ご質問がある場合や体験を共有したい場合は、いつでもコミュニティがお手伝いします。</translation>
     </message>
@@ -757,69 +777,79 @@ Puede reiniciar su equipo.</source>
 <context>
     <name>InstallerConfigCollector</name>
     <message>
-        <location filename="../install/config_collector.py" line="33"/>
+        <location filename="../install/config_collector.py" line="35"/>
         <source>Error en contraseñas</source>
         <translation>パスワードエラー</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="34"/>
+        <location filename="../install/config_collector.py" line="36"/>
         <source>Las contraseñas no coinciden o están vacías. Por favor, verifica los campos de contraseña.</source>
         <translation>パスワードが一致しないか、空です。パスワード欄を確認してください。</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="49"/>
+        <location filename="../install/config_collector.py" line="51"/>
         <source>Nombre del equipo (hostname)</source>
         <translation>コンピューター名 (hostname)</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="50"/>
+        <location filename="../install/config_collector.py" line="52"/>
         <source>Usuario (login)</source>
         <translation>ユーザー (ログイン)</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="51"/>
+        <location filename="../install/config_collector.py" line="53"/>
         <source>Nombre completo</source>
         <translation>氏名</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="52"/>
-        <location filename="../install/config_collector.py" line="97"/>
+        <location filename="../install/config_collector.py" line="54"/>
+        <location filename="../install/config_collector.py" line="109"/>
         <source>Contraseña del usuario</source>
         <translation>ユーザーパスワード</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="53"/>
-        <location filename="../install/config_collector.py" line="98"/>
+        <location filename="../install/config_collector.py" line="55"/>
+        <location filename="../install/config_collector.py" line="110"/>
         <source>Contraseña de root</source>
         <translation>root パスワード</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="77"/>
+        <location filename="../install/config_collector.py" line="79"/>
         <source>Hostname inválido</source>
         <translation>無効なホスト名</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="88"/>
+        <location filename="../install/config_collector.py" line="90"/>
         <source>Usuario inválido</source>
         <translation>無効なユーザー名</translation>
     </message>
     <message>
         <location filename="../install/config_collector.py" line="103"/>
+        <source>Nombre inválido</source>
+        <translation>無効な名前</translation>
+    </message>
+    <message>
+        <location filename="../install/config_collector.py" line="104"/>
+        <source>El nombre completo no puede contener el carácter &apos;:&apos;.</source>
+        <translation>氏名に「:」を含めることはできません。</translation>
+    </message>
+    <message>
+        <location filename="../install/config_collector.py" line="115"/>
         <source>Contraseña inválida</source>
         <translation>無効なパスワード</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="111"/>
+        <location filename="../install/config_collector.py" line="123"/>
         <source>Contraseña demasiado corta</source>
         <translation>パスワードが短すぎます</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="138"/>
+        <location filename="../install/config_collector.py" line="150"/>
         <source>Error en el cifrado</source>
         <translation>暗号化エラー</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="156"/>
+        <location filename="../install/config_collector.py" line="168"/>
         <source>Debe seleccionar una partición Raíz (/).</source>
         <translation>ルート（/）パーティションを選択してください。</translation>
     </message>
@@ -828,12 +858,12 @@ Puede reiniciar su equipo.</source>
         <translation type="vanished">EFI（/boot/efi）パーティションを選択してください。</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="59"/>
+        <location filename="../install/config_collector.py" line="61"/>
         <source>Faltan datos</source>
         <translation>データが不足しています</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="61"/>
+        <location filename="../install/config_collector.py" line="62"/>
         <source>Debes completar los siguientes campos:
 
 - </source>
@@ -856,28 +886,46 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
 スペースは含められません。</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="104"/>
+        <location filename="../install/config_collector.py" line="116"/>
         <source>{label} no puede empezar ni terminar con espacios.</source>
         <translation>{label} はスペースで始めることも終えることもできません。</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="112"/>
+        <location filename="../install/config_collector.py" line="124"/>
         <source>{label} debe tener al menos 4 caracteres.</source>
         <translation>{label} は 4 文字以上でなければなりません。</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="157"/>
+        <location filename="../install/config_collector.py" line="169"/>
         <source>Debe seleccionar una partición EFI (/boot/efi), ya sea un equipo UEFI o BIOS.</source>
         <translation>EFI (/boot/efi) パーティションを選択してください。UEFI と BIOS のどちらのシステムでも必要です。</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="162"/>
-        <location filename="../install/config_collector.py" line="191"/>
+        <location filename="../install/config_collector.py" line="174"/>
+        <location filename="../install/config_collector.py" line="210"/>
+        <location filename="../install/config_collector.py" line="221"/>
+        <location filename="../install/config_collector.py" line="230"/>
+        <location filename="../install/config_collector.py" line="244"/>
         <source>Error</source>
         <translation>エラー</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="191"/>
+        <location filename="../install/config_collector.py" line="211"/>
+        <source>La partición /home tiene un sistema de archivos no soportado: {fs}.</source>
+        <translation>/home パーティションのファイルシステムはサポートされていません：{fs}</translation>
+    </message>
+    <message>
+        <location filename="../install/config_collector.py" line="222"/>
+        <source>La misma partición está seleccionada para más de un uso.</source>
+        <translation>同じパーティションが複数の用途に選択されています。</translation>
+    </message>
+    <message>
+        <location filename="../install/config_collector.py" line="231"/>
+        <source>La partición {dev} está montada en {mp}. Desmóntala antes de continuar.</source>
+        <translation>パーティション {dev} は {mp} にマウントされています。続行する前にアンマウントしてください。</translation>
+    </message>
+    <message>
+        <location filename="../install/config_collector.py" line="244"/>
         <source>Error procesando datos: </source>
         <translation>データ処理エラー: </translation>
     </message>
@@ -957,7 +1005,7 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <translation>北米、米国</translation>
     </message>
     <message>
-        <location filename="../ui/mirrors.py" line="100"/>
+        <location filename="../ui/mirrors.py" line="98"/>
         <source>Instala los drivers propietarios de NVIDIA, optimizando el rendimiento gráfico y la compatibilidad con juegos y aplicaciones 3D.</source>
         <translation>NVIDIA の独自ドライバーをインストールし、グラフィック性能とゲームや3Dアプリとの互換性を最適化します。</translation>
     </message>
@@ -967,7 +1015,7 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <translation>Intel マイクロコードをインストール</translation>
     </message>
     <message>
-        <location filename="../ui/mirrors.py" line="105"/>
+        <location filename="../ui/mirrors.py" line="103"/>
         <source>Instala microcódigos recientes de Intel para mejorar seguridad, estabilidad y compatibilidad con CPUs Intel modernas.</source>
         <translation>最新の Intel マイクロコードをインストールし、最新の Intel CPU とのセキュリティ、安定性、互換性を向上させます。</translation>
     </message>
@@ -986,7 +1034,7 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <translation>ソフトウェアチャンネル</translation>
     </message>
     <message>
-        <location filename="../ui/mirrors.py" line="82"/>
+        <location filename="../ui/mirrors.py" line="80"/>
         <source>Aquí eliges el servidor desde el que se descargarán los paquetes y qué componentes adicionales se instalarán. Los repositorios no libres permiten acceder a software y firmware con licencias distintas a la base libre del sistema.</source>
         <translation>パッケージをダウンロードするサーバーと追加コンポーネントを選択します。非フリーリポジトリでは、システムのフリー基盤とは異なるライセンスのソフトウェアやファームウェアを利用できます。</translation>
     </message>
@@ -1041,22 +1089,22 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <translation>パスワードを再入力</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="241"/>
+        <location filename="../ui/users.py" line="240"/>
         <source>Las contraseñas de usuario no coinciden</source>
         <translation>ユーザーパスワードが一致しません</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="244"/>
+        <location filename="../ui/users.py" line="243"/>
         <source>Las contraseñas de root no coinciden</source>
         <translation>root パスワードが一致しません</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="248"/>
+        <location filename="../ui/users.py" line="247"/>
         <source>Usar la misma contraseña para el usuario root</source>
         <translation>root ユーザーにも同じパスワードを使用する</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="303"/>
+        <location filename="../ui/users.py" line="302"/>
         <source>Debe repetir la contraseña</source>
         <translation>パスワードを再入力してください</translation>
     </message>
@@ -1066,13 +1114,13 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <translation>{ctx_user} のパスワードが一致しません</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="365"/>
-        <location filename="../ui/users.py" line="377"/>
+        <location filename="../ui/users.py" line="364"/>
+        <location filename="../ui/users.py" line="376"/>
         <source>La contraseña de usuario es obligatoria</source>
         <translation>ユーザーパスワードは必須です</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="384"/>
+        <location filename="../ui/users.py" line="383"/>
         <source>La contraseña de root es obligatoria</source>
         <translation>root パスワードは必須です</translation>
     </message>
@@ -1088,7 +1136,7 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <translation>自動ログイン</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="227"/>
+        <location filename="../ui/users.py" line="226"/>
         <source>Disponible con SDDM, LightDM o GDM. Con greetd no es posible configurarlo desde este instalador.</source>
         <translation>SDDM、LightDM、またはGDMで利用できます。greetdではこのインストーラーから設定できません。</translation>
     </message>
@@ -1098,7 +1146,7 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <translation>{manager}による自動ログインを利用できます。</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="347"/>
+        <location filename="../ui/users.py" line="346"/>
         <source>Con greetd no es posible configurar autologin con este instalador.</source>
         <translation>greetdではこのインストーラーから自動ログインを設定できません。</translation>
     </message>
@@ -1121,14 +1169,14 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <translation>「最後のピクセルまで最適化」</translation>
     </message>
     <message>
-        <location filename="../ui/welcome.py" line="127"/>
+        <location filename="../ui/welcome.py" line="124"/>
         <source>Se ha detectado conexion a internet.
 Instalador en modo online.</source>
         <translation>インターネット接続が検出されました。
 インストーラーはオンラインモードです。</translation>
     </message>
     <message>
-        <location filename="../ui/welcome.py" line="134"/>
+        <location filename="../ui/welcome.py" line="131"/>
         <source>No se ha detectado conexion a internet.
 Instalador en modo offline.</source>
         <translation>インターネット接続が検出されませんでした。

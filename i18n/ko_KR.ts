@@ -4,7 +4,7 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../ui/about.py" line="58"/>
+        <location filename="../ui/about.py" line="59"/>
         <source>Acerca de {app_name}</source>
         <translation>{app_name} 정보</translation>
     </message>
@@ -14,27 +14,27 @@
         <translation>CuerdOS GNU/Linux용 그래픽 설치 프로그램입니다.</translation>
     </message>
     <message>
-        <location filename="../ui/about.py" line="66"/>
+        <location filename="../ui/about.py" line="67"/>
         <source>Versión</source>
         <translation>버전</translation>
     </message>
     <message>
-        <location filename="../ui/about.py" line="67"/>
+        <location filename="../ui/about.py" line="68"/>
         <source>Licencia</source>
         <translation>라이선스</translation>
     </message>
     <message>
-        <location filename="../ui/about.py" line="68"/>
+        <location filename="../ui/about.py" line="69"/>
         <source>Autores</source>
         <translation>제작자</translation>
     </message>
     <message>
-        <location filename="../ui/about.py" line="164"/>
+        <location filename="../ui/about.py" line="165"/>
         <source>Visitar página web</source>
         <translation>웹사이트 방문</translation>
     </message>
     <message>
-        <location filename="../ui/about.py" line="171"/>
+        <location filename="../ui/about.py" line="172"/>
         <source>Cerrar</source>
         <translation>닫기</translation>
     </message>
@@ -52,7 +52,7 @@
         <translation>CuerdOS에 오신 것을 환영합니다!</translation>
     </message>
     <message>
-        <location filename="../ui/completion.py" line="122"/>
+        <location filename="../ui/completion.py" line="119"/>
         <source>Tu sistema ha sido instalado correctamente.
 Haz clic en &apos;Reiniciar&apos; para completar el proceso.</source>
         <translation>시스템이 성공적으로 설치되었습니다.
@@ -111,7 +111,7 @@ Haz clic en &apos;Reiniciar&apos; para completar el proceso.</source>
         <translation>루트 (/):</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="516"/>
+        <location filename="../ui/disks.py" line="528"/>
         <source>Advertencia: Particionado automático</source>
         <translation>경고: 자동 파티션 설정</translation>
     </message>
@@ -142,7 +142,7 @@ Haz clic en &apos;Reiniciar&apos; para completar el proceso.</source>
         <translation>마운트 지점</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="376"/>
+        <location filename="../ui/disks.py" line="375"/>
         <source>Sistema</source>
         <translation>시스템</translation>
     </message>
@@ -152,7 +152,7 @@ Haz clic en &apos;Reiniciar&apos; para completar el proceso.</source>
         <translation>파티션</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="287"/>
+        <location filename="../ui/disks.py" line="285"/>
         <source>No disponible con el cifrado LUKS: esta asignación vive dentro del contenedor raíz.</source>
         <translation>LUKS 암호화에서는 사용할 수 없습니다: 이 할당은 루트 컨테이너 안에 있습니다.</translation>
     </message>
@@ -178,12 +178,12 @@ Haz clic en &apos;Reiniciar&apos; para completar el proceso.</source>
         <translation>Home (/home): 개인 파일과 설정이 저장됩니다.</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="355"/>
+        <location filename="../ui/disks.py" line="353"/>
         <source>EFI (/boot/efi): partición FAT32 donde vive el arranque; obligatoria en UEFI y en BIOS (la requiere Limine).</source>
         <translation>EFI (/boot/efi): 부팅 프로그램이 있는 FAT32 파티션입니다. UEFI와 BIOS 모두에서 필수입니다(Limine가 필요로 합니다).</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="368"/>
+        <location filename="../ui/disks.py" line="363"/>
         <source>Crea un contenedor cifrado en la partición raíz. Se pedirá la frase al arrancar el equipo.
 
 Todo el sistema (incluido /home) vivirá dentro del contenedor cifrado, sin usar las particiones Home/Swap separadas. El swap lo cubre zram de serie. Recomendación: frase larga (12+ caracteres).</source>
@@ -223,22 +223,22 @@ Todo el sistema (incluido /home) vivirá dentro del contenedor cifrado, sin usar
         <translation>Swap 없음</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="484"/>
+        <location filename="../ui/disks.py" line="482"/>
         <source>Introduce y confirma la frase de cifrado LUKS.</source>
         <translation>LUKS 암호화 암호문구를 입력하고 확인하세요.</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="486"/>
+        <location filename="../ui/disks.py" line="485"/>
         <source>Las frases de cifrado no coinciden.</source>
         <translation>암호문구가 일치하지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="491"/>
+        <location filename="../ui/disks.py" line="488"/>
         <source>La frase no puede empezar ni terminar con espacios y debe tener al menos 4 caracteres.</source>
         <translation>암호문구는 공백으로 시작하거나 끝날 수 없으며 4자 이상이어야 합니다.</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="521"/>
+        <location filename="../ui/disks.py" line="530"/>
         <source>El disco {disk} se formateara y perdera todos sus datos.
 Esta accion NO se puede deshacer.
 
@@ -249,22 +249,22 @@ Deseas continuar?</source>
 계속하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="539"/>
+        <location filename="../ui/disks.py" line="554"/>
         <source>Particionado completado</source>
         <translation>파티션 완료</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="542"/>
+        <location filename="../ui/disks.py" line="556"/>
         <source>El disco {disk} ha sido particionado correctamente.</source>
         <translation>{disk} 디스크가 올바르게 파티션되었습니다.</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="549"/>
+        <location filename="../ui/disks.py" line="564"/>
         <source>Error</source>
         <translation>오류</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="552"/>
+        <location filename="../ui/disks.py" line="566"/>
         <source>Fallo al particionar {disk}:
 {e}</source>
         <translation>{disk} 파티션 실패:
@@ -276,12 +276,12 @@ Deseas continuar?</source>
         <translation>CuerdOS 설치 위치</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="333"/>
+        <location filename="../ui/disks.py" line="331"/>
         <source>En esta pantalla eliges el disco y las particiones donde se instalará CuerdOS. Puedes usar el particionado automático o asignar manualmente cada punto de montaje.</source>
         <translation>CuerdOS를 설치할 디스크와 파티션을 선택합니다. 자동 파티션 또는 각 마운트 지점의 수동 할당을 사용할 수 있습니다.</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="361"/>
+        <location filename="../ui/disks.py" line="359"/>
         <source>BTRFS y EXT4 son las opciones recomendadas. BTRFS ofrece funciones avanzadas; EXT4 prioriza sencillez y compatibilidad.</source>
         <translation>BTRFS와 EXT4를 권장합니다. BTRFS는 고급 기능을 제공하고 EXT4는 단순성과 호환성을 중시합니다.</translation>
     </message>
@@ -369,49 +369,69 @@ Deseas continuar?</source>
         <translation>로그 숨기기</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="319"/>
+        <location filename="../ui/install_win.py" line="318"/>
         <source>Mostrar log</source>
         <translation>로그 표시</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="453"/>
+        <location filename="../ui/install_win.py" line="334"/>
+        <source>Se van a FORMATEAR las siguientes particiones y se perderán sus datos:</source>
+        <translation>다음 파티션이 포맷되며 데이터가 모두 삭제됩니다:</translation>
+    </message>
+    <message>
+        <location filename="../ui/install_win.py" line="337"/>
+        <source>La partición raíz se cifrará con LUKS2.</source>
+        <translation>루트 파티션이 LUKS2로 암호화됩니다.</translation>
+    </message>
+    <message>
+        <location filename="../ui/install_win.py" line="338"/>
+        <source>¿Continuar con la instalación?</source>
+        <translation>설치를 계속하시겠습니까?</translation>
+    </message>
+    <message>
+        <location filename="../ui/install_win.py" line="341"/>
+        <source>Confirmar instalación</source>
+        <translation>설치 확인</translation>
+    </message>
+    <message>
+        <location filename="../ui/install_win.py" line="480"/>
         <source>¿Salir del instalador?</source>
         <translation>설치 프로그램을 종료하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="454"/>
+        <location filename="../ui/install_win.py" line="481"/>
         <source>¿Estás seguro de que deseas salir? La instalación no ha finalizado.</source>
         <translation>정말 종료하시겠습니까? 설치가 아직 완료되지 않았습니다.</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="274"/>
+        <location filename="../ui/install_win.py" line="273"/>
         <source>Instalador Kron</source>
         <translation>Kron 설치 관리자</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="276"/>
+        <location filename="../ui/install_win.py" line="275"/>
         <source>(Modo demo)</source>
         <translation>(데모 모드)</translation>
     </message>
     <message>
         <location filename="../ui/install_win.py" line="278"/>
-        <location filename="../ui/install_win.py" line="410"/>
+        <location filename="../ui/install_win.py" line="437"/>
         <source>Siguiente</source>
         <translation>다음</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="336"/>
+        <location filename="../ui/install_win.py" line="360"/>
         <source>Pulsa otra vez para instalar</source>
         <translation>다시 누르면 설치가 시작됩니다</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="390"/>
+        <location filename="../ui/install_win.py" line="417"/>
         <source>Instalar</source>
         <translation>설치</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="395"/>
-        <location filename="../ui/install_win.py" line="401"/>
+        <location filename="../ui/install_win.py" line="422"/>
+        <location filename="../ui/install_win.py" line="428"/>
         <source>Reiniciar</source>
         <translation>재부팅</translation>
     </message>
@@ -454,7 +474,7 @@ Deseas continuar?</source>
         <translation>구성을 쓰는 중 오류 발생: {e}</translation>
     </message>
     <message>
-        <location filename="../install/install_thread.py" line="245"/>
+        <location filename="../install/install_thread.py" line="244"/>
         <source>El instalador ha fallado. Mire en /tmp/installation.log.</source>
         <translation>설치 관리자가 실패했습니다. /tmp/installation.log를 확인하세요.</translation>
     </message>
@@ -528,7 +548,7 @@ Deseas continuar?</source>
         <translation>로그를 성공적으로 내보냈습니다.</translation>
     </message>
     <message>
-        <location filename="../ui/installation_error.py" line="114"/>
+        <location filename="../ui/installation_error.py" line="113"/>
         <source>Error desconocido</source>
         <translation>알 수 없는 오류</translation>
     </message>
@@ -548,7 +568,7 @@ Deseas continuar?</source>
 <context>
     <name>InstallationPage</name>
     <message>
-        <location filename="../ui/installation.py" line="438"/>
+        <location filename="../ui/installation.py" line="435"/>
         <source>Realizando tareas del sistema...</source>
         <translation>시스템 작업 수행 중...</translation>
     </message>
@@ -593,7 +613,7 @@ Deseas continuar?</source>
         <translation>CuerdOS에 오신 것을 환영합니다</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="139"/>
+        <location filename="../ui/installation.py" line="136"/>
         <source>Estás a punto de descubrir un sistema rápido, ligero y pensado para que todo simplemente funcione. Gracias por darle una oportunidad.</source>
         <translation>빠르고 가벼우며, 그냥 잘 작동하도록 만들어진 시스템을 만나보세요. 사용해 주셔서 감사합니다.</translation>
     </message>
@@ -603,7 +623,7 @@ Deseas continuar?</source>
         <translation>앱 설치, 아주 간단해요</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="147"/>
+        <location filename="../ui/installation.py" line="144"/>
         <source>Encontrar y añadir nuevas aplicaciones es tan sencillo como un par de clics, sin complicaciones ni pasos técnicos de por medio.</source>
         <translation>새 앱을 찾아서 추가하는 건 클릭 몇 번이면 충분해요. 복잡한 기술적 절차는 필요 없습니다.</translation>
     </message>
@@ -613,7 +633,7 @@ Deseas continuar?</source>
         <translation>켜는 순간부터 빠릅니다</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="154"/>
+        <location filename="../ui/installation.py" line="152"/>
         <source>Tu equipo arrancará en segundos. Por debajo, CuerdOS está optimizado para que tú solo te preocupes de usarlo.</source>
         <translation>컴퓨터가 몇 초 안에 부팅됩니다. 뒤에서는 CuerdOS가 최적화되어 있어, 사용자는 그저 사용하기만 하면 됩니다.</translation>
     </message>
@@ -623,7 +643,7 @@ Deseas continuar?</source>
         <translation>내 마음대로 꾸미는 데스크탑</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="161"/>
+        <location filename="../ui/installation.py" line="159"/>
         <source>Elige el aspecto que más te guste: simple y minimalista, o lleno de detalles. Tú decides cómo se ve tu equipo.</source>
         <translation>심플하고 미니멀한 스타일이든, 디테일이 가득한 스타일이든 원하는 대로 선택하세요. 컴퓨터의 모습은 당신이 결정합니다.</translation>
     </message>
@@ -633,7 +653,7 @@ Deseas continuar?</source>
         <translation>노력 없이 항상 최신 상태로</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="168"/>
+        <location filename="../ui/installation.py" line="166"/>
         <source>Mantener tu sistema actualizado es muy sencillo: con un clic tendrás las últimas mejoras y parches de seguridad.</source>
         <translation>시스템을 최신 상태로 유지하는 건 아주 간단합니다. 클릭 한 번이면 최신 개선 사항과 보안 패치를 받을 수 있어요.</translation>
     </message>
@@ -643,7 +663,7 @@ Deseas continuar?</source>
         <translation>안전하고 오류에 강한 시스템</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="176"/>
+        <location filename="../ui/installation.py" line="173"/>
         <source>CuerdOS protege tu equipo desde el primer momento y está pensado para que, si algo falla, todo siga funcionando: la estabilidad es siempre la prioridad.</source>
         <translation>CuerdOS는 처음부터 컴퓨터를 보호하며, 문제가 생겨도 계속 작동할 수 있도록 설계되었습니다. 안정성이 언제나 최우선입니다.</translation>
     </message>
@@ -653,7 +673,7 @@ Deseas continuar?</source>
         <translation>언제나 함께하는 커뮤니티</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="183"/>
+        <location filename="../ui/installation.py" line="181"/>
         <source>Si tienes dudas o quieres compartir tu experiencia, nuestra comunidad está lista para ayudarte en todo momento.</source>
         <translation>궁금한 점이 있거나 경험을 나누고 싶다면, 우리 커뮤니티가 언제든 도와드릴 준비가 되어 있습니다.</translation>
     </message>
@@ -757,69 +777,79 @@ Puede reiniciar su equipo.</source>
 <context>
     <name>InstallerConfigCollector</name>
     <message>
-        <location filename="../install/config_collector.py" line="33"/>
+        <location filename="../install/config_collector.py" line="35"/>
         <source>Error en contraseñas</source>
         <translation>비밀번호 오류</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="34"/>
+        <location filename="../install/config_collector.py" line="36"/>
         <source>Las contraseñas no coinciden o están vacías. Por favor, verifica los campos de contraseña.</source>
         <translation>비밀번호가 일치하지 않거나 비어 있습니다. 비밀번호 필드를 확인하세요.</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="49"/>
+        <location filename="../install/config_collector.py" line="51"/>
         <source>Nombre del equipo (hostname)</source>
         <translation>컴퓨터 이름 (hostname)</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="50"/>
+        <location filename="../install/config_collector.py" line="52"/>
         <source>Usuario (login)</source>
         <translation>사용자 (로그인)</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="51"/>
+        <location filename="../install/config_collector.py" line="53"/>
         <source>Nombre completo</source>
         <translation>전체 이름</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="52"/>
-        <location filename="../install/config_collector.py" line="97"/>
+        <location filename="../install/config_collector.py" line="54"/>
+        <location filename="../install/config_collector.py" line="109"/>
         <source>Contraseña del usuario</source>
         <translation>사용자 비밀번호</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="53"/>
-        <location filename="../install/config_collector.py" line="98"/>
+        <location filename="../install/config_collector.py" line="55"/>
+        <location filename="../install/config_collector.py" line="110"/>
         <source>Contraseña de root</source>
         <translation>root 비밀번호</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="77"/>
+        <location filename="../install/config_collector.py" line="79"/>
         <source>Hostname inválido</source>
         <translation>잘못된 호스트 이름</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="88"/>
+        <location filename="../install/config_collector.py" line="90"/>
         <source>Usuario inválido</source>
         <translation>잘못된 사용자 이름</translation>
     </message>
     <message>
         <location filename="../install/config_collector.py" line="103"/>
+        <source>Nombre inválido</source>
+        <translation>잘못된 이름</translation>
+    </message>
+    <message>
+        <location filename="../install/config_collector.py" line="104"/>
+        <source>El nombre completo no puede contener el carácter &apos;:&apos;.</source>
+        <translation>전체 이름에는 &apos;:&apos; 문자를 사용할 수 없습니다.</translation>
+    </message>
+    <message>
+        <location filename="../install/config_collector.py" line="115"/>
         <source>Contraseña inválida</source>
         <translation>잘못된 비밀번호</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="111"/>
+        <location filename="../install/config_collector.py" line="123"/>
         <source>Contraseña demasiado corta</source>
         <translation>비밀번호가 너무 짧습니다</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="138"/>
+        <location filename="../install/config_collector.py" line="150"/>
         <source>Error en el cifrado</source>
         <translation>암호화 오류</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="156"/>
+        <location filename="../install/config_collector.py" line="168"/>
         <source>Debe seleccionar una partición Raíz (/).</source>
         <translation>루트 (/) 파티션을 선택해야 합니다.</translation>
     </message>
@@ -828,12 +858,12 @@ Puede reiniciar su equipo.</source>
         <translation type="vanished">EFI (/boot/efi) 파티션을 선택해야 합니다.</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="59"/>
+        <location filename="../install/config_collector.py" line="61"/>
         <source>Faltan datos</source>
         <translation>데이터 누락</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="61"/>
+        <location filename="../install/config_collector.py" line="62"/>
         <source>Debes completar los siguientes campos:
 
 - </source>
@@ -856,28 +886,46 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
 공백을 포함할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="104"/>
+        <location filename="../install/config_collector.py" line="116"/>
         <source>{label} no puede empezar ni terminar con espacios.</source>
         <translation>{label}은(는) 공백으로 시작하거나 끝날 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="112"/>
+        <location filename="../install/config_collector.py" line="124"/>
         <source>{label} debe tener al menos 4 caracteres.</source>
         <translation>{label}은(는) 최소 4자 이상이어야 합니다.</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="157"/>
+        <location filename="../install/config_collector.py" line="169"/>
         <source>Debe seleccionar una partición EFI (/boot/efi), ya sea un equipo UEFI o BIOS.</source>
         <translation>EFI (/boot/efi) 파티션을 선택해야 합니다. UEFI 시스템과 BIOS 시스템 모두 해당됩니다.</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="162"/>
-        <location filename="../install/config_collector.py" line="191"/>
+        <location filename="../install/config_collector.py" line="174"/>
+        <location filename="../install/config_collector.py" line="210"/>
+        <location filename="../install/config_collector.py" line="221"/>
+        <location filename="../install/config_collector.py" line="230"/>
+        <location filename="../install/config_collector.py" line="244"/>
         <source>Error</source>
         <translation>오류</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="191"/>
+        <location filename="../install/config_collector.py" line="211"/>
+        <source>La partición /home tiene un sistema de archivos no soportado: {fs}.</source>
+        <translation>/home 파티션의 파일 시스템은 지원되지 않습니다: {fs}.</translation>
+    </message>
+    <message>
+        <location filename="../install/config_collector.py" line="222"/>
+        <source>La misma partición está seleccionada para más de un uso.</source>
+        <translation>같은 파티션이 둘 이상의 용도로 선택되었습니다.</translation>
+    </message>
+    <message>
+        <location filename="../install/config_collector.py" line="231"/>
+        <source>La partición {dev} está montada en {mp}. Desmóntala antes de continuar.</source>
+        <translation>{dev} 파티션이 {mp}에 마운트되어 있습니다. 계속하기 전에 마운트를 해제하세요.</translation>
+    </message>
+    <message>
+        <location filename="../install/config_collector.py" line="244"/>
         <source>Error procesando datos: </source>
         <translation>데이터 처리 오류: </translation>
     </message>
@@ -957,7 +1005,7 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <translation>북미, 미국</translation>
     </message>
     <message>
-        <location filename="../ui/mirrors.py" line="100"/>
+        <location filename="../ui/mirrors.py" line="98"/>
         <source>Instala los drivers propietarios de NVIDIA, optimizando el rendimiento gráfico y la compatibilidad con juegos y aplicaciones 3D.</source>
         <translation>NVIDIA 독점 드라이버를 설치하여 그래픽 성능과 게임 및 3D 애플리케이션과의 호환성을 최적화합니다.</translation>
     </message>
@@ -967,7 +1015,7 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <translation>Intel 마이크로코드 설치</translation>
     </message>
     <message>
-        <location filename="../ui/mirrors.py" line="105"/>
+        <location filename="../ui/mirrors.py" line="103"/>
         <source>Instala microcódigos recientes de Intel para mejorar seguridad, estabilidad y compatibilidad con CPUs Intel modernas.</source>
         <translation>최신 Intel 마이크로코드를 설치하여 보안, 안정성 및 최신 Intel CPU와의 호환성을 향상시킵니다.</translation>
     </message>
@@ -986,7 +1034,7 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <translation>소프트웨어 채널</translation>
     </message>
     <message>
-        <location filename="../ui/mirrors.py" line="82"/>
+        <location filename="../ui/mirrors.py" line="80"/>
         <source>Aquí eliges el servidor desde el que se descargarán los paquetes y qué componentes adicionales se instalarán. Los repositorios no libres permiten acceder a software y firmware con licencias distintas a la base libre del sistema.</source>
         <translation>패키지를 다운로드할 서버와 추가로 설치할 구성 요소를 선택합니다. 비자유 저장소에서는 시스템의 자유 기반과 다른 라이선스의 소프트웨어와 펌웨어를 사용할 수 있습니다.</translation>
     </message>
@@ -1041,22 +1089,22 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <translation>비밀번호 확인</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="241"/>
+        <location filename="../ui/users.py" line="240"/>
         <source>Las contraseñas de usuario no coinciden</source>
         <translation>사용자 비밀번호가 일치하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="244"/>
+        <location filename="../ui/users.py" line="243"/>
         <source>Las contraseñas de root no coinciden</source>
         <translation>root 비밀번호가 일치하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="248"/>
+        <location filename="../ui/users.py" line="247"/>
         <source>Usar la misma contraseña para el usuario root</source>
         <translation>root 사용자에도 동일한 비밀번호 사용</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="303"/>
+        <location filename="../ui/users.py" line="302"/>
         <source>Debe repetir la contraseña</source>
         <translation>비밀번호를 다시 입력해야 합니다</translation>
     </message>
@@ -1066,13 +1114,13 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <translation>{ctx_user} 비밀번호가 일치하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="365"/>
-        <location filename="../ui/users.py" line="377"/>
+        <location filename="../ui/users.py" line="364"/>
+        <location filename="../ui/users.py" line="376"/>
         <source>La contraseña de usuario es obligatoria</source>
         <translation>사용자 비밀번호는 필수입니다</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="384"/>
+        <location filename="../ui/users.py" line="383"/>
         <source>La contraseña de root es obligatoria</source>
         <translation>root 비밀번호는 필수입니다</translation>
     </message>
@@ -1088,7 +1136,7 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <translation>자동 로그인</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="227"/>
+        <location filename="../ui/users.py" line="226"/>
         <source>Disponible con SDDM, LightDM o GDM. Con greetd no es posible configurarlo desde este instalador.</source>
         <translation>SDDM, LightDM 또는 GDM에서 사용할 수 있습니다. greetd에서는 이 설치 프로그램으로 설정할 수 없습니다.</translation>
     </message>
@@ -1098,7 +1146,7 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <translation>{manager}을(를) 통한 자동 로그인을 사용할 수 있습니다.</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="347"/>
+        <location filename="../ui/users.py" line="346"/>
         <source>Con greetd no es posible configurar autologin con este instalador.</source>
         <translation>greetd에서는 이 설치 프로그램으로 자동 로그인을 설정할 수 없습니다.</translation>
     </message>
@@ -1121,14 +1169,14 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <translation>“마지막 픽셀까지 최적화됨”</translation>
     </message>
     <message>
-        <location filename="../ui/welcome.py" line="127"/>
+        <location filename="../ui/welcome.py" line="124"/>
         <source>Se ha detectado conexion a internet.
 Instalador en modo online.</source>
         <translation>인터넷 연결이 감지되었습니다.
 설치 관리자가 온라인 모드입니다.</translation>
     </message>
     <message>
-        <location filename="../ui/welcome.py" line="134"/>
+        <location filename="../ui/welcome.py" line="131"/>
         <source>No se ha detectado conexion a internet.
 Instalador en modo offline.</source>
         <translation>인터넷 연결이 감지되지 않았습니다.

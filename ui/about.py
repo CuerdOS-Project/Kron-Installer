@@ -9,6 +9,7 @@ from PySide6.QtWidgets import (
 _BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 APP_NAME     = "Kron Installer"
+APP_VERSION  = "1.2.1"
 APP_SUBTITLE = "\u00a9 2026 CuerdOS Project"
 APP_WEBSITE  = "https://cuerdos.github.io"
 ICON_PATH    = os.path.join(_BASE_DIR, "images", "kron.svg")
@@ -63,7 +64,7 @@ class AboutDialog(QDialog):
 
         APP_DESC = self.tr("Instalador gráfico para CuerdOS GNU/Linux.")
         INFO_ROWS = [
-            (self.tr("Versión"),  "1.0.0"),
+            (self.tr("Versión"),  APP_VERSION),
             (self.tr("Licencia"), "GNU GPL v3.0"),
             (self.tr("Autores"),  "CuerdOS Dev. Team"),
         ]

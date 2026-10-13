@@ -29,7 +29,7 @@ It allows you to configure partitions, user, system language, keyboard layout, a
   - **Non-blocking installation**: Uses a threaded backend (`InstallWorker`) to keep the UI responsive.
   - **Honest Progress Bar**: Phase-weighted progress (Calamares-style). The copy phase reports **real byte progress** via `tar` checkpoints; package updates use an indeterminate (pulsing) bar plus a "Phase X of Y" counter. The bar is monotonic and never goes backwards.
   - Real-time log terminal (toggleable).
-  - **Optional disk encryption (LUKS2 + argon2id)**: single encrypted root container — `/home` and swap live inside it (a swapfile), so only one passphrase is asked at boot. Boot files stay on the unencrypted ESP (Limine reads FAT32 only). The initramfs is regenerated with dracut's `crypt` module during installation. Requires `cryptsetup` in the live ISO.
+  - **Optional disk encryption (LUKS2 + argon2id)**: single encrypted root container — `/home`, so only one passphrase is asked at boot. Boot files stay on the unencrypted ESP (Limine reads FAT32 only). The initramfs is regenerated with dracut's `crypt` module during installation. Requires `cryptsetup` in the live ISO.
   - Automates copying the base system, generating `fstab`, creating users, setting locales, regenerating initramfs, and installing the bootloader (Limine).
 - **Internationalization (i18n)**: Full support for translations using Qt Linguist.
 

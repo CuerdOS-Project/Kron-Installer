@@ -4,7 +4,7 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../ui/about.py" line="58"/>
+        <location filename="../ui/about.py" line="59"/>
         <source>Acerca de {app_name}</source>
         <translation>{app_name} Hakkında</translation>
     </message>
@@ -14,27 +14,27 @@
         <translation>CuerdOS GNU/Linux için grafik yükleyici.</translation>
     </message>
     <message>
-        <location filename="../ui/about.py" line="66"/>
+        <location filename="../ui/about.py" line="67"/>
         <source>Versión</source>
         <translation>Sürüm</translation>
     </message>
     <message>
-        <location filename="../ui/about.py" line="67"/>
+        <location filename="../ui/about.py" line="68"/>
         <source>Licencia</source>
         <translation>Lisans</translation>
     </message>
     <message>
-        <location filename="../ui/about.py" line="68"/>
+        <location filename="../ui/about.py" line="69"/>
         <source>Autores</source>
         <translation>Yazarlar</translation>
     </message>
     <message>
-        <location filename="../ui/about.py" line="164"/>
+        <location filename="../ui/about.py" line="165"/>
         <source>Visitar página web</source>
         <translation>Web sitesini ziyaret et</translation>
     </message>
     <message>
-        <location filename="../ui/about.py" line="171"/>
+        <location filename="../ui/about.py" line="172"/>
         <source>Cerrar</source>
         <translation>Kapat</translation>
     </message>
@@ -52,7 +52,7 @@
         <translation>CuerdOS&apos;a Hoş Geldiniz!</translation>
     </message>
     <message>
-        <location filename="../ui/completion.py" line="122"/>
+        <location filename="../ui/completion.py" line="119"/>
         <source>Tu sistema ha sido instalado correctamente.
 Haz clic en &apos;Reiniciar&apos; para completar el proceso.</source>
         <translation>Sisteminiz başarıyla kuruldu.
@@ -111,7 +111,7 @@ Haz clic en &apos;Reiniciar&apos; para completar el proceso.</source>
         <translation>Kök (/):</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="516"/>
+        <location filename="../ui/disks.py" line="528"/>
         <source>Advertencia: Particionado automático</source>
         <translation>Uyarı: Otomatik bölümleme</translation>
     </message>
@@ -142,7 +142,7 @@ Haz clic en &apos;Reiniciar&apos; para completar el proceso.</source>
         <translation>Bağl. noktası</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="376"/>
+        <location filename="../ui/disks.py" line="375"/>
         <source>Sistema</source>
         <translation>Sistem</translation>
     </message>
@@ -152,7 +152,7 @@ Haz clic en &apos;Reiniciar&apos; para completar el proceso.</source>
         <translation>Bölüm</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="287"/>
+        <location filename="../ui/disks.py" line="285"/>
         <source>No disponible con el cifrado LUKS: esta asignación vive dentro del contenedor raíz.</source>
         <translation>LUKS şifrelemesiyle kullanılamaz: bu atama kök kapsayıcının içinde yer alır.</translation>
     </message>
@@ -178,12 +178,12 @@ Haz clic en &apos;Reiniciar&apos; para completar el proceso.</source>
         <translation>Home (/home): kişisel dosyalarınızı ve ayarlarınızı saklar.</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="355"/>
+        <location filename="../ui/disks.py" line="353"/>
         <source>EFI (/boot/efi): partición FAT32 donde vive el arranque; obligatoria en UEFI y en BIOS (la requiere Limine).</source>
-        <translation>EFI (/boot/efi): önyüklemenin bulunduğu FAT32 bölümü; UEFI ve BIOS'ta zorunludur (Limine bunu gerektirir).</translation>
+        <translation>EFI (/boot/efi): önyüklemenin bulunduğu FAT32 bölümü; UEFI ve BIOS&apos;ta zorunludur (Limine bunu gerektirir).</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="368"/>
+        <location filename="../ui/disks.py" line="363"/>
         <source>Crea un contenedor cifrado en la partición raíz. Se pedirá la frase al arrancar el equipo.
 
 Todo el sistema (incluido /home) vivirá dentro del contenedor cifrado, sin usar las particiones Home/Swap separadas. El swap lo cubre zram de serie. Recomendación: frase larga (12+ caracteres).</source>
@@ -223,22 +223,22 @@ Tüm sistem (/home dahil) şifreli kapsayıcının içinde yer alacak; ayrı Hom
         <translation>Swap yok</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="484"/>
+        <location filename="../ui/disks.py" line="482"/>
         <source>Introduce y confirma la frase de cifrado LUKS.</source>
         <translation>LUKS şifreleme parolasını girin ve onaylayın.</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="486"/>
+        <location filename="../ui/disks.py" line="485"/>
         <source>Las frases de cifrado no coinciden.</source>
         <translation>Parolalar eşleşmiyor.</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="491"/>
+        <location filename="../ui/disks.py" line="488"/>
         <source>La frase no puede empezar ni terminar con espacios y debe tener al menos 4 caracteres.</source>
         <translation>Parola boşlukla başlayamaz veya bitemez ve en az 4 karakter olmalıdır.</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="521"/>
+        <location filename="../ui/disks.py" line="530"/>
         <source>El disco {disk} se formateara y perdera todos sus datos.
 Esta accion NO se puede deshacer.
 
@@ -249,22 +249,22 @@ Bu işlem GERİ ALINAMAZ.
 Devam etmek istiyor musunuz?</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="539"/>
+        <location filename="../ui/disks.py" line="554"/>
         <source>Particionado completado</source>
         <translation>Bölümleme tamamlandı</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="542"/>
+        <location filename="../ui/disks.py" line="556"/>
         <source>El disco {disk} ha sido particionado correctamente.</source>
         <translation>{disk} diski doğru şekilde bölümlendi.</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="549"/>
+        <location filename="../ui/disks.py" line="564"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="552"/>
+        <location filename="../ui/disks.py" line="566"/>
         <source>Fallo al particionar {disk}:
 {e}</source>
         <translation>{disk} bölümlenemedi:
@@ -276,12 +276,12 @@ Devam etmek istiyor musunuz?</translation>
         <translation>CuerdOS nereye kurulmalı</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="333"/>
+        <location filename="../ui/disks.py" line="331"/>
         <source>En esta pantalla eliges el disco y las particiones donde se instalará CuerdOS. Puedes usar el particionado automático o asignar manualmente cada punto de montaje.</source>
         <translation>CuerdOS&apos;un kurulacağı diski ve bölümleri seçin. Otomatik bölümlemeyi kullanabilir veya bağlama noktalarını elle atayabilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../ui/disks.py" line="361"/>
+        <location filename="../ui/disks.py" line="359"/>
         <source>BTRFS y EXT4 son las opciones recomendadas. BTRFS ofrece funciones avanzadas; EXT4 prioriza sencillez y compatibilidad.</source>
         <translation>BTRFS ve EXT4 önerilir. BTRFS gelişmiş özellikler sunar; EXT4 basitlik ve uyumluluğa öncelik verir.</translation>
     </message>
@@ -369,49 +369,69 @@ Devam etmek istiyor musunuz?</translation>
         <translation>Günlüğü gizle</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="319"/>
+        <location filename="../ui/install_win.py" line="318"/>
         <source>Mostrar log</source>
         <translation>Günlüğü göster</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="453"/>
+        <location filename="../ui/install_win.py" line="334"/>
+        <source>Se van a FORMATEAR las siguientes particiones y se perderán sus datos:</source>
+        <translation>Aşağıdaki bölümler BİÇİMLENDİRİLECEK ve verileri kaybolacak:</translation>
+    </message>
+    <message>
+        <location filename="../ui/install_win.py" line="337"/>
+        <source>La partición raíz se cifrará con LUKS2.</source>
+        <translation>Kök bölüm LUKS2 ile şifrelenecek.</translation>
+    </message>
+    <message>
+        <location filename="../ui/install_win.py" line="338"/>
+        <source>¿Continuar con la instalación?</source>
+        <translation>Kuruluma devam edilsin mi?</translation>
+    </message>
+    <message>
+        <location filename="../ui/install_win.py" line="341"/>
+        <source>Confirmar instalación</source>
+        <translation>Kurulumu onayla</translation>
+    </message>
+    <message>
+        <location filename="../ui/install_win.py" line="480"/>
         <source>¿Salir del instalador?</source>
         <translation>Yükleyiciden çıkılsın mı?</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="454"/>
+        <location filename="../ui/install_win.py" line="481"/>
         <source>¿Estás seguro de que deseas salir? La instalación no ha finalizado.</source>
         <translation>Çıkmak istediğinizden eminmisiniz? Kurulum tamamlanmadı.</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="274"/>
+        <location filename="../ui/install_win.py" line="273"/>
         <source>Instalador Kron</source>
         <translation>Kron Kurulumu</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="276"/>
+        <location filename="../ui/install_win.py" line="275"/>
         <source>(Modo demo)</source>
         <translation>(Demo modu)</translation>
     </message>
     <message>
         <location filename="../ui/install_win.py" line="278"/>
-        <location filename="../ui/install_win.py" line="410"/>
+        <location filename="../ui/install_win.py" line="437"/>
         <source>Siguiente</source>
         <translation>İleri</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="336"/>
+        <location filename="../ui/install_win.py" line="360"/>
         <source>Pulsa otra vez para instalar</source>
         <translation>Kurmak için tekrar basın</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="390"/>
+        <location filename="../ui/install_win.py" line="417"/>
         <source>Instalar</source>
         <translation>Kur</translation>
     </message>
     <message>
-        <location filename="../ui/install_win.py" line="395"/>
-        <location filename="../ui/install_win.py" line="401"/>
+        <location filename="../ui/install_win.py" line="422"/>
+        <location filename="../ui/install_win.py" line="428"/>
         <source>Reiniciar</source>
         <translation>Yeniden başlat</translation>
     </message>
@@ -454,7 +474,7 @@ Devam etmek istiyor musunuz?</translation>
         <translation>Yapılandırma yazılırken hata oluştu: {e}</translation>
     </message>
     <message>
-        <location filename="../install/install_thread.py" line="245"/>
+        <location filename="../install/install_thread.py" line="244"/>
         <source>El instalador ha fallado. Mire en /tmp/installation.log.</source>
         <translation>Kurulum başarısız oldu. /tmp/installation.log dosyasına bakın.</translation>
     </message>
@@ -528,7 +548,7 @@ Devam etmek istiyor musunuz?</translation>
         <translation>Günlük başarıyla dışa aktarıldı.</translation>
     </message>
     <message>
-        <location filename="../ui/installation_error.py" line="114"/>
+        <location filename="../ui/installation_error.py" line="113"/>
         <source>Error desconocido</source>
         <translation>Bilinmeyen hata</translation>
     </message>
@@ -548,7 +568,7 @@ Devam etmek istiyor musunuz?</translation>
 <context>
     <name>InstallationPage</name>
     <message>
-        <location filename="../ui/installation.py" line="438"/>
+        <location filename="../ui/installation.py" line="435"/>
         <source>Realizando tareas del sistema...</source>
         <translation>Sistem görevleri gerçekleştiriliyor...</translation>
     </message>
@@ -593,7 +613,7 @@ Devam etmek istiyor musunuz?</translation>
         <translation>CuerdOS&apos;a hoş geldiniz</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="139"/>
+        <location filename="../ui/installation.py" line="136"/>
         <source>Estás a punto de descubrir un sistema rápido, ligero y pensado para que todo simplemente funcione. Gracias por darle una oportunidad.</source>
         <translation>Her şeyin sorunsuzca çalışması için tasarlanmış hızlı ve hafif bir sistemi keşfetmek üzeresiniz. Ona bir şans verdiğiniz için teşekkürler.</translation>
     </message>
@@ -603,7 +623,7 @@ Devam etmek istiyor musunuz?</translation>
         <translation>Program kurmak çok kolay</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="147"/>
+        <location filename="../ui/installation.py" line="144"/>
         <source>Encontrar y añadir nuevas aplicaciones es tan sencillo como un par de clics, sin complicaciones ni pasos técnicos de por medio.</source>
         <translation>Yeni uygulamalar bulmak ve eklemek, teknik adımlar gerektirmeden sadece birkaç tıklama kadar basittir.</translation>
     </message>
@@ -613,7 +633,7 @@ Devam etmek istiyor musunuz?</translation>
         <translation>Açtığınız andan itibaren hızlı</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="154"/>
+        <location filename="../ui/installation.py" line="152"/>
         <source>Tu equipo arrancará en segundos. Por debajo, CuerdOS está optimizado para que tú solo te preocupes de usarlo.</source>
         <translation>Bilgisayarınız saniyeler içinde açılır. Perde arkasında CuerdOS, sizin sadece kullanmanız için optimize edilmiştir.</translation>
     </message>
@@ -623,7 +643,7 @@ Devam etmek istiyor musunuz?</translation>
         <translation>Masaüstünüz, sizin tarzınızda</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="161"/>
+        <location filename="../ui/installation.py" line="159"/>
         <source>Elige el aspecto que más te guste: simple y minimalista, o lleno de detalles. Tú decides cómo se ve tu equipo.</source>
         <translation>En sevdiğiniz görünümü seçin: sade ve minimal veya ayrıntılarla dolu. Bilgisayarınızın nasıl göründüğüne siz karar verirsiniz.</translation>
     </message>
@@ -633,7 +653,7 @@ Devam etmek istiyor musunuz?</translation>
         <translation>Hiç zahmetsiz, her zaman güncel</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="168"/>
+        <location filename="../ui/installation.py" line="166"/>
         <source>Mantener tu sistema actualizado es muy sencillo: con un clic tendrás las últimas mejoras y parches de seguridad.</source>
         <translation>Sisteminizi güncel tutmak çok basit: tek bir tıklamayla en son iyileştirmeleri ve güvenlik yamalarını alırsınız.</translation>
     </message>
@@ -643,7 +663,7 @@ Devam etmek istiyor musunuz?</translation>
         <translation>Güvenli ve hatalara hazırlıklı</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="176"/>
+        <location filename="../ui/installation.py" line="173"/>
         <source>CuerdOS protege tu equipo desde el primer momento y está pensado para que, si algo falla, todo siga funcionando: la estabilidad es siempre la prioridad.</source>
         <translation>CuerdOS bilgisayarını ilk andan itibaren korur ve bir şeyler ters giderse her şeyin çalışmaya devam etmesi için tasarlanmıştır: kararlılık her zaman önceliktir.</translation>
     </message>
@@ -653,7 +673,7 @@ Devam etmek istiyor musunuz?</translation>
         <translation>Size eşlik eden bir topluluk</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="183"/>
+        <location filename="../ui/installation.py" line="181"/>
         <source>Si tienes dudas o quieres compartir tu experiencia, nuestra comunidad está lista para ayudarte en todo momento.</source>
         <translation>Sorularınız varsa veya deneyiminizi paylaşmak istiyorsanız, topluluğumuz size her zaman yardımcı olmaya hazır.</translation>
     </message>
@@ -757,69 +777,79 @@ Bilgisayarınızı yeniden başlatabilirsiniz.</translation>
 <context>
     <name>InstallerConfigCollector</name>
     <message>
-        <location filename="../install/config_collector.py" line="33"/>
+        <location filename="../install/config_collector.py" line="35"/>
         <source>Error en contraseñas</source>
         <translation>Şifre hatası</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="34"/>
+        <location filename="../install/config_collector.py" line="36"/>
         <source>Las contraseñas no coinciden o están vacías. Por favor, verifica los campos de contraseña.</source>
         <translation>Şifreler eşleşmiyor veya boş. Lütfen şifre alanlarını kontrol edin.</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="49"/>
+        <location filename="../install/config_collector.py" line="51"/>
         <source>Nombre del equipo (hostname)</source>
         <translation>Bilgisayar adı (hostname)</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="50"/>
+        <location filename="../install/config_collector.py" line="52"/>
         <source>Usuario (login)</source>
         <translation>Kullanıcı (giriş)</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="51"/>
+        <location filename="../install/config_collector.py" line="53"/>
         <source>Nombre completo</source>
         <translation>Tam ad</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="52"/>
-        <location filename="../install/config_collector.py" line="97"/>
+        <location filename="../install/config_collector.py" line="54"/>
+        <location filename="../install/config_collector.py" line="109"/>
         <source>Contraseña del usuario</source>
         <translation>Kullanıcı şifresi</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="53"/>
-        <location filename="../install/config_collector.py" line="98"/>
+        <location filename="../install/config_collector.py" line="55"/>
+        <location filename="../install/config_collector.py" line="110"/>
         <source>Contraseña de root</source>
         <translation>Root şifresi</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="77"/>
+        <location filename="../install/config_collector.py" line="79"/>
         <source>Hostname inválido</source>
         <translation>Geçersiz makine adı</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="88"/>
+        <location filename="../install/config_collector.py" line="90"/>
         <source>Usuario inválido</source>
         <translation>Geçersiz kullanıcı adı</translation>
     </message>
     <message>
         <location filename="../install/config_collector.py" line="103"/>
+        <source>Nombre inválido</source>
+        <translation>Geçersiz ad</translation>
+    </message>
+    <message>
+        <location filename="../install/config_collector.py" line="104"/>
+        <source>El nombre completo no puede contener el carácter &apos;:&apos;.</source>
+        <translation>Tam ad &apos;:&apos; karakterini içeremez.</translation>
+    </message>
+    <message>
+        <location filename="../install/config_collector.py" line="115"/>
         <source>Contraseña inválida</source>
         <translation>Geçersiz şifre</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="111"/>
+        <location filename="../install/config_collector.py" line="123"/>
         <source>Contraseña demasiado corta</source>
         <translation>Şifre çok kısa</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="138"/>
+        <location filename="../install/config_collector.py" line="150"/>
         <source>Error en el cifrado</source>
         <translation>Şifreleme hatası</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="156"/>
+        <location filename="../install/config_collector.py" line="168"/>
         <source>Debe seleccionar una partición Raíz (/).</source>
         <translation>Bir Kök (/) bölümü seçmelisiniz.</translation>
     </message>
@@ -828,12 +858,12 @@ Bilgisayarınızı yeniden başlatabilirsiniz.</translation>
         <translation type="vanished">Bir EFI (/boot/efi) bölümü seçmelisiniz.</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="59"/>
+        <location filename="../install/config_collector.py" line="61"/>
         <source>Faltan datos</source>
         <translation>Eksik veri</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="61"/>
+        <location filename="../install/config_collector.py" line="62"/>
         <source>Debes completar los siguientes campos:
 
 - </source>
@@ -856,28 +886,46 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
 sayılar, tireler ve alt çizgiler içerebilir; boşluk içeremez.</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="104"/>
+        <location filename="../install/config_collector.py" line="116"/>
         <source>{label} no puede empezar ni terminar con espacios.</source>
         <translation>{label} boşlukla başlayamaz veya bitemez.</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="112"/>
+        <location filename="../install/config_collector.py" line="124"/>
         <source>{label} debe tener al menos 4 caracteres.</source>
         <translation>{label} en az 4 karakter olmalıdır.</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="157"/>
+        <location filename="../install/config_collector.py" line="169"/>
         <source>Debe seleccionar una partición EFI (/boot/efi), ya sea un equipo UEFI o BIOS.</source>
         <translation>Sistemin UEFI veya BIOS olmasına bakılmaksızın bir EFI (/boot/efi) bölümü seçmelisiniz.</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="162"/>
-        <location filename="../install/config_collector.py" line="191"/>
+        <location filename="../install/config_collector.py" line="174"/>
+        <location filename="../install/config_collector.py" line="210"/>
+        <location filename="../install/config_collector.py" line="221"/>
+        <location filename="../install/config_collector.py" line="230"/>
+        <location filename="../install/config_collector.py" line="244"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
     <message>
-        <location filename="../install/config_collector.py" line="191"/>
+        <location filename="../install/config_collector.py" line="211"/>
+        <source>La partición /home tiene un sistema de archivos no soportado: {fs}.</source>
+        <translation>/home bölümünde desteklenmeyen bir dosya sistemi var: {fs}.</translation>
+    </message>
+    <message>
+        <location filename="../install/config_collector.py" line="222"/>
+        <source>La misma partición está seleccionada para más de un uso.</source>
+        <translation>Aynı bölüm birden fazla amaç için seçilmiş.</translation>
+    </message>
+    <message>
+        <location filename="../install/config_collector.py" line="231"/>
+        <source>La partición {dev} está montada en {mp}. Desmóntala antes de continuar.</source>
+        <translation>{dev} bölümü {mp} konumuna bağlı. Devam etmeden önce bağlantısını kesin.</translation>
+    </message>
+    <message>
+        <location filename="../install/config_collector.py" line="244"/>
         <source>Error procesando datos: </source>
         <translation>Veriler işlenirken hata: </translation>
     </message>
@@ -957,7 +1005,7 @@ sayılar, tireler ve alt çizgiler içerebilir; boşluk içeremez.</translation>
         <translation>Kuzey Amerika, ABD</translation>
     </message>
     <message>
-        <location filename="../ui/mirrors.py" line="100"/>
+        <location filename="../ui/mirrors.py" line="98"/>
         <source>Instala los drivers propietarios de NVIDIA, optimizando el rendimiento gráfico y la compatibilidad con juegos y aplicaciones 3D.</source>
         <translation>NVIDIA&apos;nın özel sürücülerini yükleyerek grafik performansını ve oyunlar/3D uygulamalarla uyumluluğu optimize eder.</translation>
     </message>
@@ -967,7 +1015,7 @@ sayılar, tireler ve alt çizgiler içerebilir; boşluk içeremez.</translation>
         <translation>Intel mikrokodunu yükle</translation>
     </message>
     <message>
-        <location filename="../ui/mirrors.py" line="105"/>
+        <location filename="../ui/mirrors.py" line="103"/>
         <source>Instala microcódigos recientes de Intel para mejorar seguridad, estabilidad y compatibilidad con CPUs Intel modernas.</source>
         <translation>Modern Intel işlemcilerle güvenlik, kararlılık ve uyumluluğu artırmak için güncel Intel mikrokodunu yükler.</translation>
     </message>
@@ -986,7 +1034,7 @@ sayılar, tireler ve alt çizgiler içerebilir; boşluk içeremez.</translation>
         <translation>Yazılım kanalı</translation>
     </message>
     <message>
-        <location filename="../ui/mirrors.py" line="82"/>
+        <location filename="../ui/mirrors.py" line="80"/>
         <source>Aquí eliges el servidor desde el que se descargarán los paquetes y qué componentes adicionales se instalarán. Los repositorios no libres permiten acceder a software y firmware con licencias distintas a la base libre del sistema.</source>
         <translation>Paketlerin indirileceği sunucuyu ve kurulacak ek bileşenleri seçin. Özgür olmayan depolar, sistemin özgür temelinden farklı lisanslara sahip yazılım ve ürün yazılımlarına erişim sağlar.</translation>
     </message>
@@ -1041,22 +1089,22 @@ sayılar, tireler ve alt çizgiler içerebilir; boşluk içeremez.</translation>
         <translation>Şifreyi tekrar girin</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="241"/>
+        <location filename="../ui/users.py" line="240"/>
         <source>Las contraseñas de usuario no coinciden</source>
         <translation>Kullanıcı şifreleri eşleşmiyor</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="244"/>
+        <location filename="../ui/users.py" line="243"/>
         <source>Las contraseñas de root no coinciden</source>
         <translation>Root şifreleri eşleşmiyor</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="248"/>
+        <location filename="../ui/users.py" line="247"/>
         <source>Usar la misma contraseña para el usuario root</source>
         <translation>Root kullanıcısı için aynı şifreyi kullan</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="303"/>
+        <location filename="../ui/users.py" line="302"/>
         <source>Debe repetir la contraseña</source>
         <translation>Şifreyi tekrar girmelisiniz</translation>
     </message>
@@ -1066,13 +1114,13 @@ sayılar, tireler ve alt çizgiler içerebilir; boşluk içeremez.</translation>
         <translation>{ctx_user} parolaları eşleşmiyor</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="365"/>
-        <location filename="../ui/users.py" line="377"/>
+        <location filename="../ui/users.py" line="364"/>
+        <location filename="../ui/users.py" line="376"/>
         <source>La contraseña de usuario es obligatoria</source>
         <translation>Kullanıcı şifresi gereklidir</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="384"/>
+        <location filename="../ui/users.py" line="383"/>
         <source>La contraseña de root es obligatoria</source>
         <translation>Root şifresi gereklidir</translation>
     </message>
@@ -1088,7 +1136,7 @@ sayılar, tireler ve alt çizgiler içerebilir; boşluk içeremez.</translation>
         <translation>Otomatik giriş yap</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="227"/>
+        <location filename="../ui/users.py" line="226"/>
         <source>Disponible con SDDM, LightDM o GDM. Con greetd no es posible configurarlo desde este instalador.</source>
         <translation>SDDM, LightDM veya GDM ile kullanılabilir. greetd ile bu yükleyici tarafından yapılandırılamaz.</translation>
     </message>
@@ -1098,7 +1146,7 @@ sayılar, tireler ve alt çizgiler içerebilir; boşluk içeremez.</translation>
         <translation>{manager} üzerinden otomatik giriş kullanılabilir.</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="347"/>
+        <location filename="../ui/users.py" line="346"/>
         <source>Con greetd no es posible configurar autologin con este instalador.</source>
         <translation>greetd ile otomatik giriş bu yükleyici tarafından yapılandırılamaz.</translation>
     </message>
@@ -1121,14 +1169,14 @@ sayılar, tireler ve alt çizgiler içerebilir; boşluk içeremez.</translation>
         <translation>“Son piksele kadar optimize edilmiş”</translation>
     </message>
     <message>
-        <location filename="../ui/welcome.py" line="127"/>
+        <location filename="../ui/welcome.py" line="124"/>
         <source>Se ha detectado conexion a internet.
 Instalador en modo online.</source>
         <translation>İnternet bağlantısı algılandı.
 Kurulum çevrimiçi modda.</translation>
     </message>
     <message>
-        <location filename="../ui/welcome.py" line="134"/>
+        <location filename="../ui/welcome.py" line="131"/>
         <source>No se ha detectado conexion a internet.
 Instalador en modo offline.</source>
         <translation>İnternet bağlantısı algılanmadı.

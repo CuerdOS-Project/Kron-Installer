@@ -502,24 +502,13 @@ set_rootpassword() {
 set_useraccount() {
     local USERLOGIN="$(get_option USERLOGIN)"
     if [ -n "$USERLOGIN" ]; then
-        # Solo se usan los grupos que existen en el sistema instalado: si falta
-        # alguno, useradd fallaría entero y no se crearía el usuario.
-        local g groups=""
-        for g in $(get_option USERGROUPS | tr ',' ' '); do
-            if chroot "$TARGETDIR" getent group "$g" >/dev/null 2>&1; then
-                groups="${groups:+$groups,}$g"
-            else
-                echo "WARNING: group '$g' does not exist in target, skipped" >&2
-            fi
-        done
-
-        chroot "$TARGETDIR" useradd -m ${groups:+-G "$groups"} \
+        chroot "$TARGETDIR" useradd -m -G "$(get_option USERGROUPS)" \
             -c "$(get_option USERNAME)" "$USERLOGIN" \
             || die "Error creating user $USERLOGIN"
         echo "$USERLOGIN:$(get_option USERPASSWORD)" | \
             chroot "$TARGETDIR" chpasswd -c SHA512 \
             || die "Error setting password for $USERLOGIN"
-            
+
         # Sudoers
         if [ -d "$TARGETDIR/etc/sudoers.d" ]; then
             if [[ "$(get_option USERGROUPS)" != *"wheel"* ]]; then

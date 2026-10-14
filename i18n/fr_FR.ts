@@ -957,6 +957,81 @@ des chiffres, des tirets et des tirets bas, et ne peut pas contenir d&apos;espac
         <source>Teclado:</source>
         <translation>Clavier :</translation>
     </message>
+    <message>
+        <location filename="../ui/language.py" line="114"/>
+        <source>Africa</source>
+        <translation>Afrique</translation>
+    </message>
+    <message>
+        <location filename="../ui/language.py" line="115"/>
+        <source>America</source>
+        <translation>Amérique</translation>
+    </message>
+    <message>
+        <location filename="../ui/language.py" line="116"/>
+        <source>Antarctica</source>
+        <translation>Antarctique</translation>
+    </message>
+    <message>
+        <location filename="../ui/language.py" line="117"/>
+        <source>Arctic</source>
+        <translation>Arctique</translation>
+    </message>
+    <message>
+        <location filename="../ui/language.py" line="118"/>
+        <source>Asia</source>
+        <translation>Asie</translation>
+    </message>
+    <message>
+        <location filename="../ui/language.py" line="119"/>
+        <source>Atlantic</source>
+        <translation>Atlantique</translation>
+    </message>
+    <message>
+        <location filename="../ui/language.py" line="120"/>
+        <source>Australia</source>
+        <translation>Australie</translation>
+    </message>
+    <message>
+        <location filename="../ui/language.py" line="121"/>
+        <source>Brazil</source>
+        <translation>Brésil</translation>
+    </message>
+    <message>
+        <location filename="../ui/language.py" line="122"/>
+        <source>Canada</source>
+        <translation>Canada</translation>
+    </message>
+    <message>
+        <location filename="../ui/language.py" line="123"/>
+        <source>Chile</source>
+        <translation>Chili</translation>
+    </message>
+    <message>
+        <location filename="../ui/language.py" line="124"/>
+        <source>Europe</source>
+        <translation>Europe</translation>
+    </message>
+    <message>
+        <location filename="../ui/language.py" line="125"/>
+        <source>Indian</source>
+        <translation>Indien</translation>
+    </message>
+    <message>
+        <location filename="../ui/language.py" line="126"/>
+        <source>Mexico</source>
+        <translation>Mexique</translation>
+    </message>
+    <message>
+        <location filename="../ui/language.py" line="127"/>
+        <source>Pacific</source>
+        <translation>Pacifique</translation>
+    </message>
+    <message>
+        <location filename="../ui/language.py" line="128"/>
+        <source>US</source>
+        <translation>États-Unis</translation>
+    </message>
 </context>
 <context>
     <name>MirrorsPage</name>

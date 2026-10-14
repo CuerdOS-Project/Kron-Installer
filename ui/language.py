@@ -7,20 +7,6 @@ from utils.utils_locales import LanguageName, KeymapName
 from ui.title_widget import make_page_title
 
 
-_TIMEZONE_REGION_NAMES = {
-    "Africa": "África",
-    "America": "América",
-    "Antarctica": "Antártida",
-    "Arctic": "Ártico",
-    "Asia": "Asia",
-    "Atlantic": "Atlántico",
-    "Australia": "Australia",
-    "Europe": "Europa",
-    "Indian": "Índico",
-    "Pacific": "Pacífico",
-}
-
-
 def locale_display_name(locale):
     # Devuelve un nombre legible sin perder el locale real como dato.
     if locale.upper() in {"ES_ES.UTF-8", "ES_ES.UTF8"}:
@@ -79,7 +65,7 @@ class LanguagePage(QWidget):
         if sys_data:
             self.timezones = sys_data["timezones"]
             for region in sorted(self.timezones.keys()):
-                self.region_combo.addItem(_TIMEZONE_REGION_NAMES.get(region, region), region)
+                self.region_combo.addItem(self._region_display_name(region), region)
 
             self.region_combo.currentIndexChanged.connect(
                 lambda _index: self.actualizar_ciudades(self.region_combo.currentData())
@@ -116,6 +102,27 @@ class LanguagePage(QWidget):
 
         main_layout.addWidget(card, 1)
 
+    def _region_display_name(self, region):
+        # Zonas horarias pasadas por tr para traducir
+        labels = {
+            "Africa": self.tr("Africa"),
+            "America": self.tr("America"),
+            "Antarctica": self.tr("Antarctica"),
+            "Arctic": self.tr("Arctic"),
+            "Asia": self.tr("Asia"),
+            "Atlantic": self.tr("Atlantic"),
+            "Australia": self.tr("Australia"),
+            "Brazil": self.tr("Brazil"),
+            "Canada": self.tr("Canada"),
+            "Chile": self.tr("Chile"),
+            "Europe": self.tr("Europe"),
+            "Indian": self.tr("Indian"),
+            "Mexico": self.tr("Mexico"),
+            "Pacific": self.tr("Pacific"),
+            "US": self.tr("US"),
+        }
+        return labels.get(region, region)
+
     def _populate_keyboards(self, keymap_entries):
         # Construye una lista plana con los mapas disponibles en la ISO.
         self.teclado_combo.clear()
@@ -149,6 +156,21 @@ class LanguagePage(QWidget):
         self.lbl_city.setText(self.tr("Ciudad:"))
         self.lbl_language.setText(self.tr("Idioma:"))
         self.lbl_keyboard.setText(self.tr("Teclado:"))
+
+        self._retranslate_region_items()
+
+    def _retranslate_region_items(self):
+        # Reaplica los nombres traducidos de las regiones ya cargadas en el combo
+        if not hasattr(self, "region_combo"):
+            return
+        self.region_combo.blockSignals(True)
+        for index in range(self.region_combo.count()):
+            region = self.region_combo.itemData(index)
+            if region:
+                self.region_combo.setItemText(
+                    index, self._region_display_name(region)
+                )
+        self.region_combo.blockSignals(False)
 
     def actualizar_ciudades(self, region):
         self.ciudad_combo.clear()

@@ -9,7 +9,7 @@ from PySide6.QtWidgets import (
 _BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 APP_NAME     = "Kron Installer"
-APP_VERSION  = "1.2.3"
+APP_VERSION  = "1.3.1"
 APP_SUBTITLE = "\u00a9 2026 CuerdOS Project"
 APP_WEBSITE  = "https://cuerdos.github.io"
 ICON_PATH    = os.path.join(_BASE_DIR, "images", "kron.svg")

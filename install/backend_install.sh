@@ -1,12 +1,11 @@
 #!/bin/bash
-# Lógica de instalación extraída de void-installer
+# Lógica de instalación del backend (Kron Installer)
 
 # --- 1. CONFIGURACIÓN DEL ENTORNO ---
 
 CONF_FILE="/tmp/.kron-installer.conf"
-# El conf contiene contraseñas en claro: borrarlo SIEMPRE al terminar,
-# tanto en éxito como en cualquier die() (el trap EXIT los cubre).
-# Si hay un contenedor LUKS abierto, cerrarlo también al salir.
+# El conf contiene contraseñas en claro: el trap EXIT lo borra SIEMPRE (éxito o die())
+# y cierra el contenedor LUKS si sigue abierto.
 trap 'rm -f "$CONF_FILE"; if [ -e "$ROOT_MAPPER_DEV" ]; then cryptsetup close "$ROOT_MAPPER" 2>/dev/null || :; fi' EXIT
 
 # --- Estado LUKS (se rellena durante la instalación) ---
@@ -16,56 +15,60 @@ ROOT_MAPPER_DEV="/dev/mapper/kron-root"
 ROOT_LUKS_UUID=""
 TARGETDIR="/mnt/target"
 LOG="/tmp/installation.log"
-TARGET_FSTAB=$(mktemp -t vinstall-fstab-XXXXXXXX || exit 1)
+TARGET_FSTAB=$(mktemp -t vinstall-fstab-XXXXXXXX) || exit 1
 
-# Preparar descriptores de archivo
-# stdout (1) y stderr (2) van al LOG para depuración detallada
-# fd3 va al stdout original para que Python lea los mensajes de estado ">>>"
+# stdout (1) y stderr (2) van al LOG para depuración detallada;
+# fd3 conserva el stdout original: por ahí Python lee los mensajes de estado ">>>".
 exec 3>&1
 exec > >(tee -a "$LOG") 2>&1
 
-# Función para comunicar estado a la UI (Python)
+# Comunica una fase o un error a la UI (Python)
 log_ui() {
     echo ">>> $1" >&3
 }
 
-# Función para errores fatales
+# Error fatal: avisa a la UI, intenta desmontar y sale
 die() {
     log_ui "ERROR: $1"
     echo "FATAL ERROR: $1" >&2
-    # Intentar desmontar por seguridad
     umount -R "$TARGETDIR" >/dev/null 2>&1
     exit 1
 }
 
-# Detectar EFI (Lógica original líneas 58-65)
+# ¿El live arrancó en UEFI? (EFI_SYSTEM vacío = BIOS) y de cuántos bits es el
+# firmware: hay equipos de 64 bits con UEFI de 32 bits (p. ej. tablets Atom).
 if [ -d /sys/firmware/efi ]; then
     EFI_SYSTEM=1
     EFI_FW_BITS=$(cat /sys/firmware/efi/fw_platform_size 2>/dev/null || echo 64)
-    if [ $EFI_FW_BITS -eq 32 ]; then
-        EFI_TARGET=i386-efi
-    else
-        EFI_TARGET=x86_64-efi
-    fi
 fi
 
-# --- 2. FUNCIONES DE UTILIDAD (Extraídas de installer.sh) ---
+# --- 2. FUNCIONES DE UTILIDAD ---
 
 # Lee opciones del archivo generado por Python
 get_option() {
     grep -E "^${1} .*" "$CONF_FILE" | sed -e "s|^${1} ||"
 }
 
-# Habilitar servicios (runit)
-enable_service() {
-    ln -sf "/etc/sv/$1" "$TARGETDIR/etc/runit/runsvdir/default/$1"
+# Número de pasada de fsck (6.º campo de fstab) según el filesystem.
+# $1 = fstype, $2 = valor para los que sí usan fsck (1 para /, 2 para el resto)
+fsck_passno() {
+    case "$1" in
+        f2fs|btrfs|xfs) echo 0 ;;
+        *)              echo "$2" ;;
+    esac
+}
+
+# Añade una línea al fstab del sistema destino. Los argumentos son los campos
+# de fstab: $1=UUID $2=punto de montaje $3=fstype $4=opciones $5=pasada de fsck
+add_fstab_entry() {
+    echo "UUID=$1 $2 $3 $4 0 $5" >>"$TARGET_FSTAB"
 }
 
 # --- 3. FUNCIONES CORE DE INSTALACIÓN ---
 
 # Crea sistemas de archivos y monta particiones
 create_filesystems() {
-    local mnts dev mntpt fstype fspassno mkfs size rv uuid sep_home=0
+    local mnts dev mntpt fstype mkfs uuid sep_home=0
 
     # ¿Hay una partición /home aparte? Entonces btrfs no debe crear @home
     # (si no, /home quedaría montado dos veces en el fstab).
@@ -75,8 +78,7 @@ create_filesystems() {
 
     # Leer líneas MOUNTPOINT del config (ordenadas por punto de montaje)
     mnts=$(grep -E '^MOUNTPOINT .*' "$CONF_FILE" | sort -k 5)
-    
-    # Iterar sobre las particiones
+
     set -- ${mnts}
     while [ $# -ne 0 ]; do
         dev=$2; fstype=$3; mntpt="$5"; mkfs=$6
@@ -93,7 +95,7 @@ create_filesystems() {
             fi
             swapon "$dev" || die "Error activating swap on $dev"
             uuid=$(blkid -o value -s UUID "$dev")
-            echo "UUID=$uuid none swap defaults 0 0" >>"$TARGET_FSTAB"
+            add_fstab_entry "$uuid" none swap defaults 0
             continue
         fi
 
@@ -133,7 +135,7 @@ create_filesystems() {
                 xfs) MKFS="mkfs.xfs"; MKFS_FLAGS="-f -i sparse=0"; modprobe xfs ;;
                 *) die "File system $fstype not supported" ;;
             esac
-            
+
             $MKFS $MKFS_FLAGS "$dev" || die "Error formatting $dev ($fstype)"
         fi
 
@@ -155,7 +157,7 @@ create_filesystems() {
                 btrfs subvolume create "$TARGETDIR/@log" || die "Error creating @log"
                 btrfs subvolume create "$TARGETDIR/@pkg" || die "Error creating @pkg"
 
-                umount "$TARGETDIR"
+                umount "$TARGETDIR" || die "Error unmounting temporary BTRFS"
 
                 # Montaje definitivo del root
                 mount -o subvol=@ "$dev" "$TARGETDIR" || die "Error mounting subvol @"
@@ -165,32 +167,26 @@ create_filesystems() {
                 mkdir -p "$TARGETDIR/var/cache/xbps"
 
                 if [ "$sep_home" -eq 0 ]; then
-                    mount -o subvol=@home "$dev" "$TARGETDIR/home"
+                    mount -o subvol=@home "$dev" "$TARGETDIR/home" || die "Error mounting subvol @home"
                 fi
-                mount -o subvol=@log  "$dev" "$TARGETDIR/var/log"
-                mount -o subvol=@pkg  "$dev" "$TARGETDIR/var/cache/xbps"
+                mount -o subvol=@log  "$dev" "$TARGETDIR/var/log" || die "Error mounting subvol @log"
+                mount -o subvol=@pkg  "$dev" "$TARGETDIR/var/cache/xbps" || die "Error mounting subvol @pkg"
 
                 uuid=$(blkid -o value -s UUID "$dev")
-                echo "UUID=$uuid / btrfs defaults,subvol=@ 0 0" >>"$TARGET_FSTAB"
+                add_fstab_entry "$uuid" / btrfs defaults,subvol=@ 0
                 if [ "$sep_home" -eq 0 ]; then
-                    echo "UUID=$uuid /home btrfs defaults,subvol=@home 0 0" >>"$TARGET_FSTAB"
+                    add_fstab_entry "$uuid" /home btrfs defaults,subvol=@home 0
                 fi
-                echo "UUID=$uuid /var/log btrfs defaults,subvol=@log 0 0" >>"$TARGET_FSTAB"
-                echo "UUID=$uuid /var/cache/xbps btrfs defaults,subvol=@pkg 0 0" >>"$TARGET_FSTAB"
+                add_fstab_entry "$uuid" /var/log btrfs defaults,subvol=@log 0
+                add_fstab_entry "$uuid" /var/cache/xbps btrfs defaults,subvol=@pkg 0
 
                 continue
             fi
 
             mount -t "$fstype" "$dev" "$TARGETDIR" || die "Error mounting root on $dev"
-            
-            # Fstab para root
+
             uuid=$(blkid -o value -s UUID "$dev")
-            if [ "$fstype" = "f2fs" ] || [ "$fstype" = "btrfs" ] || [ "$fstype" = "xfs" ]; then
-                fspassno=0
-            else
-                fspassno=1
-            fi
-            echo "UUID=$uuid $mntpt $fstype defaults 0 $fspassno" >>"$TARGET_FSTAB"
+            add_fstab_entry "$uuid" "$mntpt" "$fstype" defaults "$(fsck_passno "$fstype" 1)"
         fi
     done
 
@@ -200,17 +196,12 @@ create_filesystems() {
         dev=$2; fstype=$3; mntpt="$5"
         shift 6
         [ "$mntpt" = "/" ] || [ "$fstype" = "swap" ] && continue
-        
+
         mkdir -p "${TARGETDIR}${mntpt}"
         mount -t "$fstype" "$dev" "${TARGETDIR}${mntpt}" || die "Error mounting $mntpt on $dev"
-        
+
         uuid=$(blkid -o value -s UUID "$dev")
-        if [ "$fstype" = "f2fs" ] || [ "$fstype" = "btrfs" ] || [ "$fstype" = "xfs" ]; then
-            fspassno=0
-        else
-            fspassno=2
-        fi
-        echo "UUID=$uuid $mntpt $fstype defaults 0 $fspassno" >>"$TARGET_FSTAB"
+        add_fstab_entry "$uuid" "$mntpt" "$fstype" defaults "$(fsck_passno "$fstype" 2)"
     done
 }
 
@@ -295,8 +286,7 @@ copy_rootfs() {
     chroot "$TARGETDIR" userdel -r cuerdos >/dev/null 2>&1
 
     # Aseguramos que el sistema instalado no tenga 'pam_rootok' activado
-    PAM_FILES="$TARGETDIR/etc/pam.d/su $TARGETDIR/etc/pam.d/login"
-    for file in $PAM_FILES; do
+    for file in "$TARGETDIR/etc/pam.d/su" "$TARGETDIR/etc/pam.d/login"; do
         if [ -f "$file" ]; then
             sed -i 's/^auth\s\+sufficient\s\+pam_rootok\.so/#auth sufficient pam_rootok.so/' "$file"
         fi
@@ -306,7 +296,7 @@ copy_rootfs() {
 # Montar sistemas virtuales para chroot
 mount_filesystems() {
     for f in sys proc dev; do
-        [ ! -d "$TARGETDIR/$f" ] && mkdir "$TARGETDIR/$f"
+        mkdir -p "$TARGETDIR/$f"
         mount --rbind "/$f" "$TARGETDIR/$f"
     done
 }
@@ -352,6 +342,15 @@ set_locale() {
     chroot "$TARGETDIR" xbps-reconfigure -f glibc-locales
 }
 
+# Pone KEYMAP=$2 en el fichero $1 (sustituye la línea existente o la añade al final)
+set_console_keymap() {
+    if grep -Eq '^[[:space:]]*KEYMAP[[:space:]]*=' "$1"; then
+        sed -i -E "s|^[[:space:]]*KEYMAP[[:space:]]*=.*$|KEYMAP=$2|" "$1"
+    else
+        printf '\nKEYMAP=%s\n' "$2" >> "$1"
+    fi
+}
+
 set_keymap() {
     local KEYMAP="$(get_option KEYMAP)"
     [ -n "$KEYMAP" ] || return 0
@@ -364,19 +363,11 @@ set_keymap() {
     # Void Linux aplica el teclado de consola leyendo KEYMAP desde /etc/rc.conf
     install -d "$TARGETDIR/etc"
     touch "$TARGETDIR/etc/rc.conf"
-    if grep -Eq '^[[:space:]]*KEYMAP[[:space:]]*=' "$TARGETDIR/etc/rc.conf"; then
-        sed -i -E "s|^[[:space:]]*KEYMAP[[:space:]]*=.*$|KEYMAP=$KEYMAP|" "$TARGETDIR/etc/rc.conf"
-    else
-        printf '\nKEYMAP=%s\n' "$KEYMAP" >> "$TARGETDIR/etc/rc.conf"
-    fi
+    set_console_keymap "$TARGETDIR/etc/rc.conf" "$KEYMAP"
 
     # Actualizar vconsole.conf solo si la imagen ya lo usa; no crearlo en Void.
     if [ -f "$TARGETDIR/etc/vconsole.conf" ]; then
-        if grep -Eq '^[[:space:]]*KEYMAP[[:space:]]*=' "$TARGETDIR/etc/vconsole.conf"; then
-            sed -i -E "s|^[[:space:]]*KEYMAP[[:space:]]*=.*$|KEYMAP=$KEYMAP|" "$TARGETDIR/etc/vconsole.conf"
-        else
-            printf '\nKEYMAP=%s\n' "$KEYMAP" >> "$TARGETDIR/etc/vconsole.conf"
-        fi
+        set_console_keymap "$TARGETDIR/etc/vconsole.conf" "$KEYMAP"
     fi
 
     # Xorg/Wayland no interpretan directamente los nombres de mapas de consola.
@@ -501,8 +492,10 @@ set_rootpassword() {
 
 set_useraccount() {
     local USERLOGIN="$(get_option USERLOGIN)"
+    local USERGROUPS
+    USERGROUPS="$(get_option USERGROUPS)"
     if [ -n "$USERLOGIN" ]; then
-        chroot "$TARGETDIR" useradd -m -G "$(get_option USERGROUPS)" \
+        chroot "$TARGETDIR" useradd -m -G "$USERGROUPS" \
             -c "$(get_option USERNAME)" "$USERLOGIN" \
             || die "Error creating user $USERLOGIN"
         echo "$USERLOGIN:$(get_option USERPASSWORD)" | \
@@ -511,7 +504,7 @@ set_useraccount() {
 
         # Sudoers
         if [ -d "$TARGETDIR/etc/sudoers.d" ]; then
-            if [[ "$(get_option USERGROUPS)" != *"wheel"* ]]; then
+            if [[ "$USERGROUPS" != *"wheel"* ]]; then
                 echo "$USERLOGIN ALL=(ALL:ALL) ALL" > "$TARGETDIR/etc/sudoers.d/$USERLOGIN"
             else
                 echo "%wheel ALL=(ALL:ALL) ALL" > "$TARGETDIR/etc/sudoers.d/wheel"
@@ -547,6 +540,7 @@ autologin-user-timeout=0
 EOF
             ;;
         gdm)
+            local target_gdm_config
             if [ -d "$TARGETDIR/etc/gdm" ]; then
                 install -d "$TARGETDIR/etc/gdm"
                 target_gdm_config="$TARGETDIR/etc/gdm/custom.conf"
@@ -595,8 +589,8 @@ set_mirror() {
     # Solo configurar mirror si no es ISO local
     if [[ "$MIRROR_KEY" != "Default" ]] && [[ -n "$MIRROR_URL" ]]; then
         echo "Configuring mirror..."
-        log_ui "MIRROR"        
-        
+        log_ui "MIRROR"
+
         if ! chroot "$TARGETDIR" xmirror -s "$MIRROR_URL"; then
             die "Error configuring mirror $MIRROR_KEY ($MIRROR_URL)"
         fi
@@ -696,18 +690,30 @@ find_esp() {
 # UUID y fstype del sistema de archivos raíz, leyendo el config generado
 # por Python (líneas "MOUNTPOINT <dev> <fstype> <size> <mntpt> <mkfs>").
 get_root_info() {
-    local line
+    local line uuid_dev
     line="$(grep -E '^MOUNTPOINT .* / ' "$CONF_FILE" | head -n1)"
     ROOT_DEV=$(echo "$line" | awk '{print $2}')
     ROOT_FSTYPE=$(echo "$line" | awk '{print $3}')
+    uuid_dev="$ROOT_DEV"
     if [ "$USE_LUKS" = "1" ] && [ -e "$ROOT_MAPPER_DEV" ]; then
         # UUID del filesystem DENTRO del contenedor: es el que el kernel
         # monta como root tras el desbloqueo del initramfs.
-        ROOT_UUID=$(blkid -s UUID -o value "$ROOT_MAPPER_DEV" 2>/dev/null)
-    else
-        ROOT_UUID=$(blkid -s UUID -o value "$ROOT_DEV" 2>/dev/null)
+        uuid_dev="$ROOT_MAPPER_DEV"
     fi
+    ROOT_UUID=$(blkid -s UUID -o value "$uuid_dev" 2>/dev/null)
     [ -n "$ROOT_UUID" ] || die "Could not determine UUID of root partition $ROOT_DEV"
+}
+
+# Copia el fichero $1 al directorio $2 del ESP si ha cambiado
+sync_file_to_esp() {
+    local src="$1" dst_dir="$2" name
+    name="$(basename "$src")"
+    # Ahorra tiempo en el hook de kernel
+    if ! cmp -s "$src" "$dst_dir/$name"; then
+        echo "Syncing $name to ESP..."
+        install -m 644 "$src" "$dst_dir/" \
+            || die "Error copying $name to the ESP (is it full?)"
+    fi
 }
 
 # Copiar kernels e initramfs desde /boot del sistema destino al ESP.
@@ -719,18 +725,10 @@ sync_kernels_to_esp() {
     install -d "$esp/EFI/cuerdos"
     for k in "$TARGETDIR"/boot/vmlinuz-*; do
         [ -f "$k" ] || continue
-        # Solo copiar si cambió (ahorra tiempo en el hook de kernel)
-        if ! cmp -s "$k" "$esp/EFI/cuerdos/$(basename "$k")"; then
-            echo "Syncing $(basename "$k") to ESP..."
-            install -m 644 "$k" "$esp/EFI/cuerdos/" \
-                || die "Error copying $(basename "$k") to the ESP (is it full?)"
-        fi
+        sync_file_to_esp "$k" "$esp/EFI/cuerdos"
         initr="${k/vmlinuz-/initramfs-}.img"
         if [ -f "$initr" ]; then
-            if ! cmp -s "$initr" "$esp/EFI/cuerdos/$(basename "$initr")"; then
-                install -m 644 "$initr" "$esp/EFI/cuerdos/" \
-                    || die "Error copying $(basename "$initr") to the ESP (is it full?)"
-            fi
+            sync_file_to_esp "$initr" "$esp/EFI/cuerdos"
         fi
     done
 }
@@ -779,9 +777,20 @@ find_bios_boot_part() {
     done
 }
 
+# Fallo del arranque BIOS. En UEFI es solo un respaldo opcional: avisa ($1) y
+# deja continuar, porque el arranque UEFI ya está listo. En BIOS puro es
+# obligatorio: aborta con el error $2.
+bios_boot_failed() {
+    if [ -n "$EFI_SYSTEM" ]; then
+        echo "WARNING: $1" >&2
+    else
+        die "$2"
+    fi
+}
+
 # Instalar Limine (stage 1/2 en BIOS, binario EFI en el ESP) y escribir limine.conf
 set_bootloader() {
-    local dev="$(get_option BOOTLOADER)" kernel initramfs ESP_MNT
+    local dev="$(get_option BOOTLOADER)" kernel initramfs ESP_MNT pattern efi_binary
     local cmdline_opts="rw" stage2_part=""
 
     if [ "$dev" = "none" ] || [ -z "$dev" ]; then return; fi
@@ -790,12 +799,11 @@ set_bootloader() {
     get_root_info
 
     # Kernel de CuerdOS (con fallback a cualquier vmlinuz si no hay match de marca)
-    kernel="$(find "$TARGETDIR/boot" -maxdepth 1 -type f \
-        -name 'vmlinuz-*cuerdos*' | sort -V | tail -n1)"
-    if [ -z "$kernel" ]; then
+    for pattern in 'vmlinuz-*cuerdos*' 'vmlinuz-*'; do
         kernel="$(find "$TARGETDIR/boot" -maxdepth 1 -type f \
-            -name 'vmlinuz-*' | sort -V | tail -n1)"
-    fi
+            -name "$pattern" | sort -V | tail -n1)"
+        [ -n "$kernel" ] && break
+    done
     if [ -z "$kernel" ]; then
         die "Could not find CuerdOS kernel"
     fi
@@ -808,9 +816,6 @@ set_bootloader() {
         die "Could not find initramfs for $(basename "$kernel")"
     fi
 
-    # UUID del sistema de archivos raíz para la línea de comandos del kernel
-    # (calculado por get_root_info)
-
     # rootflags solo aplica a btrfs (subvolumen @ creado por create_filesystems)
     if [ "$ROOT_FSTYPE" = "btrfs" ]; then
         cmdline_opts="rw rootflags=subvol=@"
@@ -818,12 +823,12 @@ set_bootloader() {
 
     # Regenerar el initramfs SIEMPRE en el chroot.
     local kver="${kernel#/boot/vmlinuz-}"
-    local dracut_args="--force --quiet"
+    local -a dracut_args=(--force --quiet)
     if [ "$USE_LUKS" = "1" ]; then
-        dracut_args="$dracut_args --add crypt"
+        dracut_args+=(--add crypt)
     fi
     echo "Regenerating initramfs (dracut)..."
-    chroot "$TARGETDIR" dracut $dracut_args \
+    chroot "$TARGETDIR" dracut "${dracut_args[@]}" \
         "/boot/initramfs-${kver}.img" "${kver}" \
         || die "Error regenerating initramfs"
 
@@ -842,10 +847,15 @@ set_bootloader() {
     # --- Ficheros de arranque en el ESP ---
     sync_kernels_to_esp "$ESP_MNT"
 
-    # Binario EFI (útil en UEFI y como copia de seguridad en BIOS puros)
+    # Binario EFI (ruta de arranque por defecto en UEFI). Un firmware de 32 bits
+    # solo busca BOOTIA32.EFI; en cualquier otro caso se usa BOOTX64.EFI.
+    efi_binary=BOOTX64.EFI
+    if [ "$EFI_FW_BITS" = "32" ]; then
+        efi_binary=BOOTIA32.EFI
+    fi
     install -d "$ESP_MNT/EFI/BOOT"
-    install -m 644 "$TARGETDIR/usr/share/limine/BOOTX64.EFI" \
-        "$ESP_MNT/EFI/BOOT/BOOTX64.EFI" || die "Error installing Limine EFI binary"
+    install -m 644 "$TARGETDIR/usr/share/limine/$efi_binary" \
+        "$ESP_MNT/EFI/BOOT/$efi_binary" || die "Error installing Limine EFI binary"
 
     # Stage 3 para arranque BIOS: sin este fichero en una partición FAT,
     # el stage 2 de la MBR muere con "Stage 3 file not found".
@@ -865,33 +875,24 @@ interface_branding: CuerdOS
 EOF
 
     # --- Stage 1/2 para arranque BIOS (híbrido: también bajo UEFI) ---
-    # En un sistema UEFI el arranque BIOS es solo un respaldo opcional: nunca
-    # debe abortar una instalación cuyo arranque UEFI ya está listo. En un
-    # sistema BIOS puro sigue siendo obligatorio.
     if [ "$(blkid -s PTTYPE -o value "$dev" 2>/dev/null)" = "gpt" ]; then
         # GPT: Limine exige una partición BIOS boot (EF02) vacía para stage 2
         stage2_part="$(find_bios_boot_part "$dev")"
         if [ -n "$stage2_part" ]; then
-            if ! chroot "$TARGETDIR" limine bios-install "$dev" "$stage2_part"; then
-                if [ -n "$EFI_SYSTEM" ]; then
-                    echo "WARNING: falló limine bios-install en $dev (partición $stage2_part): sin arranque BIOS de respaldo." >&2
-                else
-                    die "Error installing Limine BIOS stage 2 on $dev partition $stage2_part"
-                fi
-            fi
-        elif [ -n "$EFI_SYSTEM" ]; then
-            echo "WARNING: GPT sin partición BIOS boot (EF02) válida: no habrá arranque BIOS de respaldo." >&2
+            chroot "$TARGETDIR" limine bios-install "$dev" "$stage2_part" \
+                || bios_boot_failed \
+                    "falló limine bios-install en $dev (partición $stage2_part): sin arranque BIOS de respaldo." \
+                    "Error installing Limine BIOS stage 2 on $dev partition $stage2_part"
         else
-            die "GPT en modo BIOS requiere una partición BIOS boot (EF02) vacía de al menos 32KiB"
+            bios_boot_failed \
+                "GPT sin partición BIOS boot (EF02) válida: no habrá arranque BIOS de respaldo." \
+                "GPT en modo BIOS requiere una partición BIOS boot (EF02) vacía de al menos 32KiB"
         fi
     else
-        if ! chroot "$TARGETDIR" limine bios-install "$dev"; then
-            if [ -n "$EFI_SYSTEM" ]; then
-                echo "WARNING: falló limine bios-install en $dev: sin arranque BIOS de respaldo." >&2
-            else
-                die "Error installing Limine BIOS on $dev"
-            fi
-        fi
+        chroot "$TARGETDIR" limine bios-install "$dev" \
+            || bios_boot_failed \
+                "falló limine bios-install en $dev: sin arranque BIOS de respaldo." \
+                "Error installing Limine BIOS on $dev"
     fi
 
     echo "Limine installed successfully"
@@ -972,7 +973,6 @@ sync
 umount_filesystems
 rm -f "$TARGET_FSTAB"
 rm -f "$CONF_FILE"
-
 
 log_ui "DONE"
 

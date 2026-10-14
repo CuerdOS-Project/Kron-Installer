@@ -10,7 +10,7 @@ from ui.title_widget import make_page_title
 def locale_display_name(locale):
     # Devuelve un nombre legible sin perder el locale real como dato.
     if locale.upper() in {"ES_ES.UTF-8", "ES_ES.UTF8"}:
-        return "Spanish (ES)"
+        return "Español (ES)"
 
     normalized = locale.replace("-", "_")
     parts = normalized.split("_", 1)

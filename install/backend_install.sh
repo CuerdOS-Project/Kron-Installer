@@ -513,6 +513,30 @@ set_useraccount() {
     fi
 }
 
+# Configura el estado inicial de ReGreet.
+set_regreet_state() {
+    local userlogin
+    userlogin="$(get_option USERLOGIN)"
+
+    if [ -d "$TARGETDIR/etc/greetd" ]; then
+        install -d "$TARGETDIR/var/lib/regreet"
+
+        cat > "$TARGETDIR/var/lib/regreet/state.toml" <<EOF
+last_user = "$userlogin"
+
+[user_to_last_sess]
+$userlogin = "Sway (D-Bus session)"
+EOF
+
+        chroot "$TARGETDIR" chown _greeter:_greeter \
+            /var/lib/regreet /var/lib/regreet/state.toml \
+            || die "Error setting ReGreet state ownership"
+
+        chmod 755 "$TARGETDIR/var/lib/regreet"
+        chmod 644 "$TARGETDIR/var/lib/regreet/state.toml"
+    fi
+}
+
 # Configura el inicio de sesión automático en el display manager soportado.
 set_autologin() {
     local enabled="$(get_option AUTOLOGIN)"
@@ -959,6 +983,7 @@ install_extra_software
 log_ui "USER_CONFIG"
 set_rootpassword
 set_useraccount
+set_regreet_state
 set_autologin
 
 # Paso 4: Bootloader (Limine)

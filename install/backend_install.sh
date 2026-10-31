@@ -617,7 +617,7 @@ EOF
                 cat >> "$greetd_config" <<EOF
 
 [initial_session]
-command = "/etc/greetd/launch-sway.sh"
+command = "/usr/bin/launch-sway.sh"
 user = "$userlogin"
 EOF
             fi

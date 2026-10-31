@@ -223,7 +223,7 @@ class UsersPage(QWidget):
 
         self.autologin_check.setText(self.tr("Iniciar sesión automáticamente"))
         self.autologin_info.setText(
-            self.tr("Disponible con SDDM, LightDM o GDM. Con greetd no es posible configurarlo desde este instalador.")
+            self.tr("Disponible con SDDM, LightDM, GDM y Greetd.")
         )
 
         self.user_pass_label.setText(self.tr("Contraseña:"))
@@ -330,27 +330,16 @@ class UsersPage(QWidget):
 
     def set_autologin_support(self, display_manager):
         # Configura la disponibilidad de autologin para el gestor detectado.
+        supported_managers = {"sddm", "lightdm", "gdm", "greetd"}
         manager = (display_manager or "").lower()
-        if manager in {"sddm", "lightdm", "gdm"}:
-            self.autologin_check.setEnabled(True)
-            self.autologin_check.show()
-            self.autologin_info.setText(
-                self.tr("Autologin disponible mediante {manager}.").format(manager=display_manager)
-            )
-            self.autologin_info.show()
-        elif manager == "greetd":
+        supported = manager in supported_managers
+
+        self.autologin_check.setEnabled(supported)
+        self.autologin_check.setVisible(supported)
+        self.autologin_info.setVisible(supported)
+
+        if not supported:
             self.autologin_check.setChecked(False)
-            self.autologin_check.setEnabled(False)
-            self.autologin_check.hide()
-            self.autologin_info.setText(
-                self.tr("Con greetd no es posible configurar autologin con este instalador.")
-            )
-            self.autologin_info.show()
-        else:
-            self.autologin_check.setChecked(False)
-            self.autologin_check.setEnabled(False)
-            self.autologin_check.hide()
-            self.autologin_info.hide()
 
     def validate_passwords(self):
         user_valid = self._validate_user_password()

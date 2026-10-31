@@ -67,10 +67,6 @@ Haz clic en &apos;Reiniciar&apos; para completar el proceso.</source>
 <context>
     <name>DisksPage</name>
     <message>
-        <source>Discos y particiones</source>
-        <translation type="vanished">Диски и разделы</translation>
-    </message>
-    <message>
         <location filename="../ui/disks.py" line="334"/>
         <source>Disco a particionar (automático):</source>
         <translation>Диск для разметки (автоматически):</translation>
@@ -119,12 +115,6 @@ Haz clic en &apos;Reiniciar&apos; para completar el proceso.</source>
         <location filename="../ui/disks.py" line="343"/>
         <source>EFI (/boot/efi):</source>
         <translation>EFI (/boot/efi):</translation>
-    </message>
-    <message>
-        <source>EFI (/boot/efi): partición FAT32 donde vive el arranque; obligatoria en UEFI y en BIOS (la requiere Limine).
-</source>
-        <translation type="vanished">EFI (/boot/efi): раздел FAT32, содержащий файлы загрузки; обязателен как для UEFI, так и для BIOS (требуется Limine).
-</translation>
     </message>
     <message>
         <location filename="../ui/disks.py" line="344"/>
@@ -286,41 +276,9 @@ Deseas continuar?</source>
         <translation>Рекомендуются BTRFS и EXT4. BTRFS предоставляет расширенные возможности, а EXT4 — простоту и совместимость.</translation>
     </message>
     <message>
-        <source>Raíz (/): contiene el sistema instalado.
-</source>
-        <translation type="vanished">Корень (/): содержит установленную систему.
-</translation>
-    </message>
-    <message>
-        <source>Home (/home): guarda tus archivos personales y configuraciones.
-</source>
-        <translation type="vanished">Home (/home): хранит личные файлы и настройки.
-</translation>
-    </message>
-    <message>
-        <source>EFI (/boot/efi): contiene los archivos de arranque en equipos UEFI.</source>
-        <translation type="vanished">EFI (/boot/efi): содержит загрузочные файлы систем UEFI.</translation>
-    </message>
-    <message>
         <location filename="../ui/disks.py" line="356"/>
         <source>Swap: espacio de intercambio usado cuando falta memoria RAM.</source>
         <translation>Swap: область подкачки при нехватке оперативной памяти.</translation>
-    </message>
-    <message>
-        <source>Contiene el sistema instalado y sus programas.</source>
-        <translation type="vanished">Содержит установленную систему и программы.</translation>
-    </message>
-    <message>
-        <source>Contiene los archivos de arranque de equipos UEFI.</source>
-        <translation type="vanished">Содержит загрузочные файлы систем UEFI.</translation>
-    </message>
-    <message>
-        <source>Guarda los archivos personales y las configuraciones de los usuarios.</source>
-        <translation type="vanished">Хранит личные файлы и настройки пользователей.</translation>
-    </message>
-    <message>
-        <source>Espacio de intercambio usado cuando falta memoria RAM.</source>
-        <translation type="vanished">Область подкачки при нехватке оперативной памяти.</translation>
     </message>
 </context>
 <context>
@@ -330,22 +288,6 @@ Deseas continuar?</source>
         <location filename="../ui/install_win.py" line="285"/>
         <source>Bienvenida</source>
         <translation>Добро пожаловать</translation>
-    </message>
-    <message>
-        <source>Regional</source>
-        <translation type="vanished">Региональные</translation>
-    </message>
-    <message>
-        <source>Repositorios</source>
-        <translation type="vanished">Репозитории</translation>
-    </message>
-    <message>
-        <source>Usuarios</source>
-        <translation type="vanished">Пользователи</translation>
-    </message>
-    <message>
-        <source>Discos</source>
-        <translation type="vanished">Диски</translation>
     </message>
     <message>
         <location filename="../ui/install_win.py" line="144"/>
@@ -467,24 +409,6 @@ Deseas continuar?</source>
     </message>
 </context>
 <context>
-    <name>InstallWorker</name>
-    <message>
-        <location filename="../install/install_thread.py" line="199"/>
-        <source>Error al escribir la configuración: {e}</source>
-        <translation>Ошибка записи конфигурации: {e}</translation>
-    </message>
-    <message>
-        <location filename="../install/install_thread.py" line="244"/>
-        <source>El instalador ha fallado. Mire en /tmp/installation.log.</source>
-        <translation>Установщик завершился с ошибкой. См. /tmp/installation.log.</translation>
-    </message>
-    <message>
-        <location filename="../install/install_thread.py" line="248"/>
-        <source>Error crítico al ejecutar el backend: {e}</source>
-        <translation>Критическая ошибка при выполнении backend: {e}</translation>
-    </message>
-</context>
-<context>
     <name>InstallationErrorPage</name>
     <message>
         <location filename="../ui/installation_error.py" line="100"/>
@@ -532,10 +456,6 @@ Deseas continuar?</source>
         <location filename="../ui/installation_error.py" line="155"/>
         <source>Exportar registro de instalación</source>
         <translation>Экспортировать журнал установки</translation>
-    </message>
-    <message>
-        <source>No se pudo exportar el registro de instalación.</source>
-        <translation type="vanished">Не удалось экспортировать журнал установки.</translation>
     </message>
     <message>
         <location filename="../ui/installation_error.py" line="172"/>
@@ -698,10 +618,6 @@ Deseas continuar?</source>
         <translation>Настройка языка и часового пояса...</translation>
     </message>
     <message>
-        <source>Actualizando el sistema...</source>
-        <translation type="vanished">Обновление системы...</translation>
-    </message>
-    <message>
         <location filename="../ui/installation.py" line="454"/>
         <source>Configurando servidor de repositorios...</source>
         <translation>Настройка сервера репозиториев...</translation>
@@ -748,10 +664,6 @@ Deseas continuar?</source>
         <translation>Установка завершена!</translation>
     </message>
     <message>
-        <source>Éxito</source>
-        <translation type="vanished">Успешно</translation>
-    </message>
-    <message>
         <location filename="../ui/installation.py" line="473"/>
         <location filename="../ui/installation.py" line="501"/>
         <source>Error en la instalación</source>
@@ -763,282 +675,112 @@ Deseas continuar?</source>
         <source>Instalando el cargador de arranque...</source>
         <translation>Установка загрузчика...</translation>
     </message>
-    <message>
-        <source>CuerdOS se ha instalado correctamente.
-Puede reiniciar su equipo.</source>
-        <translation type="vanished">CuerdOS успешно установлен.
-Вы можете перезагрузить компьютер.</translation>
-    </message>
-    <message>
-        <source>Error Fatal</source>
-        <translation type="vanished">Критическая ошибка</translation>
-    </message>
-</context>
-<context>
-    <name>InstallerConfigCollector</name>
-    <message>
-        <location filename="../install/config_collector.py" line="35"/>
-        <source>Error en contraseñas</source>
-        <translation>Ошибка пароля</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="36"/>
-        <source>Las contraseñas no coinciden o están vacías. Por favor, verifica los campos de contraseña.</source>
-        <translation>Пароли не совпадают или пусты. Проверьте поля пароля.</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="51"/>
-        <source>Nombre del equipo (hostname)</source>
-        <translation>Имя компьютера (hostname)</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="52"/>
-        <source>Usuario (login)</source>
-        <translation>Пользователь (логин)</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="53"/>
-        <source>Nombre completo</source>
-        <translation>Полное имя</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="54"/>
-        <location filename="../install/config_collector.py" line="109"/>
-        <source>Contraseña del usuario</source>
-        <translation>Пароль пользователя</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="55"/>
-        <location filename="../install/config_collector.py" line="110"/>
-        <source>Contraseña de root</source>
-        <translation>Пароль root</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="79"/>
-        <source>Hostname inválido</source>
-        <translation>Недопустимое имя хоста</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="90"/>
-        <source>Usuario inválido</source>
-        <translation>Недопустимое имя пользователя</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="103"/>
-        <source>Nombre inválido</source>
-        <translation>Недопустимое имя</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="104"/>
-        <source>El nombre completo no puede contener el carácter &apos;:&apos;.</source>
-        <translation>Полное имя не может содержать символ &apos;:&apos;.</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="115"/>
-        <source>Contraseña inválida</source>
-        <translation>Недопустимый пароль</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="123"/>
-        <source>Contraseña demasiado corta</source>
-        <translation>Пароль слишком короткий</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="150"/>
-        <source>Error en el cifrado</source>
-        <translation>Ошибка шифрования</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="168"/>
-        <source>Debe seleccionar una partición Raíz (/).</source>
-        <translation>Необходимо выбрать корневой раздел (/).</translation>
-    </message>
-    <message>
-        <source>Debe seleccionar una partición EFI (/boot/efi).</source>
-        <translation type="vanished">Необходимо выбрать раздел EFI (/boot/efi).</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="61"/>
-        <source>Faltan datos</source>
-        <translation>Недостаточно данных</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="62"/>
-        <source>Debes completar los siguientes campos:
-
-- </source>
-        <translation>Необходимо заполнить следующие поля:
-
-- </translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="81"/>
-        <source>El nombre del equipo solo puede contener letras minusculas,
-numeros y guiones, y no puede empezar ni terminar con un guion.</source>
-        <translation>Имя компьютера может содержать только строчные буквы,
-цифры и дефисы, и не может начинаться или заканчиваться дефисом.</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="92"/>
-        <source>El nombre de usuario solo puede contener letras minusculas,
-numeros, guiones y guiones bajos, y no puede contener espacios.</source>
-        <translation>Имя пользователя может содержать только строчные буквы,
-цифры, дефисы и подчёркивания, и не может содержать пробелы.</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="116"/>
-        <source>{label} no puede empezar ni terminar con espacios.</source>
-        <translation>{label} не может начинаться или заканчиваться пробелами.</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="124"/>
-        <source>{label} debe tener al menos 4 caracteres.</source>
-        <translation>{label} должен содержать не менее 4 символов.</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="169"/>
-        <source>Debe seleccionar una partición EFI (/boot/efi), ya sea un equipo UEFI o BIOS.</source>
-        <translation>Необходимо выбрать раздел EFI (/boot/efi) — как для систем UEFI, так и для BIOS.</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="174"/>
-        <location filename="../install/config_collector.py" line="210"/>
-        <location filename="../install/config_collector.py" line="221"/>
-        <location filename="../install/config_collector.py" line="230"/>
-        <location filename="../install/config_collector.py" line="244"/>
-        <source>Error</source>
-        <translation>Ошибка</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="211"/>
-        <source>La partición /home tiene un sistema de archivos no soportado: {fs}.</source>
-        <translation>Раздел /home использует неподдерживаемую файловую систему: {fs}.</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="222"/>
-        <source>La misma partición está seleccionada para más de un uso.</source>
-        <translation>Один и тот же раздел выбран для нескольких целей.</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="231"/>
-        <source>La partición {dev} está montada en {mp}. Desmóntala antes de continuar.</source>
-        <translation>Раздел {dev} смонтирован в {mp}. Размонтируйте его перед продолжением.</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="244"/>
-        <source>Error procesando datos: </source>
-        <translation>Ошибка обработки данных: </translation>
-    </message>
 </context>
 <context>
     <name>LanguagePage</name>
     <message>
-        <location filename="../ui/language.py" line="146"/>
+        <location filename="../ui/language.py" line="153"/>
         <source>Configuración regional</source>
         <translation>Региональные настройки</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="148"/>
+        <location filename="../ui/language.py" line="155"/>
         <source>Zona horaria:</source>
         <translation>Часовой пояс:</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="149"/>
+        <location filename="../ui/language.py" line="156"/>
         <source>Ciudad:</source>
         <translation>Город:</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="150"/>
+        <location filename="../ui/language.py" line="157"/>
         <source>Idioma:</source>
         <translation>Язык:</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="151"/>
+        <location filename="../ui/language.py" line="158"/>
         <source>Teclado:</source>
         <translation>Клавиатура:</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="114"/>
+        <location filename="../ui/language.py" line="108"/>
         <source>Africa</source>
         <translation>Африка</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="115"/>
+        <location filename="../ui/language.py" line="109"/>
         <source>America</source>
         <translation>Америка</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="116"/>
+        <location filename="../ui/language.py" line="110"/>
         <source>Antarctica</source>
         <translation>Антарктида</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="117"/>
+        <location filename="../ui/language.py" line="111"/>
         <source>Arctic</source>
         <translation>Арктика</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="118"/>
+        <location filename="../ui/language.py" line="112"/>
         <source>Asia</source>
         <translation>Азия</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="119"/>
+        <location filename="../ui/language.py" line="113"/>
         <source>Atlantic</source>
         <translation>Атлантика</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="120"/>
+        <location filename="../ui/language.py" line="114"/>
         <source>Australia</source>
         <translation>Австралия</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="121"/>
+        <location filename="../ui/language.py" line="115"/>
         <source>Brazil</source>
         <translation>Бразилия</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="122"/>
+        <location filename="../ui/language.py" line="116"/>
         <source>Canada</source>
         <translation>Канада</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="123"/>
+        <location filename="../ui/language.py" line="117"/>
         <source>Chile</source>
         <translation>Чили</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="124"/>
+        <location filename="../ui/language.py" line="118"/>
         <source>Europe</source>
         <translation>Европа</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="125"/>
+        <location filename="../ui/language.py" line="119"/>
         <source>Indian</source>
         <translation>Индийский океан</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="126"/>
+        <location filename="../ui/language.py" line="120"/>
         <source>Mexico</source>
         <translation>Мексика</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="127"/>
+        <location filename="../ui/language.py" line="121"/>
         <source>Pacific</source>
         <translation>Тихий океан</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="128"/>
+        <location filename="../ui/language.py" line="122"/>
         <source>US</source>
         <translation>США</translation>
     </message>
 </context>
 <context>
     <name>MirrorsPage</name>
-    <message>
-        <source>Repositorios y software</source>
-        <translation type="vanished">Репозитории и ПО</translation>
-    </message>
     <message>
         <location filename="../ui/mirrors.py" line="83"/>
         <source>Servidor de descarga (mirror)</source>
@@ -1095,10 +837,6 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <translation>Устанавливает актуальные микрокоды Intel для повышения безопасности, стабильности и совместимости с современными процессорами Intel.</translation>
     </message>
     <message>
-        <source>Activar repositorios no libres</source>
-        <translation type="vanished">Включить несвободные репозитории</translation>
-    </message>
-    <message>
         <location filename="../ui/mirrors.py" line="96"/>
         <source>Instalar drivers NVIDIA</source>
         <translation>Установить драйверы NVIDIA</translation>
@@ -1116,10 +854,6 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
 </context>
 <context>
     <name>UsersPage</name>
-    <message>
-        <source>Nombre de equipo y usuarios</source>
-        <translation type="vanished">Имя компьютера и пользователи</translation>
-    </message>
     <message>
         <location filename="../ui/users.py" line="218"/>
         <source>Nombre del equipo:</source>
@@ -1144,6 +878,11 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <location filename="../ui/users.py" line="222"/>
         <source>Contraseña de root</source>
         <translation>Пароль root</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" line="226"/>
+        <source>Disponible con SDDM, LightDM, GDM y Greetd.</source>
+        <translation>Доступно с SDDM, LightDM, GDM и Greetd.</translation>
     </message>
     <message>
         <location filename="../ui/users.py" line="229"/>
@@ -1189,13 +928,13 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <translation>Пароли для {ctx_user} не совпадают</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="364"/>
-        <location filename="../ui/users.py" line="376"/>
+        <location filename="../ui/users.py" line="353"/>
+        <location filename="../ui/users.py" line="365"/>
         <source>La contraseña de usuario es obligatoria</source>
         <translation>Пароль пользователя обязателен</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="383"/>
+        <location filename="../ui/users.py" line="372"/>
         <source>La contraseña de root es obligatoria</source>
         <translation>Пароль root обязателен</translation>
     </message>
@@ -1209,21 +948,6 @@ numeros, guiones y guiones bajos, y no puede contener espacios.</source>
         <location filename="../ui/users.py" line="224"/>
         <source>Iniciar sesión automáticamente</source>
         <translation>Входить автоматически</translation>
-    </message>
-    <message>
-        <location filename="../ui/users.py" line="226"/>
-        <source>Disponible con SDDM, LightDM o GDM. Con greetd no es posible configurarlo desde este instalador.</source>
-        <translation>Доступно для SDDM, LightDM или GDM. В greetd это нельзя настроить с помощью этого установщика.</translation>
-    </message>
-    <message>
-        <location filename="../ui/users.py" line="338"/>
-        <source>Autologin disponible mediante {manager}.</source>
-        <translation>Автоматический вход доступен через {manager}.</translation>
-    </message>
-    <message>
-        <location filename="../ui/users.py" line="346"/>
-        <source>Con greetd no es posible configurar autologin con este instalador.</source>
-        <translation>В greetd нельзя настроить автоматический вход с помощью этого установщика.</translation>
     </message>
     <message>
         <location filename="../ui/users.py" line="217"/>

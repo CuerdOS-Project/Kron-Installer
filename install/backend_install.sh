@@ -589,7 +589,36 @@ EOF
             fi
             ;;
         greetd)
-            echo "Autologin no configurado: greetd no es compatible con este instalador."
+            local greetd_config="$TARGETDIR/etc/greetd/config.toml"
+            local tmp_config="$greetd_config.tmp"
+
+            if [ -f "$greetd_config" ]; then
+                # Eliminar la sección initial_session heredada del Live.
+                awk '
+                    /^[[:space:]]*\[[[:space:]]*initial_session[[:space:]]*\]/ {
+                        skip = 1
+                        next
+                    }
+                    skip && /^[[:space:]]*\[/ {
+                        skip = 0
+                    }
+                    !skip {
+                        print
+                    }
+                ' "$greetd_config" > "$tmp_config"
+
+                if [ "$enabled" = "1" ]; then
+                    cat >> "$tmp_config" <<EOF
+
+[initial_session]
+command = "dbus-run-session sway"
+user = "$userlogin"
+EOF
+                fi
+
+                chmod --reference="$greetd_config" "$tmp_config"
+                mv "$tmp_config" "$greetd_config"
+            fi
             ;;
         *)
             echo "Autologin no configurado: no se detectó un display manager compatible."

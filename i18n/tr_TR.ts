@@ -67,10 +67,6 @@ Haz clic en &apos;Reiniciar&apos; para completar el proceso.</source>
 <context>
     <name>DisksPage</name>
     <message>
-        <source>Discos y particiones</source>
-        <translation type="vanished">Diskler ve bölümler</translation>
-    </message>
-    <message>
         <location filename="../ui/disks.py" line="334"/>
         <source>Disco a particionar (automático):</source>
         <translation>Bölümlenecek disk (otomatik):</translation>
@@ -119,12 +115,6 @@ Haz clic en &apos;Reiniciar&apos; para completar el proceso.</source>
         <location filename="../ui/disks.py" line="343"/>
         <source>EFI (/boot/efi):</source>
         <translation>EFI (/boot/efi):</translation>
-    </message>
-    <message>
-        <source>EFI (/boot/efi): partición FAT32 donde vive el arranque; obligatoria en UEFI y en BIOS (la requiere Limine).
-</source>
-        <translation type="vanished">EFI (/boot/efi): önyükleme dosyalarının bulunduğu FAT32 bölümü; UEFI ve BIOS sistemlerinde zorunludur (Limine bunu gerektirir).
-</translation>
     </message>
     <message>
         <location filename="../ui/disks.py" line="344"/>
@@ -286,41 +276,9 @@ Devam etmek istiyor musunuz?</translation>
         <translation>BTRFS ve EXT4 önerilir. BTRFS gelişmiş özellikler sunar; EXT4 basitlik ve uyumluluğa öncelik verir.</translation>
     </message>
     <message>
-        <source>Raíz (/): contiene el sistema instalado.
-</source>
-        <translation type="vanished">Kök (/): kurulu sistemi içerir.
-</translation>
-    </message>
-    <message>
-        <source>Home (/home): guarda tus archivos personales y configuraciones.
-</source>
-        <translation type="vanished">Home (/home): kişisel dosyaları ve ayarları saklar.
-</translation>
-    </message>
-    <message>
-        <source>EFI (/boot/efi): contiene los archivos de arranque en equipos UEFI.</source>
-        <translation type="vanished">EFI (/boot/efi): UEFI sistemlerinin önyükleme dosyalarını içerir.</translation>
-    </message>
-    <message>
         <location filename="../ui/disks.py" line="356"/>
         <source>Swap: espacio de intercambio usado cuando falta memoria RAM.</source>
         <translation>Swap: RAM yetersiz olduğunda kullanılan takas alanıdır.</translation>
-    </message>
-    <message>
-        <source>Contiene el sistema instalado y sus programas.</source>
-        <translation type="vanished">Kurulu sistemi ve programlarını içerir.</translation>
-    </message>
-    <message>
-        <source>Contiene los archivos de arranque de equipos UEFI.</source>
-        <translation type="vanished">UEFI sistemlerinin önyükleme dosyalarını içerir.</translation>
-    </message>
-    <message>
-        <source>Guarda los archivos personales y las configuraciones de los usuarios.</source>
-        <translation type="vanished">Kullanıcıların kişisel dosyalarını ve ayarlarını saklar.</translation>
-    </message>
-    <message>
-        <source>Espacio de intercambio usado cuando falta memoria RAM.</source>
-        <translation type="vanished">RAM yetersiz olduğunda kullanılan takas alanıdır.</translation>
     </message>
 </context>
 <context>
@@ -330,22 +288,6 @@ Devam etmek istiyor musunuz?</translation>
         <location filename="../ui/install_win.py" line="285"/>
         <source>Bienvenida</source>
         <translation>Hoş geldiniz</translation>
-    </message>
-    <message>
-        <source>Regional</source>
-        <translation type="vanished">Bölgesel</translation>
-    </message>
-    <message>
-        <source>Repositorios</source>
-        <translation type="vanished">Depolar</translation>
-    </message>
-    <message>
-        <source>Usuarios</source>
-        <translation type="vanished">Kullanıcılar</translation>
-    </message>
-    <message>
-        <source>Discos</source>
-        <translation type="vanished">Diskler</translation>
     </message>
     <message>
         <location filename="../ui/install_win.py" line="144"/>
@@ -467,24 +409,6 @@ Devam etmek istiyor musunuz?</translation>
     </message>
 </context>
 <context>
-    <name>InstallWorker</name>
-    <message>
-        <location filename="../install/install_thread.py" line="199"/>
-        <source>Error al escribir la configuración: {e}</source>
-        <translation>Yapılandırma yazılırken hata oluştu: {e}</translation>
-    </message>
-    <message>
-        <location filename="../install/install_thread.py" line="244"/>
-        <source>El instalador ha fallado. Mire en /tmp/installation.log.</source>
-        <translation>Kurulum başarısız oldu. /tmp/installation.log dosyasına bakın.</translation>
-    </message>
-    <message>
-        <location filename="../install/install_thread.py" line="248"/>
-        <source>Error crítico al ejecutar el backend: {e}</source>
-        <translation>Arka uç çalıştırılırken kritik hata: {e}</translation>
-    </message>
-</context>
-<context>
     <name>InstallationErrorPage</name>
     <message>
         <location filename="../ui/installation_error.py" line="100"/>
@@ -532,10 +456,6 @@ Devam etmek istiyor musunuz?</translation>
         <location filename="../ui/installation_error.py" line="155"/>
         <source>Exportar registro de instalación</source>
         <translation>Kurulum günlüğünü dışa aktar</translation>
-    </message>
-    <message>
-        <source>No se pudo exportar el registro de instalación.</source>
-        <translation type="vanished">Kurulum günlüğü dışa aktarılamadı.</translation>
     </message>
     <message>
         <location filename="../ui/installation_error.py" line="172"/>
@@ -698,10 +618,6 @@ Devam etmek istiyor musunuz?</translation>
         <translation>Dil ve saat dilimi yapılandırılıyor...</translation>
     </message>
     <message>
-        <source>Actualizando el sistema...</source>
-        <translation type="vanished">Sistem güncelleniyor...</translation>
-    </message>
-    <message>
         <location filename="../ui/installation.py" line="454"/>
         <source>Configurando servidor de repositorios...</source>
         <translation>Depo sunucusu yapılandırılıyor...</translation>
@@ -748,10 +664,6 @@ Devam etmek istiyor musunuz?</translation>
         <translation>Kurulum tamamlandı!</translation>
     </message>
     <message>
-        <source>Éxito</source>
-        <translation type="vanished">Başarılı</translation>
-    </message>
-    <message>
         <location filename="../ui/installation.py" line="473"/>
         <location filename="../ui/installation.py" line="501"/>
         <source>Error en la instalación</source>
@@ -763,282 +675,112 @@ Devam etmek istiyor musunuz?</translation>
         <source>Instalando el cargador de arranque...</source>
         <translation>Önyükleyici kuruluyor...</translation>
     </message>
-    <message>
-        <source>CuerdOS se ha instalado correctamente.
-Puede reiniciar su equipo.</source>
-        <translation type="vanished">CuerdOS doğru şekilde kuruldu.
-Bilgisayarınızı yeniden başlatabilirsiniz.</translation>
-    </message>
-    <message>
-        <source>Error Fatal</source>
-        <translation type="vanished">Kritik Hata</translation>
-    </message>
-</context>
-<context>
-    <name>InstallerConfigCollector</name>
-    <message>
-        <location filename="../install/config_collector.py" line="35"/>
-        <source>Error en contraseñas</source>
-        <translation>Şifre hatası</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="36"/>
-        <source>Las contraseñas no coinciden o están vacías. Por favor, verifica los campos de contraseña.</source>
-        <translation>Şifreler eşleşmiyor veya boş. Lütfen şifre alanlarını kontrol edin.</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="51"/>
-        <source>Nombre del equipo (hostname)</source>
-        <translation>Bilgisayar adı (hostname)</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="52"/>
-        <source>Usuario (login)</source>
-        <translation>Kullanıcı (giriş)</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="53"/>
-        <source>Nombre completo</source>
-        <translation>Tam ad</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="54"/>
-        <location filename="../install/config_collector.py" line="109"/>
-        <source>Contraseña del usuario</source>
-        <translation>Kullanıcı şifresi</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="55"/>
-        <location filename="../install/config_collector.py" line="110"/>
-        <source>Contraseña de root</source>
-        <translation>Root şifresi</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="79"/>
-        <source>Hostname inválido</source>
-        <translation>Geçersiz makine adı</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="90"/>
-        <source>Usuario inválido</source>
-        <translation>Geçersiz kullanıcı adı</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="103"/>
-        <source>Nombre inválido</source>
-        <translation>Geçersiz ad</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="104"/>
-        <source>El nombre completo no puede contener el carácter &apos;:&apos;.</source>
-        <translation>Tam ad &apos;:&apos; karakterini içeremez.</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="115"/>
-        <source>Contraseña inválida</source>
-        <translation>Geçersiz şifre</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="123"/>
-        <source>Contraseña demasiado corta</source>
-        <translation>Şifre çok kısa</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="150"/>
-        <source>Error en el cifrado</source>
-        <translation>Şifreleme hatası</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="168"/>
-        <source>Debe seleccionar una partición Raíz (/).</source>
-        <translation>Bir Kök (/) bölümü seçmelisiniz.</translation>
-    </message>
-    <message>
-        <source>Debe seleccionar una partición EFI (/boot/efi).</source>
-        <translation type="vanished">Bir EFI (/boot/efi) bölümü seçmelisiniz.</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="61"/>
-        <source>Faltan datos</source>
-        <translation>Eksik veri</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="62"/>
-        <source>Debes completar los siguientes campos:
-
-- </source>
-        <translation>Aşağıdaki alanları doldurmalısınız:
-
-- </translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="81"/>
-        <source>El nombre del equipo solo puede contener letras minusculas,
-numeros y guiones, y no puede empezar ni terminar con un guion.</source>
-        <translation>Bilgisayar adı yalnızca küçük harfler,
-sayılar ve tireler içerebilir; tire ile başlayamaz veya bitemez.</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="92"/>
-        <source>El nombre de usuario solo puede contener letras minusculas,
-numeros, guiones y guiones bajos, y no puede contener espacios.</source>
-        <translation>Kullanıcı adı yalnızca küçük harfler,
-sayılar, tireler ve alt çizgiler içerebilir; boşluk içeremez.</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="116"/>
-        <source>{label} no puede empezar ni terminar con espacios.</source>
-        <translation>{label} boşlukla başlayamaz veya bitemez.</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="124"/>
-        <source>{label} debe tener al menos 4 caracteres.</source>
-        <translation>{label} en az 4 karakter olmalıdır.</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="169"/>
-        <source>Debe seleccionar una partición EFI (/boot/efi), ya sea un equipo UEFI o BIOS.</source>
-        <translation>Sistemin UEFI veya BIOS olmasına bakılmaksızın bir EFI (/boot/efi) bölümü seçmelisiniz.</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="174"/>
-        <location filename="../install/config_collector.py" line="210"/>
-        <location filename="../install/config_collector.py" line="221"/>
-        <location filename="../install/config_collector.py" line="230"/>
-        <location filename="../install/config_collector.py" line="244"/>
-        <source>Error</source>
-        <translation>Hata</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="211"/>
-        <source>La partición /home tiene un sistema de archivos no soportado: {fs}.</source>
-        <translation>/home bölümünde desteklenmeyen bir dosya sistemi var: {fs}.</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="222"/>
-        <source>La misma partición está seleccionada para más de un uso.</source>
-        <translation>Aynı bölüm birden fazla amaç için seçilmiş.</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="231"/>
-        <source>La partición {dev} está montada en {mp}. Desmóntala antes de continuar.</source>
-        <translation>{dev} bölümü {mp} konumuna bağlı. Devam etmeden önce bağlantısını kesin.</translation>
-    </message>
-    <message>
-        <location filename="../install/config_collector.py" line="244"/>
-        <source>Error procesando datos: </source>
-        <translation>Veriler işlenirken hata: </translation>
-    </message>
 </context>
 <context>
     <name>LanguagePage</name>
     <message>
-        <location filename="../ui/language.py" line="146"/>
+        <location filename="../ui/language.py" line="153"/>
         <source>Configuración regional</source>
         <translation>Bölgesel ayarlar</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="148"/>
+        <location filename="../ui/language.py" line="155"/>
         <source>Zona horaria:</source>
         <translation>Saat dilimi:</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="149"/>
+        <location filename="../ui/language.py" line="156"/>
         <source>Ciudad:</source>
         <translation>Şehir:</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="150"/>
+        <location filename="../ui/language.py" line="157"/>
         <source>Idioma:</source>
         <translation>Dil:</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="151"/>
+        <location filename="../ui/language.py" line="158"/>
         <source>Teclado:</source>
         <translation>Klavye:</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="114"/>
+        <location filename="../ui/language.py" line="108"/>
         <source>Africa</source>
         <translation>Afrika</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="115"/>
+        <location filename="../ui/language.py" line="109"/>
         <source>America</source>
         <translation>Amerika</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="116"/>
+        <location filename="../ui/language.py" line="110"/>
         <source>Antarctica</source>
         <translation>Antarktika</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="117"/>
+        <location filename="../ui/language.py" line="111"/>
         <source>Arctic</source>
         <translation>Arktik</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="118"/>
+        <location filename="../ui/language.py" line="112"/>
         <source>Asia</source>
         <translation>Asya</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="119"/>
+        <location filename="../ui/language.py" line="113"/>
         <source>Atlantic</source>
         <translation>Atlantik</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="120"/>
+        <location filename="../ui/language.py" line="114"/>
         <source>Australia</source>
         <translation>Avustralya</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="121"/>
+        <location filename="../ui/language.py" line="115"/>
         <source>Brazil</source>
         <translation>Brezilya</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="122"/>
+        <location filename="../ui/language.py" line="116"/>
         <source>Canada</source>
         <translation>Kanada</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="123"/>
+        <location filename="../ui/language.py" line="117"/>
         <source>Chile</source>
         <translation>Şili</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="124"/>
+        <location filename="../ui/language.py" line="118"/>
         <source>Europe</source>
         <translation>Avrupa</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="125"/>
+        <location filename="../ui/language.py" line="119"/>
         <source>Indian</source>
         <translation>Hint Okyanusu</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="126"/>
+        <location filename="../ui/language.py" line="120"/>
         <source>Mexico</source>
         <translation>Meksika</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="127"/>
+        <location filename="../ui/language.py" line="121"/>
         <source>Pacific</source>
         <translation>Pasifik</translation>
     </message>
     <message>
-        <location filename="../ui/language.py" line="128"/>
+        <location filename="../ui/language.py" line="122"/>
         <source>US</source>
         <translation>ABD</translation>
     </message>
 </context>
 <context>
     <name>MirrorsPage</name>
-    <message>
-        <source>Repositorios y software</source>
-        <translation type="vanished">Depolar ve yazılım</translation>
-    </message>
     <message>
         <location filename="../ui/mirrors.py" line="83"/>
         <source>Servidor de descarga (mirror)</source>
@@ -1095,10 +837,6 @@ sayılar, tireler ve alt çizgiler içerebilir; boşluk içeremez.</translation>
         <translation>Modern Intel işlemcilerle güvenlik, kararlılık ve uyumluluğu artırmak için güncel Intel mikrokodunu yükler.</translation>
     </message>
     <message>
-        <source>Activar repositorios no libres</source>
-        <translation type="vanished">Özgür olmayan depoları etkinleştir</translation>
-    </message>
-    <message>
         <location filename="../ui/mirrors.py" line="96"/>
         <source>Instalar drivers NVIDIA</source>
         <translation>NVIDIA sürücülerini kur</translation>
@@ -1116,10 +854,6 @@ sayılar, tireler ve alt çizgiler içerebilir; boşluk içeremez.</translation>
 </context>
 <context>
     <name>UsersPage</name>
-    <message>
-        <source>Nombre de equipo y usuarios</source>
-        <translation type="vanished">Bilgisayar adı ve kullanıcılar</translation>
-    </message>
     <message>
         <location filename="../ui/users.py" line="218"/>
         <source>Nombre del equipo:</source>
@@ -1144,6 +878,11 @@ sayılar, tireler ve alt çizgiler içerebilir; boşluk içeremez.</translation>
         <location filename="../ui/users.py" line="222"/>
         <source>Contraseña de root</source>
         <translation>Root şifresi</translation>
+    </message>
+    <message>
+        <location filename="../ui/users.py" line="226"/>
+        <source>Disponible con SDDM, LightDM, GDM y Greetd.</source>
+        <translation>SDDM, LightDM, GDM ve Greetd ile kullanılabilir.</translation>
     </message>
     <message>
         <location filename="../ui/users.py" line="229"/>
@@ -1189,13 +928,13 @@ sayılar, tireler ve alt çizgiler içerebilir; boşluk içeremez.</translation>
         <translation>{ctx_user} parolaları eşleşmiyor</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="364"/>
-        <location filename="../ui/users.py" line="376"/>
+        <location filename="../ui/users.py" line="353"/>
+        <location filename="../ui/users.py" line="365"/>
         <source>La contraseña de usuario es obligatoria</source>
         <translation>Kullanıcı şifresi gereklidir</translation>
     </message>
     <message>
-        <location filename="../ui/users.py" line="383"/>
+        <location filename="../ui/users.py" line="372"/>
         <source>La contraseña de root es obligatoria</source>
         <translation>Root şifresi gereklidir</translation>
     </message>
@@ -1209,21 +948,6 @@ sayılar, tireler ve alt çizgiler içerebilir; boşluk içeremez.</translation>
         <location filename="../ui/users.py" line="224"/>
         <source>Iniciar sesión automáticamente</source>
         <translation>Otomatik giriş yap</translation>
-    </message>
-    <message>
-        <location filename="../ui/users.py" line="226"/>
-        <source>Disponible con SDDM, LightDM o GDM. Con greetd no es posible configurarlo desde este instalador.</source>
-        <translation>SDDM, LightDM veya GDM ile kullanılabilir. greetd ile bu yükleyici tarafından yapılandırılamaz.</translation>
-    </message>
-    <message>
-        <location filename="../ui/users.py" line="338"/>
-        <source>Autologin disponible mediante {manager}.</source>
-        <translation>{manager} üzerinden otomatik giriş kullanılabilir.</translation>
-    </message>
-    <message>
-        <location filename="../ui/users.py" line="346"/>
-        <source>Con greetd no es posible configurar autologin con este instalador.</source>
-        <translation>greetd ile otomatik giriş bu yükleyici tarafından yapılandırılamaz.</translation>
     </message>
     <message>
         <location filename="../ui/users.py" line="217"/>

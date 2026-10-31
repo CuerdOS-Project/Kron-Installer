@@ -534,6 +534,28 @@ EOF
 
         chmod 755 "$TARGETDIR/var/lib/regreet"
         chmod 644 "$TARGETDIR/var/lib/regreet/state.toml"
+
+        # Eliminar la sesión inicial heredada del Live.
+        if [ -f "$TARGETDIR/etc/greetd/config.toml" ]; then
+            local greetd_config="$TARGETDIR/etc/greetd/config.toml"
+            local tmp_config="$greetd_config.tmp"
+
+            awk '
+                /^[[:space:]]*\[[[:space:]]*initial_session[[:space:]]*\]/ {
+                    skip = 1
+                    next
+                }
+                skip && /^[[:space:]]*\[/ {
+                    skip = 0
+                }
+                !skip {
+                    print
+                }
+            ' "$greetd_config" > "$tmp_config"
+
+            chmod --reference="$greetd_config" "$tmp_config"
+            mv "$tmp_config" "$greetd_config"
+        fi
     fi
 }
 
@@ -590,34 +612,14 @@ EOF
             ;;
         greetd)
             local greetd_config="$TARGETDIR/etc/greetd/config.toml"
-            local tmp_config="$greetd_config.tmp"
 
             if [ -f "$greetd_config" ]; then
-                # Eliminar la sección initial_session heredada del Live.
-                awk '
-                    /^[[:space:]]*\[[[:space:]]*initial_session[[:space:]]*\]/ {
-                        skip = 1
-                        next
-                    }
-                    skip && /^[[:space:]]*\[/ {
-                        skip = 0
-                    }
-                    !skip {
-                        print
-                    }
-                ' "$greetd_config" > "$tmp_config"
-
-                if [ "$enabled" = "1" ]; then
-                    cat >> "$tmp_config" <<EOF
+                cat >> "$greetd_config" <<EOF
 
 [initial_session]
 command = "dbus-run-session sway"
 user = "$userlogin"
 EOF
-                fi
-
-                chmod --reference="$greetd_config" "$tmp_config"
-                mv "$tmp_config" "$greetd_config"
             fi
             ;;
         *)

@@ -617,7 +617,7 @@ EOF
                 cat >> "$greetd_config" <<EOF
 
 [initial_session]
-command = "dbus-run-session sway"
+command = "/etc/greetd/launch-sway.sh"
 user = "$userlogin"
 EOF
             fi

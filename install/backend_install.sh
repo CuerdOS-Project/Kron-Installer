@@ -516,16 +516,24 @@ set_useraccount() {
 # Configura el estado inicial de ReGreet.
 set_regreet_state() {
     local userlogin
+    local session
+
     userlogin="$(get_option USERLOGIN)"
 
     if [ -d "$TARGETDIR/etc/greetd" ]; then
         install -d "$TARGETDIR/var/lib/regreet"
 
+        if [ -x "$TARGETDIR/usr/bin/xfwl4" ]; then
+            session="Xfce (Wayland D-Bus session)"
+        else
+            session="Sway (D-Bus session)"
+        fi
+
         cat > "$TARGETDIR/var/lib/regreet/state.toml" <<EOF
 last_user = "$userlogin"
 
 [user_to_last_sess]
-$userlogin = "Sway (D-Bus session)"
+$userlogin = "$session"
 EOF
 
         chroot "$TARGETDIR" chown _greeter:_greeter \

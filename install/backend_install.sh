@@ -612,12 +612,17 @@ EOF
             ;;
         greetd)
             local greetd_config="$TARGETDIR/etc/greetd/config.toml"
+            local launch_script="/usr/bin/launch-sway.sh"
+
+            if [ -x "$TARGETDIR/usr/bin/xfwl4" ]; then
+                launch_script="/usr/bin/launch-xfce.sh"
+            fi
 
             if [ -f "$greetd_config" ]; then
                 cat >> "$greetd_config" <<EOF
 
 [initial_session]
-command = "/usr/bin/launch-sway.sh"
+command = "$launch_script"
 user = "$userlogin"
 EOF
             fi

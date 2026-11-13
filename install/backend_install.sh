@@ -889,6 +889,9 @@ set_bootloader() {
         cmdline_opts="rw rootflags=subvol=@"
     fi
 
+    # Agregar soporte a AppArmor
+    cmdline_opts="$cmdline_opts apparmor=1 security=apparmor"
+
     # Regenerar el initramfs SIEMPRE en el chroot.
     local kver="${kernel#/boot/vmlinuz-}"
     local -a dracut_args=(--force --quiet)

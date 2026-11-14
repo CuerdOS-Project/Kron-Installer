@@ -528,76 +528,6 @@ Devam etmek istiyor musunuz?</translation>
         <translation>Kurulum motoru başlatılıyor...</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="134"/>
-        <source>Bienvenido a CuerdOS</source>
-        <translation>CuerdOS&apos;a hoş geldiniz</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="136"/>
-        <source>Estás a punto de descubrir un sistema rápido, ligero y pensado para que todo simplemente funcione. Gracias por darle una oportunidad.</source>
-        <translation>Her şeyin sorunsuzca çalışması için tasarlanmış hızlı ve hafif bir sistemi keşfetmek üzeresiniz. Ona bir şans verdiğiniz için teşekkürler.</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="142"/>
-        <source>Instalar programas, muy fácil</source>
-        <translation>Program kurmak çok kolay</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="144"/>
-        <source>Encontrar y añadir nuevas aplicaciones es tan sencillo como un par de clics, sin complicaciones ni pasos técnicos de por medio.</source>
-        <translation>Yeni uygulamalar bulmak ve eklemek, teknik adımlar gerektirmeden sadece birkaç tıklama kadar basittir.</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="150"/>
-        <source>Rápido desde que enciendes</source>
-        <translation>Açtığınız andan itibaren hızlı</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="152"/>
-        <source>Tu equipo arrancará en segundos. Por debajo, CuerdOS está optimizado para que tú solo te preocupes de usarlo.</source>
-        <translation>Bilgisayarınız saniyeler içinde açılır. Perde arkasında CuerdOS, sizin sadece kullanmanız için optimize edilmiştir.</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="157"/>
-        <source>Tu escritorio, a tu gusto</source>
-        <translation>Masaüstünüz, sizin tarzınızda</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="159"/>
-        <source>Elige el aspecto que más te guste: simple y minimalista, o lleno de detalles. Tú decides cómo se ve tu equipo.</source>
-        <translation>En sevdiğiniz görünümü seçin: sade ve minimal veya ayrıntılarla dolu. Bilgisayarınızın nasıl göründüğüne siz karar verirsiniz.</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="164"/>
-        <source>Siempre al día, sin esfuerzo</source>
-        <translation>Hiç zahmetsiz, her zaman güncel</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="166"/>
-        <source>Mantener tu sistema actualizado es muy sencillo: con un clic tendrás las últimas mejoras y parches de seguridad.</source>
-        <translation>Sisteminizi güncel tutmak çok basit: tek bir tıklamayla en son iyileştirmeleri ve güvenlik yamalarını alırsınız.</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="171"/>
-        <source>Seguro y preparado para errores</source>
-        <translation>Güvenli ve hatalara hazırlıklı</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="173"/>
-        <source>CuerdOS protege tu equipo desde el primer momento y está pensado para que, si algo falla, todo siga funcionando: la estabilidad es siempre la prioridad.</source>
-        <translation>CuerdOS bilgisayarını ilk andan itibaren korur ve bir şeyler ters giderse her şeyin çalışmaya devam etmesi için tasarlanmıştır: kararlılık her zaman önceliktir.</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="179"/>
-        <source>Una comunidad que te acompaña</source>
-        <translation>Size eşlik eden bir topluluk</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="181"/>
-        <source>Si tienes dudas o quieres compartir tu experiencia, nuestra comunidad está lista para ayudarte en todo momento.</source>
-        <translation>Sorularınız varsa veya deneyiminizi paylaşmak istiyorsanız, topluluğumuz size her zaman yardımcı olmaya hazır.</translation>
-    </message>
-    <message>
         <location filename="../ui/installation.py" line="439"/>
         <source>(Fase {0} de {1})</source>
         <translation>(Aşama {0} / {1})</translation>
@@ -674,6 +604,86 @@ Devam etmek istiyor musunuz?</translation>
         <location filename="../ui/installation.py" line="460"/>
         <source>Instalando el cargador de arranque...</source>
         <translation>Önyükleyici kuruluyor...</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="135"/>
+        <source>Las bondades de CuerdOS</source>
+        <translation>CuerdOS'un artıları</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="136"/>
+        <source>Un sistema rápido, ligero y estable, potenciado con las herramientas de CuerdOS y un kernel personalizado, con una apariencia amigable para ti. Instala y mantén tus programas con Yelena Software y fpm.</source>
+        <translation>CuerdOS araçları ve özel bir çekirdekle güçlendirilmiş, sizin için dost canlısı bir görünüme sahip hızlı, hafif ve kararlı bir sistem. Programlarınızı Yelena Software ve fpm ile kurun ve güncel tutun.</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="144"/>
+        <source>CuerdOS para artistas</source>
+        <translation>Sanatçılar için CuerdOS</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="145"/>
+        <source>Se adapta muy bien al diseño vectorial, la música, el dibujo, la fotografía y mucho más. Tu creatividad no tiene límites.</source>
+        <translation>Vektör tasarım, müzik, çizim, fotoğrafçılık ve çok daha fazlasına çok iyi uyum sağlar. Yaratıcılığınızın sınırı yok.</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="152"/>
+        <source>CuerdOS para jugadores</source>
+        <translation>Oyuncular için CuerdOS</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="153"/>
+        <source>Diseñado para jugar, desde los grandes títulos AAA hasta los clásicos de siempre.</source>
+        <translation>Büyük AAA oyunlardan efsane klasiklere kadar oyun oynamak için tasarlandı.</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="159"/>
+        <source>CuerdOS para la oficina</source>
+        <translation>Ofis için CuerdOS</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="160"/>
+        <source>Muy funcional para armar presentaciones, documentos y cálculos, y mucho más para tu trabajo diario.</source>
+        <translation>Sunumlar, belgeler ve hesaplamalar hazırlamak ve günlük işleriniz için çok daha fazlası için oldukça işlevsel.</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="166"/>
+        <source>CuerdOS para la ciencia</source>
+        <translation>Bilim için CuerdOS</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="167"/>
+        <source>Una gran herramienta para estudiantes y para la ciencia de datos.</source>
+        <translation>Öğrenciler ve veri bilimi için harika bir araç.</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="173"/>
+        <source>CuerdOS para desarrolladores</source>
+        <translation>Geliştiriciler için CuerdOS</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="174"/>
+        <source>Ideal para crear y construir proyectos de alto calibre, con todo lo que necesitas a la mano.</source>
+        <translation>Yüksek kaliteli projeler oluşturmak ve derlemek için ideal; ihtiyacınız olan her şey elinizin altında.</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="180"/>
+        <source>CuerdOS para Media Center</source>
+        <translation>Medya Merkezi için CuerdOS</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="181"/>
+        <source>Un sistema que puede convertirse en un centro multimedia para tus películas, series, música y fotos.</source>
+        <translation>Filmleriniz, dizileriniz, müzikleriniz ve fotoğraflarınız için bir multimedya merkezine dönüşebilen bir sistem.</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="187"/>
+        <source>CuerdOS para TODOS</source>
+        <translation>Herkes için CuerdOS</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="188"/>
+        <source>Un sistema 100% libre y de código abierto, fácil para principiantes y para quienes recién llegan al mundo de GNU/Linux.</source>
+        <translation>%100 özgür ve açık kaynaklı bir sistem; yeni başlayanlar ve GNU/Linux dünyasına yeni adım atanlar için kolay.</translation>
     </message>
 </context>
 <context>

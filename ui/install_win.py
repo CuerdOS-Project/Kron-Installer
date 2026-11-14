@@ -129,7 +129,7 @@ class InstallWin(QWidget):
         self.pag_mirrors = MirrorsPage(self.system_data)
         self.pag_usuarios = UsersPage()
         self.pag_usuarios.set_autologin_support(self.system_data["display_manager"])
-        self.pag_discos = DisksPage(self.system_data)
+        self.pag_discos = DisksPage(self.system_data, demo=self.demo)
         self.pag_instalacion = InstallationPage(demo=self.demo)
         self.pag_error = InstallationErrorPage(self)
         self.pag_finalizacion = CompletionPage(images_dir=self._images_dir)
@@ -373,7 +373,7 @@ class InstallWin(QWidget):
             )
             config = collector.collect_data()
 
-            if config and not self._confirmar_formateo(config):
+            if config and not self.demo and not self._confirmar_formateo(config):
                 return
 
             if config:

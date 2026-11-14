@@ -1,11 +1,14 @@
 from PySide6.QtWidgets import (
     QWidget, QLabel, QVBoxLayout, QHBoxLayout, QPlainTextEdit,
     QProgressBar, QPushButton, QFrame, QSizePolicy,
-    QStackedWidget
+    QStackedWidget, QTextEdit
 )
 from PySide6.QtCore import Qt, Signal, QTimer, QVariantAnimation, QEasingCurve
 from PySide6.QtGui import QPixmap
 import os
+import re
+import time
+from html import escape
 from install.install_thread import InstallWorker
 from ui.title_widget import make_page_title
 
@@ -117,13 +120,14 @@ class InstallationPage(QWidget):
 
     # Imagenes de cada slide, en el mismo orden que _slide_texts().
     SLIDE_IMAGES = [
-        "welcome.webp",
-        "package.webp",
-        "init.webp",
-        "desktop.webp",
-        "update.webp",
-        "secure.webp",
-        "community.webp",
+        "yelena-soft-image.webp",
+        "suri-image.webp",
+        "yur-vera-image.webp",
+        "sun-hee-image.webp",
+        "alex-image.webp",
+        "monika-image.webp",
+        "becky-image.webp",
+        "general.webp",
     ]
 
     def _slide_texts(self):
@@ -131,55 +135,63 @@ class InstallationPage(QWidget):
         para cualquier persona, sin tecnicismos."""
         return [
             (
-                self.tr("Bienvenido a CuerdOS"),
+                self.tr("Las bondades de CuerdOS"),
                 self.tr(
-                    "Estás a punto de descubrir un sistema rápido, ligero "
-                    "y pensado para que todo simplemente funcione. "
-                    "Gracias por darle una oportunidad."
+                    "Un sistema rápido, ligero y estable, potenciado con las "
+                    "herramientas de CuerdOS y un kernel personalizado, con "
+                    "una apariencia amigable para ti. Instala y mantén tus "
+                    "programas con Yelena Software y fpm."
                 ),
             ),
             (
-                self.tr("Instalar programas, muy fácil"),
+                self.tr("CuerdOS para artistas"),
                 self.tr(
-                    "Encontrar y añadir nuevas aplicaciones es tan sencillo "
-                    "como un par de clics, sin complicaciones ni pasos "
-                    "técnicos de por medio."
+                    "Se adapta muy bien al diseño vectorial, la música, el "
+                    "dibujo, la fotografía y mucho más. Tu creatividad no "
+                    "tiene límites."
                 ),
             ),
             (
-                self.tr("Rápido desde que enciendes"),
+                self.tr("CuerdOS para jugadores"),
                 self.tr(
-                    "Tu equipo arrancará en segundos. Por debajo, CuerdOS "
-                    "está optimizado para que tú solo te preocupes de usarlo."
+                    "Diseñado para jugar, desde los grandes títulos AAA "
+                    "hasta los clásicos de siempre."
                 ),
             ),
             (
-                self.tr("Tu escritorio, a tu gusto"),
+                self.tr("CuerdOS para la oficina"),
                 self.tr(
-                    "Elige el aspecto que más te guste: simple y minimalista, "
-                    "o lleno de detalles. Tú decides cómo se ve tu equipo."
+                    "Muy funcional para armar presentaciones, documentos y "
+                    "cálculos, y mucho más para tu trabajo diario."
                 ),
             ),
             (
-                self.tr("Siempre al día, sin esfuerzo"),
+                self.tr("CuerdOS para la ciencia"),
                 self.tr(
-                    "Mantener tu sistema actualizado es muy sencillo: con un "
-                    "clic tendrás las últimas mejoras y parches de seguridad."
+                    "Una gran herramienta para estudiantes y para la "
+                    "ciencia de datos."
                 ),
             ),
             (
-                self.tr("Seguro y preparado para errores"),
+                self.tr("CuerdOS para desarrolladores"),
                 self.tr(
-                    "CuerdOS protege tu equipo desde el primer momento y está "
-                    "pensado para que, si algo falla, todo siga funcionando: "
-                    "la estabilidad es siempre la prioridad."
+                    "Ideal para crear y construir proyectos de alto "
+                    "calibre, con todo lo que necesitas a la mano."
                 ),
             ),
             (
-                self.tr("Una comunidad que te acompaña"),
+                self.tr("CuerdOS para Media Center"),
                 self.tr(
-                    "Si tienes dudas o quieres compartir tu experiencia, "
-                    "nuestra comunidad está lista para ayudarte en todo momento."
+                    "Un sistema que puede convertirse en un centro "
+                    "multimedia para tus películas, series, música y fotos."
+                ),
+            ),
+            (
+                self.tr("CuerdOS para TODOS"),
+                self.tr(
+                    "Un sistema 100% libre y de código abierto, fácil para "
+                    "principiantes y para quienes recién llegan al mundo de "
+                    "GNU/Linux."
                 ),
             ),
         ]
@@ -193,10 +205,12 @@ class InstallationPage(QWidget):
         self._current_slide = 0
         self._slide_count = len(self.SLIDE_IMAGES)
         self._demo_success_pending = False
+        self._installing = False
         self._showing_log = False
         self._indeterminate = False
         self._phase_idx = None
         self._phase_total = None
+        self._t0 = None
         self.setup_ui()
         self.translate_ui()
 
@@ -307,9 +321,11 @@ class InstallationPage(QWidget):
         self._content_stack.addWidget(slides_page)
 
         # --- Pagina 1: Terminal ---
-        self.terminal = QPlainTextEdit()
+        self.terminal = QTextEdit()
         self.terminal.setReadOnly(True)
         self.terminal.setObjectName("installTerminal")
+        self.terminal.setLineWrapMode(QTextEdit.WidgetWidth)
+        self.terminal.document().setMaximumBlockCount(5000)
         self._content_stack.addWidget(self.terminal)
 
         container_layout.addWidget(self._content_stack)
@@ -319,7 +335,6 @@ class InstallationPage(QWidget):
         self._slide_timer = QTimer(self)
         self._slide_timer.setInterval(10000)
         self._slide_timer.timeout.connect(self._next_slide)
-        self._slide_timer.start()
 
         # Estado inicial de dots
         self._update_dots()
@@ -340,13 +355,15 @@ class InstallationPage(QWidget):
 
         self.slide_stack.setCurrentIndex(self._current_slide)
         self._update_dots()
-        self._slide_timer.start()
+        if self._installing:
+            self._slide_timer.start()
 
     def _prev_slide(self):
         self._current_slide = (self._current_slide - 1) % self._slide_count
         self.slide_stack.setCurrentIndex(self._current_slide)
         self._update_dots()
-        self._slide_timer.start()
+        if self._installing:
+            self._slide_timer.start()
 
     def _update_dots(self):
         for i, dot in enumerate(self.dot_labels):
@@ -364,7 +381,8 @@ class InstallationPage(QWidget):
         if self._showing_log:
             # Volver a slides
             self._content_stack.setCurrentIndex(0)
-            self._slide_timer.start()
+            if self._installing:
+                self._slide_timer.start()
             self._showing_log = False
         else:
             # Mostrar terminal
@@ -372,6 +390,71 @@ class InstallationPage(QWidget):
             self._slide_timer.stop()
             self._showing_log = True
         self.log_state_changed.emit(self._showing_log)
+
+    #  Salida de instalacion (terminal)
+    _LOG_COLORS = {
+        "text": "#b9d6c0",
+        "dim":  "#5f7468",
+        "head": "#7fd18f",
+        "ok":   "#7fd18f",
+        "warn": "#e6c26a",
+        "err":  "#f08a8a",
+        "demo": "#7fb4d1",
+    }
+    _RE_ERR = re.compile(r"\b(error|fatal|failed|fail|no se pudo|cannot|can't)\b", re.I)
+    _RE_WARN = re.compile(r"\b(warning|warn|note|aviso)\b", re.I)
+    _RE_OK = re.compile(
+        r"(configured|system updated|completad|correctamente|done|finished|created)", re.I
+    )
+
+    def _elapsed(self):
+        if self._t0 is None:
+            return "00:00"
+        secs = int(time.monotonic() - self._t0)
+        return f"{secs // 60:02d}:{secs % 60:02d}"
+
+    def _log_line(self, text, kind="text", bold=False, gap=False):
+        c = self._LOG_COLORS
+        stamp = f'<span style="color:{c["dim"]}">[{self._elapsed()}]</span>'
+        body = escape(text).replace(" ", "&nbsp;")
+        weight = "font-weight:600;" if bold else ""
+        html = (
+            f'<span style="font-family:monospace;">{stamp}&nbsp;'
+            f'<span style="color:{c[kind]};{weight}">{body}</span></span>'
+        )
+        if gap:
+            self.terminal.append("")
+        self.terminal.append(html)
+
+    def _append_log(self, line):
+        line = (line or "").rstrip()
+        if not line:
+            return
+
+        # Inicio de fase: "[INFO] TOKEN" -> encabezado legible
+        if line.startswith("[INFO] "):
+            token = line[7:].strip()
+            texto = self.UI_STATUS_TEXTS.get(token)
+            if texto is not None:
+                self._log_line(f"\u25B6 {texto}", "head", bold=True, gap=True)
+            elif self._RE_ERR.search(token):
+                self._log_line(f"\u2716 {token}", "err", bold=True)
+            else:
+                self._log_line(f"\u2022 {token}", "text")
+            return
+
+        if line.startswith("[DEMO]"):
+            self._log_line("  " + line[6:].strip(), "demo")
+            return
+
+        if line.startswith("FATAL ERROR") or self._RE_ERR.search(line):
+            self._log_line(f"\u2716 {line}", "err", bold=line.startswith("FATAL"))
+        elif self._RE_WARN.search(line):
+            self._log_line(f"\u26A0 {line}", "warn")
+        elif self._RE_OK.search(line):
+            self._log_line(f"\u2714 {line}", "ok")
+        else:
+            self._log_line(f"  {line}", "text")
 
     #  Instalacion
     def _set_progress_mode(self, indeterminate):
@@ -407,6 +490,15 @@ class InstallationPage(QWidget):
         self._phase_total = total
 
     def iniciar_instalacion(self, config_data):
+        self._installing = True
+        self._t0 = time.monotonic()
+        self.terminal.clear()
+        self._log_line(self.tr("Registro de instalación iniciado"), "head")
+        self._current_slide = 0
+        self.slide_stack.setCurrentIndex(0)
+        self._update_dots()
+        if not self._showing_log:
+            self._slide_timer.start()
         if self.demo:
             self.texto_label.setText(self.tr("Iniciando simulación (modo demo)..."))
         else:
@@ -420,7 +512,7 @@ class InstallationPage(QWidget):
         self.worker.progress_update.connect(self._on_progress_value)
         self.worker.mode_changed.connect(self._set_progress_mode)
         self.worker.phase_changed.connect(self._on_phase_changed)
-        self.worker.log_update.connect(self.terminal.appendPlainText)
+        self.worker.log_update.connect(self._append_log)
         self.worker.finished_success.connect(self.on_success)
         self.worker.finished_error.connect(self.on_error)
 
@@ -481,6 +573,10 @@ class InstallationPage(QWidget):
         self.install_finished = True
         self._demo_success_pending = False
         self.texto_label.setText(self.tr("¡Instalación completada!"))
+        self._log_line(
+            self.tr("\u2714 Instalación completada en {0}").format(self._elapsed()),
+            "ok", bold=True, gap=True,
+        )
         self._set_progress_mode(False)
         self.progress.setValue(100)
         self.finished_success.emit()
@@ -496,6 +592,10 @@ class InstallationPage(QWidget):
 
     def on_error(self, msg):
         self.install_error = True
+        self._log_line(
+            self.tr("\u2716 La instalación falló tras {0}: {1}").format(self._elapsed(), msg),
+            "err", bold=True, gap=True,
+        )
         self.texto_label.setObjectName("errorStatusLabel")
         self.texto_label.setStyle(self.texto_label.style())
         self.texto_label.setText(self.tr("Error en la instalación"))

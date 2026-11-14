@@ -528,76 +528,6 @@ Deseas continuar?</source>
         <translation>설치 엔진 시작 중...</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="134"/>
-        <source>Bienvenido a CuerdOS</source>
-        <translation>CuerdOS에 오신 것을 환영합니다</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="136"/>
-        <source>Estás a punto de descubrir un sistema rápido, ligero y pensado para que todo simplemente funcione. Gracias por darle una oportunidad.</source>
-        <translation>빠르고 가벼우며, 그냥 잘 작동하도록 만들어진 시스템을 만나보세요. 사용해 주셔서 감사합니다.</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="142"/>
-        <source>Instalar programas, muy fácil</source>
-        <translation>앱 설치, 아주 간단해요</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="144"/>
-        <source>Encontrar y añadir nuevas aplicaciones es tan sencillo como un par de clics, sin complicaciones ni pasos técnicos de por medio.</source>
-        <translation>새 앱을 찾아서 추가하는 건 클릭 몇 번이면 충분해요. 복잡한 기술적 절차는 필요 없습니다.</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="150"/>
-        <source>Rápido desde que enciendes</source>
-        <translation>켜는 순간부터 빠릅니다</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="152"/>
-        <source>Tu equipo arrancará en segundos. Por debajo, CuerdOS está optimizado para que tú solo te preocupes de usarlo.</source>
-        <translation>컴퓨터가 몇 초 안에 부팅됩니다. 뒤에서는 CuerdOS가 최적화되어 있어, 사용자는 그저 사용하기만 하면 됩니다.</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="157"/>
-        <source>Tu escritorio, a tu gusto</source>
-        <translation>내 마음대로 꾸미는 데스크탑</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="159"/>
-        <source>Elige el aspecto que más te guste: simple y minimalista, o lleno de detalles. Tú decides cómo se ve tu equipo.</source>
-        <translation>심플하고 미니멀한 스타일이든, 디테일이 가득한 스타일이든 원하는 대로 선택하세요. 컴퓨터의 모습은 당신이 결정합니다.</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="164"/>
-        <source>Siempre al día, sin esfuerzo</source>
-        <translation>노력 없이 항상 최신 상태로</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="166"/>
-        <source>Mantener tu sistema actualizado es muy sencillo: con un clic tendrás las últimas mejoras y parches de seguridad.</source>
-        <translation>시스템을 최신 상태로 유지하는 건 아주 간단합니다. 클릭 한 번이면 최신 개선 사항과 보안 패치를 받을 수 있어요.</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="171"/>
-        <source>Seguro y preparado para errores</source>
-        <translation>안전하고 오류에 강한 시스템</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="173"/>
-        <source>CuerdOS protege tu equipo desde el primer momento y está pensado para que, si algo falla, todo siga funcionando: la estabilidad es siempre la prioridad.</source>
-        <translation>CuerdOS는 처음부터 컴퓨터를 보호하며, 문제가 생겨도 계속 작동할 수 있도록 설계되었습니다. 안정성이 언제나 최우선입니다.</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="179"/>
-        <source>Una comunidad que te acompaña</source>
-        <translation>언제나 함께하는 커뮤니티</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="181"/>
-        <source>Si tienes dudas o quieres compartir tu experiencia, nuestra comunidad está lista para ayudarte en todo momento.</source>
-        <translation>궁금한 점이 있거나 경험을 나누고 싶다면, 우리 커뮤니티가 언제든 도와드릴 준비가 되어 있습니다.</translation>
-    </message>
-    <message>
         <location filename="../ui/installation.py" line="439"/>
         <source>(Fase {0} de {1})</source>
         <translation>(단계 {0} / {1})</translation>
@@ -674,6 +604,86 @@ Deseas continuar?</source>
         <location filename="../ui/installation.py" line="460"/>
         <source>Instalando el cargador de arranque...</source>
         <translation>부트로더 설치 중...</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="135"/>
+        <source>Las bondades de CuerdOS</source>
+        <translation>CuerdOS의 장점</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="136"/>
+        <source>Un sistema rápido, ligero y estable, potenciado con las herramientas de CuerdOS y un kernel personalizado, con una apariencia amigable para ti. Instala y mantén tus programas con Yelena Software y fpm.</source>
+        <translation>빠르고 가볍고 안정적인 시스템으로, CuerdOS 도구와 맞춤형 커널로 강화되었으며 사용자에게 친근한 모습을 갖추고 있습니다. Yelena Software와 fpm으로 프로그램을 설치하고 관리하세요.</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="144"/>
+        <source>CuerdOS para artistas</source>
+        <translation>아티스트를 위한 CuerdOS</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="145"/>
+        <source>Se adapta muy bien al diseño vectorial, la música, el dibujo, la fotografía y mucho más. Tu creatividad no tiene límites.</source>
+        <translation>벡터 디자인, 음악, 그림, 사진 등 다양한 분야에 잘 어울립니다. 당신의 창의력에는 한계가 없습니다.</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="152"/>
+        <source>CuerdOS para jugadores</source>
+        <translation>게이머를 위한 CuerdOS</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="153"/>
+        <source>Diseñado para jugar, desde los grandes títulos AAA hasta los clásicos de siempre.</source>
+        <translation>대형 AAA 타이틀부터 클래식 게임까지 즐길 수 있도록 설계되었습니다.</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="159"/>
+        <source>CuerdOS para la oficina</source>
+        <translation>사무용 CuerdOS</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="160"/>
+        <source>Muy funcional para armar presentaciones, documentos y cálculos, y mucho más para tu trabajo diario.</source>
+        <translation>프레젠테이션, 문서, 계산 작업에 매우 유용하며 일상 업무에 더 많은 도움을 줍니다.</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="166"/>
+        <source>CuerdOS para la ciencia</source>
+        <translation>과학을 위한 CuerdOS</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="167"/>
+        <source>Una gran herramienta para estudiantes y para la ciencia de datos.</source>
+        <translation>학생과 데이터 과학에 훌륭한 도구입니다.</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="173"/>
+        <source>CuerdOS para desarrolladores</source>
+        <translation>개발자를 위한 CuerdOS</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="174"/>
+        <source>Ideal para crear y construir proyectos de alto calibre, con todo lo que necesitas a la mano.</source>
+        <translation>필요한 모든 것이 갖춰져 있어 수준 높은 프로젝트를 만들고 빌드하기에 이상적입니다.</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="180"/>
+        <source>CuerdOS para Media Center</source>
+        <translation>미디어 센터를 위한 CuerdOS</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="181"/>
+        <source>Un sistema que puede convertirse en un centro multimedia para tus películas, series, música y fotos.</source>
+        <translation>영화, 시리즈, 음악, 사진을 즐기는 멀티미디어 센터로 바꿀 수 있는 시스템입니다.</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="187"/>
+        <source>CuerdOS para TODOS</source>
+        <translation>모두를 위한 CuerdOS</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="188"/>
+        <source>Un sistema 100% libre y de código abierto, fácil para principiantes y para quienes recién llegan al mundo de GNU/Linux.</source>
+        <translation>100% 자유 오픈 소스 시스템으로, 초보자와 GNU/Linux를 처음 접하는 분들도 쉽게 사용할 수 있습니다.</translation>
     </message>
 </context>
 <context>

@@ -13,6 +13,19 @@ class WelcomePage(QWidget):
         self.setup_ui(sys_data)
         self.translate_ui()
 
+    def _scale_logo(self):
+        if self._logo_pixmap.isNull():
+            return
+        w = max(1, int(self.width() * 0.5))
+        h = max(1, int(self.height() * 0.45))
+        self._logo.setPixmap(
+            self._logo_pixmap.scaled(w, h, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        )
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self._scale_logo()
+
     def setup_ui(self, sys_data):
         main_layout = QVBoxLayout(self)
         main_layout.setContentsMargins(32, 32, 32, 12)
@@ -62,13 +75,11 @@ class WelcomePage(QWidget):
 
         # Logo grande centrado
         logo = QLabel()
+        self._logo = logo
         logo.setAlignment(Qt.AlignCenter)
         identity_path = os.path.join(self._images_dir, "ps1.webp") if self._images_dir else "images/ps1.webp"
-        pixmap = QPixmap(identity_path)
-        if not pixmap.isNull():
-            logo.setPixmap(
-                pixmap.scaled(500, 350, Qt.KeepAspectRatio, Qt.SmoothTransformation)
-            )
+        self._logo_pixmap = QPixmap(identity_path)
+        self._scale_logo()
         center.addWidget(logo, alignment=Qt.AlignCenter)
 
         center.addSpacing(18)

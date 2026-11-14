@@ -13,9 +13,10 @@ from ui.title_widget import make_page_title
 
 
 class DisksPage(QWidget):
-    def __init__(self, sys_data):
+    def __init__(self, sys_data, demo=False):
         super().__init__()
         self.sys_data = sys_data
+        self.demo = demo
         self._partitions = {}
         self._role_desc = {}
         self.setup_ui(sys_data)
@@ -378,6 +379,13 @@ class DisksPage(QWidget):
         self.cargar_particiones()
 
     def abrir_partition_manager(self):
+        if self.demo:
+            QMessageBox.information(
+                self,
+                self.tr("Modo demo"),
+                self.tr("Simulación: en una instalación real se abriría el gestor de particiones."),
+            )
+            return
         try:
             subprocess.run(["partitionmanager"])
             # Tras cerrar el partition manager, recargar particiones
@@ -533,6 +541,16 @@ class DisksPage(QWidget):
             ).format(disk=disk),
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
         )
+
+        if reply == QMessageBox.StandardButton.Yes and self.demo:
+            QMessageBox.information(
+                self,
+                self.tr("Modo demo"),
+                self.tr(
+                    "Simulación: el disco {disk} no se ha modificado."
+                ).format(disk=disk),
+            )
+            return
 
         if reply == QMessageBox.StandardButton.Yes:
             try:

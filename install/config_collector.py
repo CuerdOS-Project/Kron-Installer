@@ -222,7 +222,7 @@ class InstallerConfigCollector(QObject):
                     self.tr("La misma partición está seleccionada para más de un uso."),
                 )
                 return None
-            for dev in devs:
+            for dev in [] if pag_discos.demo else devs:
                 mp = pag_discos.montada_en(dev)
                 if mp:
                     QMessageBox.warning(

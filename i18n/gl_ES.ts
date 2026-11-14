@@ -528,76 +528,6 @@ Desexas continuar?</translation>
         <translation>Iniciando o motor de instalación...</translation>
     </message>
     <message>
-        <location filename="../ui/installation.py" line="134"/>
-        <source>Bienvenido a CuerdOS</source>
-        <translation>Benvido a CuerdOS</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="136"/>
-        <source>Estás a punto de descubrir un sistema rápido, ligero y pensado para que todo simplemente funcione. Gracias por darle una oportunidad.</source>
-        <translation>Estás a punto de descubrir un sistema rápido, lixeiro e pensado para que todo simplemente funcione. Grazas por darlle unha oportunidade.</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="142"/>
-        <source>Instalar programas, muy fácil</source>
-        <translation>Instalar programas, moi fácil</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="144"/>
-        <source>Encontrar y añadir nuevas aplicaciones es tan sencillo como un par de clics, sin complicaciones ni pasos técnicos de por medio.</source>
-        <translation>Atopar e engadir novas aplicacións é tan sinxelo como un par de clics, sen complicacións nin pasos técnicos.</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="150"/>
-        <source>Rápido desde que enciendes</source>
-        <translation>Rápido dende que o acendes</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="152"/>
-        <source>Tu equipo arrancará en segundos. Por debajo, CuerdOS está optimizado para que tú solo te preocupes de usarlo.</source>
-        <translation>O teu equipo arrincará en segundos. Por debaixo, CuerdOS está optimizado para que ti só te preocupes de usalo.</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="157"/>
-        <source>Tu escritorio, a tu gusto</source>
-        <translation>O teu escritorio, ao teu gusto</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="159"/>
-        <source>Elige el aspecto que más te guste: simple y minimalista, o lleno de detalles. Tú decides cómo se ve tu equipo.</source>
-        <translation>Escolle o aspecto que máis te guste: sinxelo e minimalista, ou cheo de detalles. Ti decides como se ve o teu equipo.</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="164"/>
-        <source>Siempre al día, sin esfuerzo</source>
-        <translation>Sempre ao día, sen esforzo</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="166"/>
-        <source>Mantener tu sistema actualizado es muy sencillo: con un clic tendrás las últimas mejoras y parches de seguridad.</source>
-        <translation>Manter o teu sistema actualizado é moi sinxelo: cun clic terás as últimas melloras e parches de seguridade.</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="171"/>
-        <source>Seguro y preparado para errores</source>
-        <translation>Seguro e preparado para os erros</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="173"/>
-        <source>CuerdOS protege tu equipo desde el primer momento y está pensado para que, si algo falla, todo siga funcionando: la estabilidad es siempre la prioridad.</source>
-        <translation>CuerdOS protexe o teu equipo desde o primeiro momento e está pensado para que, se algo falla, todo siga funcionando: a estabilidade é sempre a prioridade.</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="179"/>
-        <source>Una comunidad que te acompaña</source>
-        <translation>Unha comunidade que te acompaña</translation>
-    </message>
-    <message>
-        <location filename="../ui/installation.py" line="181"/>
-        <source>Si tienes dudas o quieres compartir tu experiencia, nuestra comunidad está lista para ayudarte en todo momento.</source>
-        <translation>Se tes dúbidas ou queres compartir a túa experiencia, a nosa comunidade está lista para axudarte en todo momento.</translation>
-    </message>
-    <message>
         <location filename="../ui/installation.py" line="439"/>
         <source>(Fase {0} de {1})</source>
         <translation>(Fase {0} de {1})</translation>
@@ -674,6 +604,86 @@ Desexas continuar?</translation>
         <location filename="../ui/installation.py" line="460"/>
         <source>Instalando el cargador de arranque...</source>
         <translation>Instalando o cargador de arranque...</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="135"/>
+        <source>Las bondades de CuerdOS</source>
+        <translation>As bondades de CuerdOS</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="136"/>
+        <source>Un sistema rápido, ligero y estable, potenciado con las herramientas de CuerdOS y un kernel personalizado, con una apariencia amigable para ti. Instala y mantén tus programas con Yelena Software y fpm.</source>
+        <translation>Un sistema rápido, lixeiro e estable, potenciado coas ferramentas de CuerdOS e un núcleo personalizado, cunha aparencia amigable para ti. Instala e mantén os teus programas con Yelena Software e fpm.</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="144"/>
+        <source>CuerdOS para artistas</source>
+        <translation>CuerdOS para artistas</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="145"/>
+        <source>Se adapta muy bien al diseño vectorial, la música, el dibujo, la fotografía y mucho más. Tu creatividad no tiene límites.</source>
+        <translation>Adáptase moi ben ao deseño vectorial, a música, o debuxo, a fotografía e moito máis. A túa creatividade non ten límites.</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="152"/>
+        <source>CuerdOS para jugadores</source>
+        <translation>CuerdOS para xogadores</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="153"/>
+        <source>Diseñado para jugar, desde los grandes títulos AAA hasta los clásicos de siempre.</source>
+        <translation>Deseñado para xogar, desde os grandes títulos AAA ata os clásicos de sempre.</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="159"/>
+        <source>CuerdOS para la oficina</source>
+        <translation>CuerdOS para a oficina</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="160"/>
+        <source>Muy funcional para armar presentaciones, documentos y cálculos, y mucho más para tu trabajo diario.</source>
+        <translation>Moi funcional para facer presentacións, documentos e cálculos, e moito máis para o teu traballo diario.</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="166"/>
+        <source>CuerdOS para la ciencia</source>
+        <translation>CuerdOS para a ciencia</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="167"/>
+        <source>Una gran herramienta para estudiantes y para la ciencia de datos.</source>
+        <translation>Unha gran ferramenta para estudantes e para a ciencia de datos.</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="173"/>
+        <source>CuerdOS para desarrolladores</source>
+        <translation>CuerdOS para desenvolvedores</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="174"/>
+        <source>Ideal para crear y construir proyectos de alto calibre, con todo lo que necesitas a la mano.</source>
+        <translation>Ideal para crear e construír proxectos de alto nivel, con todo o que precisas á man.</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="180"/>
+        <source>CuerdOS para Media Center</source>
+        <translation>CuerdOS para Media Center</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="181"/>
+        <source>Un sistema que puede convertirse en un centro multimedia para tus películas, series, música y fotos.</source>
+        <translation>Un sistema que pode converterse nun centro multimedia para as túas películas, series, música e fotos.</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="187"/>
+        <source>CuerdOS para TODOS</source>
+        <translation>CuerdOS para TODOS</translation>
+    </message>
+    <message>
+        <location filename="../ui/installation.py" line="188"/>
+        <source>Un sistema 100% libre y de código abierto, fácil para principiantes y para quienes recién llegan al mundo de GNU/Linux.</source>
+        <translation>Un sistema 100% libre e de código aberto, fácil para principiantes e para quen acaba de chegar ao mundo de GNU/Linux.</translation>
     </message>
 </context>
 <context>

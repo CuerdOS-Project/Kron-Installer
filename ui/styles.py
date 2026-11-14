@@ -751,7 +751,7 @@ def global_stylesheet(assets_dir=None):
         background-color: transparent;
     }
 
-    QPlainTextEdit#installTerminal {
+    QPlainTextEdit#installTerminal, QTextEdit#installTerminal {
         background-color: #0d0f0e;
         color: #8cc997;
         border: none;
